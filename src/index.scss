@@ -3,13 +3,18 @@ body {
     'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f3f7fa;
+  background-color: #E5E5E5;
+  box-sizing: border-box;
 
+}
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+  padding: 0;
 }
 
 
 #root {
-  //width: 100%;
+  width: 100%;
   margin: 0;
   display: grid;
   place-items: center;

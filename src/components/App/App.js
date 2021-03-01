@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
-import classes                        from './App.module.scss';
-import Header                         from '../Header';
-import Test                           from '../Test';
-import NewTaskForm                    from '../NewTaskForm';
-import PostList                       from '../PostList';
+import { BrowserRouter }   from 'react-router-dom';
+import classes             from './App.module.scss';
+import Header              from '../Header';
+import SingIn from '../SignIn';
+import EditProfile from '../EditProfile';
+import Test from '../Test';
 
 
 const App = () => {
-  const [todo_list, setTodos] = useState();
-  const [filter, setFilter] = useState('all');
-  const fn = () => {}
+  const [ todo_list, setTodos ] = useState();
+  const [ filter, setFilter ] = useState( 'all' );
+  const fn = () => {};
 
-    return (
-    <section className={classes.app}>
-      <Header  />
-      <NewTaskForm add_new_todo={fn}/>
-      <PostList toggle_status={fn} remove_todo={fn}/>
-      <Test/>
-    </section>
+  return (
+    <BrowserRouter>
+      <section className={classes.app}>
+        <Header />
+        <SingIn />
+        <EditProfile/>
+      </section>
+    </BrowserRouter>
   );
 };
 

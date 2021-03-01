@@ -6,7 +6,6 @@ import Post      from '../Post';
 import * as actions from '../../redux/actions';
 
 function PostList( { todos }) {
-  console.log(todos)
 
   const task_list = todos.map((todo) => (
     <li key={todo.id}>

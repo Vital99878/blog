@@ -1,0 +1,21 @@
+@mixin reset-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* identical to box height, or 183% */
+@mixin font-size-sm{
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 22px;
+  color: #C4C4C4;
+}
+
+
+
+
+
+

@@ -26,7 +26,9 @@ const initial_state = [
     sec: 3,
   },
 ]
-const reducer = (state = initial_state, action) => {
+const test_person = { firstName: "Vital",lastName: "Lihoy", email: 'mail@mail.ru' }
+
+const reducer = (state = test_person, action) => {
   switch (action.type) {
     case 'TRANSFERS':
       return {
@@ -68,7 +70,7 @@ const reducer = (state = initial_state, action) => {
       };
 
     default:
-      return { todos: initial_state };
+      return { ...initial_state, firstName: "Vital", lastName: "Lihoy", email: 'mail@mail.ru' };
   }
 };
 
