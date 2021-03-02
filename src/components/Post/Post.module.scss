@@ -1,74 +1,87 @@
-.view {
-  display: flex;
-  /*align-items: baseline;*/
-  justify-content: space-between;
+@import '../../mixins';
+
+.item {
+  box-sizing: border-box;
+  position: relative;
+  @include reset-list;
+  background-color: white;
+  padding: 15px 14px 20px 20px;
+  border-radius: 5px;
+  filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.15));
+  min-width: 320px;
 }
 
-label {
+.title {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 15px 85px 15px 60px;
+  margin-bottom: 8px;
+
+  h5 {
+    margin-right: 14px;
+    font-family: Inter, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 28px;
+    color: #1890FF;
+  }
 }
 
-label .created {
-  font-size: 12px;
-  color: gray;
-  justify-self: flex-start;
-}
-
-label .description {
+.favorited  {
   display: flex;
-  justify-content: space-between;
-  word-break: break-all;
-  line-height: 1.2;
-  transition: color 0.4s;
-  font-weight: 400;
-  color: #4d4d4d;
+  align-self: flex-end;
+
+  p{
+    margin-top: .8px;
+    font-size: 12px;
+    font-family: Inter, sans-serif;
+    color: rgba(0, 0, 0, 0.75);
+  }
 }
 
-.view__description {
-  width: 100%;
+.tags {
   display: flex;
-  justify-content: space-between;
-  justify-self: flex-end;
+  padding: 0;
+  margin-bottom: 6px;
 }
 
-.completed label .description {
-  color: #cdcdcd;
-  text-decoration: line-through;
+.tag {
+  @include reset-list;
+  @include tag;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+
+  a {
+    margin: 0;
+    padding: 0;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
 }
 
-.icon {
+.firstTag {
+  @include reset-list;
+  @include tag;
+  border: 1px solid rgba(0, 0, 0, 0.85);
+
+  a {
+    margin: 0;
+    padding: 0;
+    color: rgba(0, 0, 0, 0.85);
+  }
+}
+
+.author {
   position: absolute;
-  top: 0;
-  bottom: 6px;
-  width: 30px;
-  height: 40px;
-  font-size: 34px;
-  color: #cc9a9a;
-  margin: auto 0 11px;
-  transition: color 0.2s ease-out;
-  cursor: pointer;
+  top: 15px;
+  right: 14px;
 }
 
-.icon:hover {
-  color: #af5b5e;
+.heart {
+  @include heart;
+  background: url('../../img/heart.svg') no-repeat;
 }
 
-.icon-destroy {
-  right: 10px;
-}
-
-.icon-destroy:after {
-  content: '×';
-}
-
-.icon-edit {
-  font-size: 19px;
-  right: 45px;
-}
-
-.icon-edit:after {
-  content: '✎';
+.redHeart {
+  @include heart;
+  background: url('../../img/red_heart.svg') no-repeat;
 }

@@ -4,8 +4,9 @@ import classes             from './App.module.scss';
 import Header              from '../Header';
 import SingIn              from '../SignIn';
 import EditProfile         from '../EditProfile';
-import Test                from '../Test';
+// import Test                from '../Test';
 import CreateNewAccount    from '../CreateNewAccount/CreateNewAccount';
+import PostList            from '../PostList/PostList';
 
 
 const App = () => {
@@ -17,9 +18,7 @@ const App = () => {
     <BrowserRouter>
       <section className={classes.app}>
         <Header />
-        <CreateNewAccount/>
-        <EditProfile/>
-        <SingIn />
+        <PostList/>
       </section>
     </BrowserRouter>
   );

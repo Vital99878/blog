@@ -1,33 +1,29 @@
 import React     from 'react';
-import './PostList.module.scss';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import classes from './PostList.module.scss';
 import Post      from '../Post';
 import * as actions from '../../redux/actions';
 
-function PostList( { todos }) {
+function PostList( { posts }) {
+  console.log(posts)
 
-  const task_list = todos.map((todo) => (
-    <li key={todo.id}>
-      <Post todo={todo}/>
-    </li>
+  const task_list = posts.map((post) => (
+    <Post post={post}/>
   ));
   return (
-    <section className="main">
-      <ul className="todo-list">{task_list}</ul>
-    </section>
+      <ul className={classes.list}>{task_list}</ul>
   );
 }
 
 PostList.defaultProp = {
-  todos: [],
+  posts: [],
   toggle_status: () => {},
-  id: Math.random() * 784,
 };
 PostList.propTypes = {
-  todos: PropTypes.arrayOf.isRequired,
+  posts: PropTypes.arrayOf.isRequired,
 };
 const mapStateToProps = (state) => ({
-  todos: state.todos,
+  posts: state.posts,
 });
 export default connect(mapStateToProps, actions)(PostList);

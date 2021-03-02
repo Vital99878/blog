@@ -1,35 +1,45 @@
+const initial_state = {
+  'articles': [ {
+    'slug': 'how-to-train-your-dragon',
+    'title': 'How to train your dragon',
+    'description': 'Ever wonder how?',
+    'body': 'It takes a Jacobian',
+    'tagList': [ 'dragons', 'training' ],
+    'createdAt': '2016-02-18T03:22:56.637Z',
+    'updatedAt': '2016-02-18T03:48:35.824Z',
+    'favorited': true,
+    'favoritesCount': 15,
+    'author': {
+      'username': 'jake',
+      'bio': 'I work at statefarm',
+      'image': 'https://i.stack.imgur.com/xHWG8.jpg',
+      'following': false,
+    },
+  }, {
+    'slug': 'how-to-train-your-dragon-2',
+    'title': 'How to train your dragon 2',
+    'description': 'So toothless',
+    'body': 'It a dragon',
+    'tagList': [ 'dragons', 'training' ],
+    'createdAt': '2016-02-18T03:22:56.637Z',
+    'updatedAt': '2016-02-18T03:48:35.824Z',
+    'favorited': false,
+    'favoritesCount': 0,
+    'author': {
+      'username': 'jake',
+      'bio': 'I work at statefarm',
+      'image': 'https://i.stack.imgur.com/xHWG8.jpg',
+      'following': false,
+    },
+  } ],
+  'articlesCount': 2,
+  firstName: 'Vital',
+  lastName: 'Lihoy',
+  email: 'mail@mail.ru',
+};
 
-
-const initial_state = [
-  {
-    label: 'Active task',
-    created: new Date(2021, 0, 25, 14, 55),
-    id: 11,
-    status: 'active',
-    min: 10,
-    sec: 30,
-  },
-  {
-    label: 'Completed task',
-    created: new Date(2020, 11, 12, 14, 55),
-    id: 52,
-    status: 'completed',
-    min: 8,
-    sec: 30,
-  },
-  {
-    label: 'Active task',
-    created: new Date(2021, 0, 20, 10, 55),
-    id: 3,
-    status: 'active',
-    min: 0,
-    sec: 3,
-  },
-]
-const test_person = { firstName: "Vital",lastName: "Lihoy", email: 'mail@mail.ru' }
-
-const reducer = (state = test_person, action) => {
-  switch (action.type) {
+const reducer = ( state = initial_state, action ) => {
+  switch ( action.type ) {
     case 'TRANSFERS':
       return {
         ...state,
@@ -70,7 +80,7 @@ const reducer = (state = test_person, action) => {
       };
 
     default:
-      return { ...initial_state, firstName: "Vital", lastName: "Lihoy", email: 'mail@mail.ru' };
+      return { posts: initial_state.articles, firstName: 'Vital', lastName: 'Lihoy', email: 'mail@mail.ru' };
   }
 };
 
