@@ -4,6 +4,7 @@ import PropTypes                   from 'prop-types';
 import * as actions                from '../../redux/actions';
 import classes                     from './EditProfile.module.scss';
 
+
 const { card__title, card, card__forms, card__label, card__button, card__input } = classes;
 let { warning, card__inputWarning } = classes;
 
@@ -34,6 +35,12 @@ const EditProfile = ( { firstName, lastName, email } ) => {
     setPasswordLength( () => newPasswordRef.current.value.length );
   }
 
+  function toggleSuccessClass( evt ) {
+    if ( evt.target.value.length > 0 ) {
+      evt.target.classList.replace( classes.card__inputWarning, card__input );
+    }
+  }
+
   if ( passwordLength >= 6 || passwordLength === 0 ) {
     card__inputWarning = false;
     warning = false;
@@ -53,6 +60,7 @@ const EditProfile = ( { firstName, lastName, email } ) => {
                  className={card__input}
                  type='text'
                  defaultValue={`${firstName} ${lastName}`}
+                 onChange={toggleSuccessClass}
           />
         </label>
         <label className={card__label}>
@@ -61,6 +69,7 @@ const EditProfile = ( { firstName, lastName, email } ) => {
                  className={card__input}
                  type='email'
                  defaultValue={email}
+                 onChange={toggleSuccessClass}
           />
         </label>
         <label className={card__label}>
@@ -81,7 +90,9 @@ const EditProfile = ( { firstName, lastName, email } ) => {
           <input ref={avatarUrlRef}
                  className={card__input}
                  type='url'
-                 placeholder='Avatar image' />
+                 placeholder='Avatar image'
+                 onChange={toggleSuccessClass}
+          />
         </label>
       </div>
       <button className={card__button}

@@ -27,6 +27,12 @@ const SingIn = () => {
     } );
   }
 
+  function toggleSuccessClass( evt ) {
+    if ( evt.target.value.length > 0 ){
+      evt.target.classList.replace( classes.card__inputWarning, card__input  );
+    }
+  }
+
   function changeLength() {
     setPasswordLength( () => passwordRef.current.value.length );
   }
@@ -45,7 +51,8 @@ const SingIn = () => {
       <h6 className={card__title}>Sign In</h6>
       <div className={card__forms}>
         <label className={card__label}>Email address
-          <input ref={mailRef} className={card__input} type='email' placeholder='Email address' />
+          <input ref={mailRef} className={card__input} type='email' placeholder='Email address'
+                 onChange={toggleSuccessClass} />
         </label>
         <label className={card__label}>Password
           <input ref={passwordRef}
@@ -59,7 +66,7 @@ const SingIn = () => {
           </span>
         </label>
       </div>
-      <button onClick={() => logIn([mailRef, passwordRef])} className={card__button} type='submit'>Login</button>
+      <button onClick={() => logIn( [ mailRef, passwordRef ] )} className={card__button} type='submit'>Login</button>
       <p className={card__p}>Don’t have an account? <Link to='/signUp'>Sign Up.</Link></p>
     </div>
   );
