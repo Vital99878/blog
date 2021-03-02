@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { BrowserRouter }   from 'react-router-dom';
 import classes             from './App.module.scss';
 import Header              from '../Header';
-import SingIn from '../SignIn';
-import EditProfile from '../EditProfile';
-import Test from '../Test';
+import SingIn              from '../SignIn';
+import EditProfile         from '../EditProfile';
+import Test                from '../Test';
+import CreateNewAccount    from '../CreateNewAccount/CreateNewAccount';
 
 
 const App = () => {
@@ -16,8 +17,9 @@ const App = () => {
     <BrowserRouter>
       <section className={classes.app}>
         <Header />
-        <SingIn />
+        <CreateNewAccount/>
         <EditProfile/>
+        <SingIn />
       </section>
     </BrowserRouter>
   );

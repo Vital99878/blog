@@ -1,18 +1,18 @@
 import React, { useRef, useState } from 'react';
 import { connect }                 from 'react-redux';
-import PropTypes                   from 'prop-types';
-import * as actions                from '../../redux/actions';
-import classes                     from './EditProfile.module.scss';
+import * as actions from '../../redux/actions';
+import classes      from './CreateNewAccount.module.scss';
 
 const { card__title, card, card__forms, card__label, card__button, card__input } = classes;
 let { warning, card__inputWarning } = classes;
 
-const EditProfile = ( { firstName, lastName, email } ) => {
+const CreateNewAccount = ( ) => {
   const [ passwordLength, setPasswordLength ] = useState( 0 );
   const usernameRef = useRef();
   const emailRef = useRef( '' );
-  const newPasswordRef = useRef( '' );
-  const avatarUrlRef = useRef();
+  const passwordRef = useRef( '' );
+  const repeatPasswordRef = useRef( '' );
+
 
   function logIn( refs ) {
     const refForFocus = refs.find( ref => ref.current.value.length === 0 );
@@ -31,7 +31,7 @@ const EditProfile = ( { firstName, lastName, email } ) => {
   }
 
   function changeLengthPassword() {
-    setPasswordLength( () => newPasswordRef.current.value.length );
+    setPasswordLength( () => passwordRef.current.value.length );
   }
 
   if ( passwordLength >= 6 || passwordLength === 0 ) {
@@ -45,14 +45,14 @@ const EditProfile = ( { firstName, lastName, email } ) => {
 
   return (
     <div className={card}>
-      <h6 className={card__title}>Edit Profile</h6>
+      <h6 className={card__title}>Create new account</h6>
       <div className={card__forms}>
         <label className={card__label}>
           Username
           <input ref={usernameRef}
                  className={card__input}
                  type='text'
-                 defaultValue={`${firstName} ${lastName}`}
+                 placeholder="you name"
           />
         </label>
         <label className={card__label}>
@@ -60,16 +60,16 @@ const EditProfile = ( { firstName, lastName, email } ) => {
           <input ref={emailRef}
                  className={card__input}
                  type='email'
-                 defaultValue={email}
+                 placeholder="email"
           />
         </label>
         <label className={card__label}>
-          New password
-          <input ref={newPasswordRef}
+          Password
+          <input ref={passwordRef}
                  className={card__inputWarning || card__input}
                  minLength='6'
                  type='password'
-                 placeholder='New password'
+                 placeholder='password'
                  onChange={changeLengthPassword}
           />
           <span className={warning || classes.hideSpan}>
@@ -77,16 +77,21 @@ const EditProfile = ( { firstName, lastName, email } ) => {
           </span>
         </label>
         <label className={card__label}>
-          Avatar image (url)
-          <input ref={avatarUrlRef}
-                 className={card__input}
-                 type='url'
-                 placeholder='Avatar image' />
+          Repeat Password
+          <input ref={repeatPasswordRef}
+                 className={card__inputWarning || card__input}
+                 type='password'
+                 placeholder='Repeat password'
+                 onChange={changeLengthPassword}
+          />
+          <span className={warning || classes.hideSpan}>
+            Passwords must match.
+          </span>
         </label>
       </div>
       <button className={card__button}
-              onClick={() => logIn( [ usernameRef, emailRef, newPasswordRef, avatarUrlRef ] )}
-              type='submit'>Save
+              onClick={() => logIn( [ usernameRef, emailRef, passwordRef, repeatPasswordRef ] )}
+              type='submit'>Create
       </button>
     </div>
   );
@@ -98,15 +103,13 @@ const mapStateToProps = ( state ) => (
     email: state.email,
   });
 
-EditProfile.defaultProp = {
+CreateNewAccount.defaultProp = {
   firstName: '',
   lastName: '',
   email: '',
 };
-EditProfile.propTypes = {
-  firstName: PropTypes.string.isRequired,
-  lastName: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
+CreateNewAccount.propTypes = {
+
 };
 
-export default connect( mapStateToProps, actions )( EditProfile );
+export default connect( mapStateToProps, actions )( CreateNewAccount );
