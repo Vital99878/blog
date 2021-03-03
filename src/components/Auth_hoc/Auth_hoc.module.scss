@@ -73,6 +73,12 @@
   .item:not(:last-child) {
     margin-right: 0;
   }
+  .signIn {
+    align-self: center;
+  }
+  .signUp {
+    padding: 6px 4px;
+  }
   .logOut {
     padding: 6px 8px;
     font-size: 12px;

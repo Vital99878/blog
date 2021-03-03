@@ -83,11 +83,12 @@ const reducer = ( state = initial_state, action ) => {
         firstName: 'Vital',
         lastName: 'Lihoy',
         email: 'mail@mail.ru',
-        auth: true,
+        auth: false,
         user: {
           username: 'Vital',
           image: 'https://sun9-32.userapi.com/impg/Xey8t2zJyK0UFlOyMl7Xk-8W5_i268frf776EA/tfPHMuN2YKw.jpg?size=881x700&quality=96&sign=33fdce245441749fb4db391f50f2e6bf&type=album',
         },
+        page_number: 1
       };
   }
 };
