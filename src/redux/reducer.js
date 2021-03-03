@@ -40,12 +40,10 @@ const initial_state = {
 
 const reducer = ( state = initial_state, action ) => {
   switch ( action.type ) {
-    case 'TRANSFERS':
+    case 'LOGOUT':
       return {
         ...state,
-        transfers: action.transfers,
-        active_all: action.transfers.length === 4,
-        index: 0,
+        auth: false
       };
 
     case 'ALL_TRANSFERS':
@@ -80,7 +78,17 @@ const reducer = ( state = initial_state, action ) => {
       };
 
     default:
-      return { posts: initial_state.articles, firstName: 'Vital', lastName: 'Lihoy', email: 'mail@mail.ru', auth: false };
+      return {
+        posts: initial_state.articles,
+        firstName: 'Vital',
+        lastName: 'Lihoy',
+        email: 'mail@mail.ru',
+        auth: true,
+        user: {
+          username: 'Vital',
+          image: 'https://sun9-32.userapi.com/impg/Xey8t2zJyK0UFlOyMl7Xk-8W5_i268frf776EA/tfPHMuN2YKw.jpg?size=881x700&quality=96&sign=33fdce245441749fb4db391f50f2e6bf&type=album',
+        },
+      };
   }
 };
 

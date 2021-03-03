@@ -1,35 +1,41 @@
 import React        from 'react';
 import { connect }  from 'react-redux';
-import PropTypes from 'prop-types';
+import PropTypes    from 'prop-types';
+import {Link}       from 'react-router-dom';
 import * as actions from '../../redux/actions';
 import classes      from './Auth_hoc.module.scss';
+import User         from '../User';
 
+const {list, item, signIn, signUp, logOut, createArticle} = classes;
 
-const Auth_hoc = ( { auth }) => {
+const Auth_hoc = ( { auth, user,isLogOut }) => {
+
   if (auth ) {
     return (
-      <div className=''>
-        createButton User logOutButton
-      </div>
+      <ul className={list}>
+        <li className={`${item} ${createArticle}`}><Link to='userChange'>Create article</Link></li>
+        <li className={item}><Link to='userChange'><User user={user}/></Link></li>
+        <li className={`${item} ${logOut}`}><Link  onClick={isLogOut} to='userChange'>Log Out</Link></li>
+      </ul>
     )
   }
   return (
-    <div className=''>
-      signIn, signUp
-    </div>
+    <ul className={list}>
+      <li className={`${item} ${signIn}`}><Link to="/signIn">Sign In</Link></li>
+      <li className={`${item} ${signUp}`}><Link to='signUp'>Sign Up</Link></li>
+    </ul>
   )
 }
-
-
-
 
 Auth_hoc.defaultProp = {
 
 };
 Auth_hoc.propTypes = {
-  auth: PropTypes.bool.isRequired
-};
+  user: PropTypes.objectOf.isRequired,
+  auth: PropTypes.bool.isRequired,
+  isLogOut:  PropTypes.func.isRequired};
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  user: state.user,
 });
 export default connect(mapStateToProps, actions)(Auth_hoc);

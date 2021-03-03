@@ -9,6 +9,7 @@
   border-radius: 5px;
   filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.15));
   min-width: 320px;
+
 }
 
 .title {
@@ -85,3 +86,11 @@
   @include heart;
   background: url('../../img/red_heart.svg') no-repeat;
 }
+
+@media (max-width: 560px) {
+  .item {
+    display: flex;
+    flex-direction: column;
+  }
+}
+

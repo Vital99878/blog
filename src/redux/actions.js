@@ -1,6 +1,5 @@
-export const toggle_transfers = (transfers) => ({
-  type: 'TRANSFERS',
-  transfers,
+export const isLogOut = () => ({
+  type: 'LOGOUT',
 });
 
 export const select_all_transfers = (active_all, transfers) => ({

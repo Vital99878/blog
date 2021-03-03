@@ -1,13 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { connect }                 from 'react-redux';
 import { Link }                    from 'react-router-dom';
-import * as actions                from '../../redux/actions';
-import classes                     from './CreateNewAccount.module.scss';
+import * as actions from '../../redux/actions';
+import classes      from './SignUp.module.scss';
 
 const { card__title, card, card__forms, card__label, card__button, card__input, card__p } = classes;
 let { warning, card__inputWarning } = classes;
 
-const CreateNewAccount = ( ) => {
+const SignUp = ( ) => {
   const [ passwordLength, setPasswordLength ] = useState( 0 );
   const [ repeatPasswordWarning, setRepeatPasswordWarning ] = useState( false );
   const [ warningMatchPassword, setWarningMatchPassword ] = useState( false );
@@ -134,13 +134,13 @@ const mapStateToProps = ( state ) => (
     email: state.email,
   });
 
-CreateNewAccount.defaultProp = {
+SignUp.defaultProp = {
   firstName: '',
   lastName: '',
   email: '',
 };
-CreateNewAccount.propTypes = {
+SignUp.propTypes = {
 
 };
 
-export default connect( mapStateToProps, actions )( CreateNewAccount );
+export default connect( mapStateToProps, actions )( SignUp );

@@ -1,9 +1,6 @@
 @import '../../mixins';
 
 .author {
-  position: absolute;
-  top: 15px;
-  right: 14px;
   display: flex;
 }
 
@@ -12,7 +9,6 @@
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
-  text-transform: uppercase;
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
@@ -34,9 +30,9 @@
 }
 
 @media (max-width: 560px) {
-  .author{
-    position: static;
-    margin-left: auto;
-    margin-bottom: 6px;
+  .avatar {
+    height: 30px;
+    width: 30px;
   }
 }
+

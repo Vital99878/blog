@@ -1,5 +1,9 @@
+@import '../../variables';
+@import '../../mixins';
+
 .header {
-  height: 80px;
+  box-sizing: border-box;
+  //height: 80px;
   width: 100%;
   max-width: 1440px;
   background-color: white;
@@ -7,6 +11,21 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: min-content;
+}
+
+.logo {
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+@media (max-width: 560px) {
+  .header {
+    padding: 8px 30px;
+  }
 }
 
 
