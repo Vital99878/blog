@@ -1,6 +1,13 @@
 .header {
   height: 80px;
   width: 100%;
+  max-width: 1440px;
   background-color: white;
+  padding: 16px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+
 

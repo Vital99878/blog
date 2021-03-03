@@ -80,7 +80,7 @@ const reducer = ( state = initial_state, action ) => {
       };
 
     default:
-      return { posts: initial_state.articles, firstName: 'Vital', lastName: 'Lihoy', email: 'mail@mail.ru' };
+      return { posts: initial_state.articles, firstName: 'Vital', lastName: 'Lihoy', email: 'mail@mail.ru', auth: false };
   }
 };
 

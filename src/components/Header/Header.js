@@ -1,16 +1,16 @@
-import React from 'react';
+import React    from 'react';
 import classes  from './Header.module.scss';
-// import PropTypes from 'prop-types';
-
+import Auth_hoc from '../Auth_hoc/Auth_hoc';
 
 function Header() {
   return (
     <div className={classes.header}>
-      Header
+      <div className={classes.logo}>
+        Realworld Blog
+      </div>
+      <Auth_hoc/>
     </div>
   );
 }
-Header.propTypes = {
 
-};
 export default Header;
