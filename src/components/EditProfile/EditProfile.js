@@ -102,6 +102,7 @@ const EditProfile = ( { firstName, lastName, email } ) => {
     </div>
   );
 };
+
 const mapStateToProps = ( state ) => (
   {
     firstName: state.firstName,

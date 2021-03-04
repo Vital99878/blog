@@ -1,12 +1,16 @@
 import React, { useRef, useState } from 'react';
 import { Link }                    from 'react-router-dom';
+import PropTypes                   from 'prop-types';
+import { connect }                 from 'react-redux';
+import * as actions                from '../../redux/actions';
 import classes                     from './SignIn.module.scss';
-// import PropTypes from 'prop-types';
+
 
 const { card__title, card, card__forms, card__label, card__button, card__input, card__p } = classes;
 let { warning, card__inputWarning } = classes;
 
-const SingIn = () => {
+const SingIn = ( { signIn } ) => {
+
   const [ passwordLength, setPasswordLength ] = useState( 0 );
   const mailRef = useRef( '' );
   const passwordRef = useRef( '' );
@@ -25,16 +29,17 @@ const SingIn = () => {
         ref.current.classList.replace( classes.card__inputWarning, card__input );
       }
     } );
-  }
 
-  function toggleSuccessClass( evt ) {
-    if ( evt.target.value.length > 0 ){
-      evt.target.classList.replace( classes.card__inputWarning, card__input  );
+    const [ mail, password ] = refs;
+    if ( mail.current.value.length !== 0 && password.current.value.length >= 8 ) {
+      signIn( mail.current.value, password.current.value );
     }
   }
 
-  function changeLength() {
-    setPasswordLength( () => passwordRef.current.value.length );
+  function toggleSuccessClass( evt ) {
+    if ( evt.target.value.length > 0 ) {
+      evt.target.classList.replace( classes.card__inputWarning, card__input );
+    }
   }
 
   if ( passwordLength >= 6 || passwordLength === 0 ) {
@@ -51,16 +56,22 @@ const SingIn = () => {
       <h6 className={card__title}>Sign In</h6>
       <div className={card__forms}>
         <label className={card__label}>Email address
-          <input ref={mailRef} className={card__input} type='email' placeholder='Email address'
+          <input ref={mailRef}
+                 className={card__input}
+                 type='email'
+                 required
+                 placeholder='Email address'
                  onChange={toggleSuccessClass} />
         </label>
         <label className={card__label}>Password
           <input ref={passwordRef}
                  className={card__inputWarning || card__input}
-                 minLength='6'
+                 minLength='8'
+                 maxLength="40"
                  type='password'
+                 required
                  placeholder='Password'
-                 onChange={changeLength} />
+                 onChange={ () => setPasswordLength( () => passwordRef.current.value.length )} />
           <span className={warning || classes.hideSpan}>
             Your password needs to be at least 6 characters.
           </span>
@@ -73,5 +84,11 @@ const SingIn = () => {
 };
 
 SingIn.defaultProp = {};
-SingIn.propTypes = {};
-export default SingIn;
+SingIn.propTypes = {
+  signIn: PropTypes.func.isRequired,
+};
+// const mapStateToProps = (state) ={
+//
+// }
+
+export default connect( null, actions )( SingIn );

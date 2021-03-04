@@ -40,22 +40,31 @@ const initial_state = {
 
 const reducer = ( state = initial_state, action ) => {
   switch ( action.type ) {
+
+    case 'SIGN_IN':
+      return {
+        ...state,
+        auth: true,
+        user: action.user,
+      };
+
     case 'LOGOUT':
       return {
         ...state,
-        auth: false
+        auth: false,
+        user: null,
       };
 
-    case 'ALL_TRANSFERS':
+    case 'GET_ARTICLES':
       return {
         ...state,
-        active_all: action.active_all,
-        transfers: action.transfers,
-        index: 0,
+        posts: action.articles,
+        pages: Math.round( action.articlesCount / 5 ),
+        loading: false,
       };
 
-    case 'SET_ID':
-      return { ...state, searchId: action.searchId };
+    case 'OFFSET':
+      return { ...state, offset: action.offset, page_number: action.page, loading: true };
 
     case 'NEW_TICKETS':
 
@@ -79,16 +88,14 @@ const reducer = ( state = initial_state, action ) => {
 
     default:
       return {
-        posts: initial_state.articles,
+        posts: [],
         firstName: 'Vital',
         lastName: 'Lihoy',
         email: 'mail@mail.ru',
         auth: false,
-        user: {
-          username: 'Vital',
-          image: 'https://sun9-32.userapi.com/impg/Xey8t2zJyK0UFlOyMl7Xk-8W5_i268frf776EA/tfPHMuN2YKw.jpg?size=881x700&quality=96&sign=33fdce245441749fb4db391f50f2e6bf&type=album',
-        },
-        page_number: 1
+        user: null,
+        page_number: 1,
+        loading: true,
       };
   }
 };

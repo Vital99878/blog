@@ -74,6 +74,8 @@ const SignUp = ( ) => {
                  className={card__input}
                  type='text'
                  placeholder="you name"
+                 minLength='3'
+                 maxLength="20"
                  onChange={toggleSuccessClass}
           />
         </label>

@@ -42,7 +42,7 @@
   text-align: center;
   vertical-align: middle;
   list-style: none;
-  background-color: rgba(1,1,1,0);
+  background-color: transparent;
   outline: 0;
   cursor: pointer;
   -webkit-user-select: none;
@@ -74,10 +74,9 @@
   border-radius: 6px;
   font-weight: 500;
   background:  #1890ff;
-
 }
 .ant-pagination-item-active a {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 .ant-pagination-item-active:focus,
 .ant-pagination-item-active:hover {

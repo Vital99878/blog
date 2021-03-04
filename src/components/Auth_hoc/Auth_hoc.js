@@ -8,14 +8,14 @@ import User         from '../User';
 
 const {list, item, signIn, signUp, logOut, createArticle} = classes;
 
-const Auth_hoc = ( { auth, user,isLogOut }) => {
+const Auth_hoc = ( { auth, user, isLogOut }) => {
 
   if (auth ) {
     return (
       <ul className={list}>
-        <li className={`${item} ${createArticle}`}><Link to='userChange'>Create article</Link></li>
-        <li className={item}><Link to='userChange'><User user={user}/></Link></li>
-        <li className={`${item} ${logOut}`}><Link  onClick={isLogOut} to='userChange'>Log Out</Link></li>
+        <li className={`${item} ${createArticle}`}><Link to='/createArticle'>Create article</Link></li>
+        <li className={item}><Link to='/editProfile'><User user={user}/></Link></li>
+        <li className={`${item} ${logOut}`}><Link  onClick={isLogOut} to='/'>Log Out</Link></li>
       </ul>
     )
   }

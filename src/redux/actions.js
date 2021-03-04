@@ -1,19 +1,40 @@
-export const isLogOut = () => ({
-  type: 'LOGOUT',
-});
+import articles_service from '../api/blog_api';
+import auth_api         from '../api/auth_api';
 
-export const select_all_transfers = (active_all, transfers) => ({
-  type: 'ALL_TRANSFERS',
-  active_all,
-  transfers,
-});
+// async actions auth
 
- // async actions
-export function setId() {
-  // return async (dispatch) => {
-  //   const searchId = await getId();
-  //   dispatch({ type: 'SET_ID', searchId });
-  // };
+export function signIn( mail, password ) {
+  return async ( dispatch ) => {
+
+    const user = await auth_api.get_user( mail, password );
+    if ( typeof user !== 'string' ) {
+      dispatch( { type: 'SIGN_IN', user } );
+    }
+  };
+
+};
+
+export const isLogOut = () => (
+  {
+    type: 'LOGOUT',
+  });
+
+
+
+// async actions Articles
+
+export function getArticles( offset ) {
+  return async ( dispatch ) => {
+    const { articles, articlesCount } = await articles_service.get_articles( offset );
+    dispatch( { type: 'GET_ARTICLES', articles, articlesCount } );
+  };
+}
+
+export function getOneArticle( slug ) {
+  return async ( dispatch ) => {
+    const article  = await articles_service.get_one_article( slug );
+    dispatch( { type: 'ONE_ARTICLE', article } );
+  };
 }
 
 export const get_tickets = () => {
@@ -22,3 +43,11 @@ export const get_tickets = () => {
   //   dispatch({ type: 'NEW_TICKETS', new_tickets, stop });
   // };
 };
+
+export const set_offset = ( page, offset ) => (
+  {
+    type: 'OFFSET',
+    offset, page,
+  });
+
+
