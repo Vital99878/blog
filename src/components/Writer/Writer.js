@@ -4,7 +4,7 @@ import classes        from './Writer.module.scss';
 import { monthNames } from '../../utilities';
 
 
-const Writer = ( { author, createdAt, updatedAt } ) => {
+const Writer = ( { author, createdAt } ) => {
 
   const date = `${monthNames[ new Date( createdAt ).getMonth() ]} ${new Date( createdAt ).getDay()}, ${new Date( createdAt ).getFullYear()}`;
 
@@ -32,6 +32,5 @@ Writer.defaultProp = {
 Writer.propTypes = {
   author: PropTypes.objectOf.isRequired,
   createdAt: PropTypes.objectOf.isRequired,
-  updatedAt: PropTypes.objectOf.isRequired,
 };
 export default Writer;

@@ -2,10 +2,10 @@ const base = 'https://conduit.productionready.io/api';
 
 
 class Auth_api {
+
   async get_user(email, password) {
     const myHeaders = new Headers();
     myHeaders.append( 'Content-Type', 'application/json' );
-
     const raw = JSON.stringify( {
                                   user: {
                                     email,
@@ -26,13 +26,11 @@ class Auth_api {
     return user.user;
   }
 
-
   // async create_article() {
   // }
   //
   // async edit_article() {
   // }
-
 }
 
 export default new Auth_api();

@@ -1,44 +1,44 @@
-const initial_state = {
-  'articles': [ {
-    'slug': 'how-to-train-your-dragon',
-    'title': 'How to train your dragon',
-    'description': 'Ever wonder how?',
-    'body': 'It takes a Jacobian',
-    'tagList': [ 'dragons', 'training' ],
-    'createdAt': '2016-02-18T03:22:56.637Z',
-    'updatedAt': '2016-02-18T03:48:35.824Z',
-    'favorited': true,
-    'favoritesCount': 15,
-    'author': {
-      'username': 'jake',
-      'bio': 'I work at statefarm',
-      'image': 'https://i.stack.imgur.com/xHWG8.jpg',
-      'following': false,
-    },
-  }, {
-    'slug': 'how-to-train-your-dragon-2',
-    'title': 'How to train your dragon 2',
-    'description': 'So toothless',
-    'body': 'It a dragon',
-    'tagList': [ 'dragons', 'training' ],
-    'createdAt': '2016-02-18T03:22:56.637Z',
-    'updatedAt': '2016-02-18T03:48:35.824Z',
-    'favorited': false,
-    'favoritesCount': 0,
-    'author': {
-      'username': 'jake',
-      'bio': 'I work at statefarm',
-      'image': 'https://i.stack.imgur.com/xHWG8.jpg',
-      'following': false,
-    },
-  } ],
-  'articlesCount': 2,
-  firstName: 'Vital',
-  lastName: 'Lihoy',
-  email: 'mail@mail.ru',
-};
+// const initial_state = {
+//   'articles': [ {
+//     'slug': 'how-to-train-your-dragon',
+//     'title': 'How to train your dragon',
+//     'description': 'Ever wonder how?',
+//     'body': 'It takes a Jacobian',
+//     'tagList': [ 'dragons', 'training' ],
+//     'createdAt': '2016-02-18T03:22:56.637Z',
+//     'updatedAt': '2016-02-18T03:48:35.824Z',
+//     'favorited': true,
+//     'favoritesCount': 15,
+//     'author': {
+//       'username': 'jake',
+//       'bio': 'I work at statefarm',
+//       'image': 'https://i.stack.imgur.com/xHWG8.jpg',
+//       'following': false,
+//     },
+//   }, {
+//     'slug': 'how-to-train-your-dragon-2',
+//     'title': 'How to train your dragon 2',
+//     'description': 'So toothless',
+//     'body': 'It a dragon',
+//     'tagList': [ 'dragons', 'training' ],
+//     'createdAt': '2016-02-18T03:22:56.637Z',
+//     'updatedAt': '2016-02-18T03:48:35.824Z',
+//     'favorited': false,
+//     'favoritesCount': 0,
+//     'author': {
+//       'username': 'jake',
+//       'bio': 'I work at statefarm',
+//       'image': 'https://i.stack.imgur.com/xHWG8.jpg',
+//       'following': false,
+//     },
+//   } ],
+//   'articlesCount': 2,
+//   firstName: 'Vital',
+//   lastName: 'Lihoy',
+//   email: 'mail@mail.ru',
+// };
 
-const reducer = ( state = initial_state, action ) => {
+const reducer = ( state , action ) => {
   switch ( action.type ) {
 
     case 'SIGN_IN':
@@ -46,6 +46,7 @@ const reducer = ( state = initial_state, action ) => {
         ...state,
         auth: true,
         user: action.user,
+        username: action.user.username
       };
 
     case 'LOGOUT':
@@ -53,6 +54,13 @@ const reducer = ( state = initial_state, action ) => {
         ...state,
         auth: false,
         user: null,
+        username: ''
+      };
+
+    case 'ONE_ARTICLE':
+      return {
+        ...state,
+        article: action.article,
       };
 
     case 'GET_ARTICLES':
@@ -96,6 +104,7 @@ const reducer = ( state = initial_state, action ) => {
         user: null,
         page_number: 1,
         loading: true,
+        username: ''
       };
   }
 };

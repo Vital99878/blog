@@ -29,6 +29,13 @@
   border-radius: 5px;
 }
 
+@mixin delete_edit_article {
+  padding: 8px 12px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 
 
 

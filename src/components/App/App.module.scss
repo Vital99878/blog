@@ -46,7 +46,6 @@ button::-moz-focus-inner {
   display: none;
 }
 
-
 /*
 	Hack to remove background from Mobile Safari.
 	Can't use it globally since it destroys checkboxes in Firefox
@@ -67,6 +66,7 @@ button::-moz-focus-inner {
   flex-direction: column;
   background-color: #EBEEF3;
   align-items: center;
+
 }
 
 

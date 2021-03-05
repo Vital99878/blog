@@ -7,10 +7,10 @@ import * as actions         from '../../redux/actions';
 import classes              from './PostList.module.scss';
 import './Pagination.css';
 
-function PostList( { posts, offset, getArticles, loading, page_number, pages, set_offset } ) {
+function PostList( { posts, offset, getArticles, loading, page_number, pages, set_offset, user } ) {
 
   useEffect( () => {
-    getArticles( offset );
+    getArticles( offset, user );
   },[offset] );
 
   if ( loading ) {
@@ -49,6 +49,7 @@ PostList.propTypes = {
   page_number: PropTypes.number.isRequired,
   pages: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
+  user: PropTypes.objectOf.isRequired,
 
 };
 const mapStateToProps = ( state ) => (
@@ -57,6 +58,7 @@ const mapStateToProps = ( state ) => (
     posts: state.posts,
     offset: state.offset,
     loading: state.loading,
-    pages: state.pages
+    pages: state.pages,
+    user: state.user
   });
 export default connect( mapStateToProps, actions )( PostList );
