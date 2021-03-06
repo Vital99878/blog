@@ -54,11 +54,9 @@ class Articles_Service {
       method: 'POST',
       headers: myHeaders,
     };
-    const body = await fetch( `${base}/${slug}/favorite`, requestOptions );
-    if ( !body.ok ) {
-      return 'Something wrong';
-    }
-    return [];
+    const response = await fetch( `${base}/${slug}/favorite`, requestOptions );
+    const body = await response.json();
+    return body.article;
   }
 
   async remove_from_favorite( slug, token ) {
@@ -68,11 +66,9 @@ class Articles_Service {
       method: 'DELETE',
       headers: myHeaders,
     };
-    const body = await fetch( `${base}/${slug}/favorite`, requestOptions );
-    if ( !body.ok ) {
-      return 'Something wrong';
-    }
-    return [];
+    const response = await fetch( `${base}/${slug}/favorite`, requestOptions );
+    const body = await response.json();
+    return body.article;
   }
 
   // POST /api/articles/:slug/favorite

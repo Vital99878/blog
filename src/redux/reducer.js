@@ -57,6 +57,36 @@ const reducer = ( state , action ) => {
         username: ''
       };
 
+    case 'LIKE':
+      return {
+        ...state,
+        posts: state.posts.map(post => {
+          if (post.slug === action.article.slug ) {
+            return action.article
+          }
+          return  post
+        }),
+        article: action.article
+      };
+
+    case 'DISLIKE':
+      return {
+        ...state,
+        posts: state.posts.map(post => {
+          if (post.slug === action.article.slug ) {
+            return action.article
+          }
+          return  post
+        }),
+        article: action.article
+      };
+
+    case 'ARTICLE_NULL':
+      return {
+        ...state,
+        article: null,
+      };
+      
     case 'ONE_ARTICLE':
       return {
         ...state,
@@ -74,26 +104,6 @@ const reducer = ( state , action ) => {
     case 'OFFSET':
       return { ...state, offset: action.offset, page_number: action.page, loading: true };
 
-    case 'NEW_TICKETS':
-
-      return {
-        ...state,
-        index: 0,
-      };
-
-    case 'TAB':
-      return {
-        ...state,
-        tab_value: action.tab_value,
-        index: 0,
-      };
-
-    case 'MORE':
-      return {
-        ...state,
-        index: action.index,
-      };
-
     default:
       return {
         posts: [],
@@ -104,7 +114,8 @@ const reducer = ( state , action ) => {
         user: null,
         page_number: 1,
         loading: true,
-        username: ''
+        username: '',
+        article: null
       };
   }
 };

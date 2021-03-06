@@ -6,39 +6,35 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as actions from '../../redux/actions';
-import articles_service from '../../api/blog_api';
 import Writer from '../Writer';
 import classes from './Post.module.scss';
 
 
 function Post({ post, getOneArticle, user, addToFavorite, removeFromFavorite }) {
-
+  
   const { author, title,  createdAt, favorited, favoritesCount, tagList, slug, description } = post;
+  let heartButtonClass;
   const tags = tagList.map((tag) => (
     <li className={classes.tag}>
       <a href="">{tag}</a>
     </li>
   ));
-  let heartButton;
-  let [toggleHeart, setToggleHeart] = useState(favorited);
-  let [count, setCount] = useState(favoritesCount);
 
-  if (toggleHeart) {
-    heartButton = classes.redHeart;
-  } else {
-    heartButton = classes.heart;
+
+  if ( favorited ) {
+    heartButtonClass = classes.redHeart;
+  }
+  else {
+    heartButtonClass = classes.heart;
   }
 
-  function toggleFavorite(toggleHeart) {
-    if (user) {
-      setToggleHeart((toggle) => !toggle);
-      if (toggleHeart) {
-        setCount((num) => num - 1);
-        articles_service.remove_from_favorite(slug, user.token)
+  function toggleFavorite( favorited ) {
+    if ( user ) {
+      if ( favorited ) {
+        removeFromFavorite(slug, user.token)
       }
-      if (!toggleHeart) {
-        setCount((num) => num + 1);
-        articles_service.add_to_favorite(slug, user.token)
+      if ( !favorited ) {
+        addToFavorite( slug, user.token)
       }
     }
   }
@@ -52,8 +48,8 @@ function Post({ post, getOneArticle, user, addToFavorite, removeFromFavorite }) 
             <h5>{title}</h5>
           </Link>
           <div className={classes.favorited}>
-            <button type="button" className={heartButton} onClick={() => toggleFavorite(toggleHeart)} />
-            <p>{count}</p>
+            <button type="button" className={heartButtonClass} onClick={() => toggleFavorite(favorited)} />
+            <p>{favoritesCount}</p>
           </div>
         </div>
         <ul className={classes.tags}>{tags}</ul>

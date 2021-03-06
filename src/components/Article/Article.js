@@ -6,20 +6,19 @@ import React, { useState } from 'react';
 import PropTypes           from 'prop-types';
 import { Link }            from 'react-router-dom';
 import { connect }         from 'react-redux';
+import * as actions from '../../redux/actions';
 import Writer              from '../Writer';
 import classes             from './Article.module.scss';
 import articles_service    from '../../api/blog_api';
 
 
-function Article( { article, username, user } ) {
+function Article( { article, username, user,addToFavorite, removeFromFavorite } ) {
 
   if ( !article ) {
     return <div className={classes.loader}>Article loading ...</div>;
   }
 
   const { author, title, body, createdAt, description, favorited, favoritesCount, tagList, slug } = article;
-  let [ count, setCount ] = useState( favoritesCount );
-  let [ toggleHeart, setToggleHeart ] = useState( favorited );
 
   const tags = tagList.map( ( tag ) => (
     <li className={classes.tag}>
@@ -28,23 +27,20 @@ function Article( { article, username, user } ) {
   ) );
   let heartButtonClass;
 
-  if ( toggleHeart ) {
+  if ( favorited ) {
     heartButtonClass = classes.redHeart;
   }
   else {
     heartButtonClass = classes.heart;
   }
 
-  function toggleFavorite(toggleHeart) {
-    if (user) {
-      setToggleHeart((toggle) => !toggle);
-      if (toggleHeart) {
-        setCount((num) => num - 1);
-        articles_service.remove_from_favorite(slug, user.token)
+  function toggleFavorite(  ) {
+    if ( user ) {
+      if ( favorited ) {
+        removeFromFavorite(slug, user.token)
       }
-      if (!toggleHeart) {
-        setCount((num) => num + 1);
-        articles_service.add_to_favorite(slug, user.token)
+      if ( !favorited ) {
+        addToFavorite( slug, user.token)
       }
     }
   }
@@ -55,17 +51,17 @@ function Article( { article, username, user } ) {
       <div className={classes.title}>
         <h5>{title}</h5>
         <div className={classes.favorited}>
-          <button type='button' className={heartButtonClass} onClick={() => toggleFavorite( toggleHeart )} />
-          <p>{count}</p>
+          <button type='button' className={heartButtonClass} onClick={() => toggleFavorite(  )} />
+          <p>{favoritesCount}</p>
         </div>
       </div>
       <ul className={classes.tags}>{tags}</ul>
       <div className={classes.paragraph}>
         <p className={classes.description}> {description}</p>
-        {  article.author.username === username &&
+        {article.author.username === username &&
         <ul className={classes.list}>
           <li className={`${classes.item} ${classes.deleteArticle}`}>Delete</li>
-          <li className={`${classes.item} ${classes.editArticle}`}><Link  to='/editArticle'>Edit</Link></li>
+          <li className={`${classes.item} ${classes.editArticle}`}><Link to='/editArticle'>Edit</Link></li>
         </ul>
         }
       </div>
@@ -83,6 +79,8 @@ Article.propTypes = {
   article: PropTypes.objectOf.isRequired,
   username: PropTypes.string.isRequired,
   user: PropTypes.objectOf.isRequired,
+  addToFavorite: PropTypes.func.isRequired,
+  removeFromFavorite: PropTypes.func.isRequired,
 
 };
 
@@ -91,7 +89,9 @@ const mapStateToProps = ( state ) => (
     article: state.article,
     username: state.username,
     user: state.user,
-
-
   });
-export default connect( mapStateToProps, null )( Article );
+
+
+// lihoy84@yandex.ru
+
+export default connect( mapStateToProps, actions )( Article );

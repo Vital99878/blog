@@ -25,6 +25,8 @@ export function getArticles( offset, token = '' ) {
   };
 }
 
+
+
 export function getOneArticle( slug, user ) {
   return async ( dispatch ) => {
     const article = await articles_service.get_one_article( slug, user );
@@ -32,12 +34,21 @@ export function getOneArticle( slug, user ) {
   };
 }
 
-// export function addToFavorite( slug, token ) {
-//   return async ( dispatch ) => {
-//     await articles_service.add_to_favorite( slug, token );
-//     dispatch( { type: 'LIKE' } );
-//   };
-// }
+export function addToFavorite( slug, token ) {
+  return async ( dispatch ) => {
+    const article = await articles_service.add_to_favorite( slug, token );
+    dispatch( { type: 'LIKE', article } );
+  };
+}
+
+export function removeFromFavorite( slug, token ) {
+  return async ( dispatch ) => {
+    const article = await articles_service.remove_from_favorite( slug, token );
+    dispatch( { type: 'DISLIKE', article } );
+  };
+}
+
+
 // export function removeFromFavorite( slug, token ) {
 //   return async ( dispatch ) => {
 //     await articles_service.remove_from_favorite( slug, token );

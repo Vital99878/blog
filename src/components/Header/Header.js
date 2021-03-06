@@ -1,12 +1,15 @@
-import React    from 'react';
-import { Link } from 'react-router-dom';
-import classes  from './Header.module.scss';
-import Auth_hoc from '../Auth_hoc/Auth_hoc';
+import React        from 'react';
+import PropTypes           from 'prop-types';
+import { Link }     from 'react-router-dom';
+import {connect}    from 'react-redux'
+import Auth_hoc     from '../Auth_hoc/Auth_hoc';
 
-function Header() {
+import classes      from './Header.module.scss';
+
+function Header({setArticleNull}) {
   return (
     <div className={classes.header}>
-      <Link className={classes.logo} to='/'>
+      <Link className={classes.logo} to='/' onClick={setArticleNull}>
         Realworld Blog
       </Link>
       <Auth_hoc/>
@@ -14,4 +17,11 @@ function Header() {
   );
 }
 
-export default Header;
+Header.propTypes = {
+  setArticleNull: PropTypes.func.isRequired,
+};
+const mapDispatchToProps = (dispatch) => ({
+    setArticleNull: () => dispatch( { type: 'ARTICLE_NULL' } )
+  })
+
+export default connect(null, mapDispatchToProps)(Header);
