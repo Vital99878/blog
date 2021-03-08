@@ -6,10 +6,13 @@ import Header from '../Header';
 import SingIn from '../SignIn';
 import PostList from '../PostList/PostList';
 import SignUp from '../SignUp';
+import CreateArticle from '../CreateArticle';
+import Test from '../Test';
 
 import classes     from './App.module.scss';
 import EditProfile from '../EditProfile/EditProfile';
 import Article     from '../Article';
+import Markdown    from '../Markdown';
 
 
 const App = () => {
@@ -21,11 +24,13 @@ const App = () => {
     <BrowserRouter>
       <section className={classes.app}>
         <Header />
+        { /*<Markdown/>*/ }
         <Route path="/" exact component={PostList} />
         <Route path="/signIn" component={SingIn} />
         <Route path="/signUp" component={SignUp} />
         <Route path="/editProfile" component={EditProfile} />
         <Route path="/article" component={Article} />
+        <Route path="/createArticle" component={CreateArticle} />
       </section>
     </BrowserRouter>
   );

@@ -1,11 +1,17 @@
 import React, { useEffect } from 'react';
 import { connect }          from 'react-redux';
-import { Pagination }       from 'antd';
+import { Pagination, Spin } from 'antd';
 import PropTypes            from 'prop-types';
+import { LoadingOutlined } from '@ant-design/icons';
 import Post                 from '../Post';
+
 import * as actions         from '../../redux/actions';
 import classes              from './PostList.module.scss';
 import './Pagination.css';
+
+
+const spinStyle = { fontSize: 60, marginTop: "180px", color: 'lightgreen' }
+const antIcon = <LoadingOutlined style={spinStyle} spin />;
 
 function PostList( { posts, offset, getArticles, loading, page_number, pages, set_offset, user } ) {
 
@@ -14,7 +20,7 @@ function PostList( { posts, offset, getArticles, loading, page_number, pages, se
   },[offset] );
 
   if ( loading ) {
-    return <div className={classes.loader}>Loading ...</div>;
+    return <Spin indicator={antIcon} />
   }
 
   const task_list = posts.map( ( post ) => (

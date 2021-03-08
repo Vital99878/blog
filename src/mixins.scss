@@ -36,6 +36,15 @@
   cursor: pointer;
 }
 
+@mixin card_input_style {
+  font-family: Roboto, sans-serif;
+  padding-left: 12px;
+  font-size: 16px;
+  border: 1px solid #D9D9D9;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
 
 
 

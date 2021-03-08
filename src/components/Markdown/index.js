@@ -1,3 +1,3 @@
-import Test from './Test';
+import Markdown from './Markdown';
 
-export default Test;
+export default Markdown;

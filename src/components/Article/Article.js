@@ -6,16 +6,21 @@ import React, { useState } from 'react';
 import PropTypes           from 'prop-types';
 import { Link }            from 'react-router-dom';
 import { connect }         from 'react-redux';
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import * as actions from '../../redux/actions';
 import Writer              from '../Writer';
 import classes             from './Article.module.scss';
-import articles_service    from '../../api/blog_api';
+
+
+const spinStyle = { fontSize: 48, marginTop: "180px", color: 'lightgreen' }
+const antIcon = <LoadingOutlined style={spinStyle} spin />;
 
 
 function Article( { article, username, user,addToFavorite, removeFromFavorite } ) {
 
   if ( !article ) {
-    return <div className={classes.loader}>Article loading ...</div>;
+    return <Spin indicator={antIcon} />
   }
 
   const { author, title, body, createdAt, description, favorited, favoritesCount, tagList, slug } = article;
