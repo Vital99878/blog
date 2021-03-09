@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown'
 import gfm     from 'remark-gfm'
-import classes from './Markdown.module.scss';
-// import PropTypes from 'prop-types';
+
 
 
 function Markdown() {

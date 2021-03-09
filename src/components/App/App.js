@@ -24,7 +24,7 @@ const App = () => {
     <BrowserRouter>
       <section className={classes.app}>
         <Header />
-        { /*<Markdown/>*/ }
+        {/*<CreateArticle/>*/}
         <Route path="/" exact component={PostList} />
         <Route path="/signIn" component={SingIn} />
         <Route path="/signUp" component={SignUp} />
@@ -32,6 +32,7 @@ const App = () => {
         <Route path="/article" component={Article} />
         <Route path="/createArticle" component={CreateArticle} />
       </section>
+
     </BrowserRouter>
   );
 };

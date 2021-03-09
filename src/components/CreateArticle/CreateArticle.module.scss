@@ -45,6 +45,22 @@
   color: #262626;
 }
 
+.article__tags {
+  position: relative;
+  min-height: 40px;
+  width: 590px;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: auto;
+  font-size: 14px;
+  row-gap: 6px;
+  color: #262626;
+  input {
+    width: 300px;
+    margin-right: 18px;
+  }
+}
+
 .article__label:not(:last-child) {
   margin-bottom: 12px;
 }
@@ -52,6 +68,32 @@
 .article__input {
   @include card_input_style;
   height: 40px;
+}
+
+.article__add_tag {
+  cursor: pointer;
+  position: absolute;
+  margin-top: 10px;
+  bottom: 0;
+  right: 0;
+  @include card_input_style;
+  height: 40px;
+  width: 136px;
+  border: 1px solid #1890FF;
+  color: #1890FF;
+}
+
+.article__delete_tag {
+  @include card_input_style;
+  cursor: pointer;
+  height: 40px;
+  width: 118px;
+  border: 1px solid#F5222D;
+  color:#F5222D;
+}
+
+.article__add_tag:active, .article__delete_tag:active {
+  @include active_button;
 }
 
 .article__inputWarning {
@@ -67,16 +109,14 @@
 .article__button {
   background-color: $primary-color;
   height: 40px;
-  width: 100%;
+  width: 320px;
   color: white;
   border-radius: 6px;
   cursor: pointer;
 }
 
 .article__button:active {
-  transform: translateY(-8%) scale(1.02);
-  box-shadow: 0 4px 4px 2px rgba(0, 0, 0, 0.4);
-  transition: all .25s;
+ @include active_button;
 }
 
 .article__p {

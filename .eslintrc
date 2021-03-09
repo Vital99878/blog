@@ -37,7 +37,8 @@
     "no-underscore-dangle": "off",
     "no-param-reassign": "off",
     "spaced-comment": "off",
-    "no-unused-expressions": "off"
+    "no-unused-expressions": "off",
+    "no-restricted-globals": "off"
   },
   "settings": {
     "react": {
