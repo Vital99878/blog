@@ -6,7 +6,8 @@
   display: flex;
   margin: 60px auto;
   padding: 48px 36px;
-  width: clamp(300px, 938px, 938px);
+  width: 100%;
+  max-width: 938px;
   min-width: 300px;
   background-color: #FFFFFF;
   flex-direction: column;
@@ -140,4 +141,32 @@ a {
   height: 0;
   opacity: 0;
   transition: all .6s;
+}
+
+@media (max-width: 560px) {
+  .article__tags {
+    width: 100%;
+    flex-direction: column;
+    input {
+      width: 100%;
+      margin-right: 0;
+    }
+  }
+  .article__delete_tag {
+    width: 100%;
+    margin: 12px 0;
+  }
+
+  .article__add_tag {
+    margin: 0;
+    position: static;
+    width: 100%;
+   justify-self: center;
+  }
+  .article__button {
+    height: 60px;
+    width: 100%;
+  }
+
+
 }

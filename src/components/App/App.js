@@ -7,24 +7,16 @@ import SingIn from '../SignIn';
 import PostList from '../PostList/PostList';
 import SignUp from '../SignUp';
 import CreateArticle from '../CreateArticle';
-import Test from '../Test';
-
 import classes     from './App.module.scss';
 import EditProfile from '../EditProfile/EditProfile';
 import Article     from '../Article';
-import Markdown    from '../Markdown';
 
 
-const App = () => {
-  // const [ todo_list, setTodos ] = useState();
-  // const [ filter, setFilter ] = useState( 'all' );
-  const fn = (page) => {};
-
-  return (
+const App = () => (
     <BrowserRouter>
       <section className={classes.app}>
         <Header />
-        {/*<CreateArticle/>*/}
+        <CreateArticle/>
         <Route path="/" exact component={PostList} />
         <Route path="/signIn" component={SingIn} />
         <Route path="/signUp" component={SignUp} />
@@ -32,14 +24,9 @@ const App = () => {
         <Route path="/article" component={Article} />
         <Route path="/createArticle" component={CreateArticle} />
       </section>
-
     </BrowserRouter>
   );
-};
 
-App.propTypes = {
-
-};
 const mapStateToProps = (state) => ({
   page_number: state.page_number,
   pages: state.pages,

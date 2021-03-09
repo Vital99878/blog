@@ -25,7 +25,7 @@ const CreateArticle = ( { create_article } ) => {
     const index = Math.random() * 1500;
     return {
       tag: (
-        <div className={article.tag}>
+        <div className={article__tag}>
           <input className={article__input} type="text" required placeholder="tag" />
           <button className={article__delete_tag} data-ind={index} type="button">
             Delete
