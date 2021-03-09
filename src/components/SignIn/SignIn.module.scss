@@ -5,7 +5,8 @@
   display: flex;
   margin: 60px auto;
   padding: 48px 36px;
-  width: clamp(300px, 384px, 384px);
+  width: 100%;
+  max-width: 400px;
   min-width: 300px;
   background-color: #FFFFFF;
   flex-direction: column;
@@ -95,4 +96,11 @@ a {
   height: 0;
   opacity: 0;
   transition: all .6s;
+}
+
+@media (max-width: 404px) {
+  .card {
+    width: 100%;
+    padding: 48px 20px;
+  }
 }

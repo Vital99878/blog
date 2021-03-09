@@ -16,7 +16,6 @@ const App = () => (
     <BrowserRouter>
       <section className={classes.app}>
         <Header />
-        <CreateArticle/>
         <Route path="/" exact component={PostList} />
         <Route path="/signIn" component={SingIn} />
         <Route path="/signUp" component={SignUp} />
