@@ -67,7 +67,15 @@
   color: white;
   border-radius: 6px;
   cursor: pointer;
+  transition: all .4s;
 }
+
+.card__button:focus {
+  background-color: #0a569c;
+  transition: all .4s;
+}
+
+.card__button
 
 .card__button:active {
   transform: translateY(-8%) scale(1.02);

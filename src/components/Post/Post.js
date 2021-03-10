@@ -1,14 +1,13 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable prefer-const */
 /* eslint-disable no-shadow */
-import React, { useState } from 'react';
+import React  from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as actions from '../../redux/actions';
 import Writer from '../Writer';
 import classes from './Post.module.scss';
-
 
 function Post({ post, getOneArticle, user, addToFavorite, removeFromFavorite }) {
   
@@ -29,6 +28,7 @@ function Post({ post, getOneArticle, user, addToFavorite, removeFromFavorite }) 
   }
 
   function toggleFavorite( favorited ) {
+
     if ( user ) {
       if ( favorited ) {
         removeFromFavorite(slug, user.token)

@@ -1,124 +1,105 @@
-import React, { useRef, useState } from 'react';
-import { connect }                 from 'react-redux';
-import PropTypes                   from 'prop-types';
-import * as actions                from '../../redux/actions';
-import classes                     from './EditProfile.module.scss';
+import React        from 'react';
+import { Redirect } from 'react-router-dom';
+import PropTypes    from 'prop-types';
+import { connect }  from 'react-redux';
+import { useForm }  from 'react-hook-form';
+import * as actions from '../../redux/actions';
+import classes      from './EditProfile.module.scss';
 
 
-const { card__title, card, card__forms, card__label, card__button, card__input } = classes;
-let { warning, card__inputWarning } = classes;
+const { card__title, card, card__forms, card__label, card__button, card__input, card__p } = classes;
+const { warning, card__inputWarning } = classes;
 
-const EditProfile = ( { firstName, lastName, email } ) => {
-  const [ passwordLength, setPasswordLength ] = useState( 0 );
-  const usernameRef = useRef();
-  const emailRef = useRef( '' );
-  const newPasswordRef = useRef( '' );
-  const avatarUrlRef = useRef();
+const EditProfile = ( { updateUser, responseValidation, auth, user, emailValid, usernameValid } ) => {
+  const { register, handleSubmit, errors } = useForm();
+  
 
-  function logIn( refs ) {
-    const refForFocus = refs.find( ref => ref.current.value.length === 0 );
-    if ( refForFocus ) {
-      refForFocus.current.focus();
-    }
-    refs.forEach( ( ref ) => {
-      if ( ref.current.value.length === 0 ) {
-        ref.current.classList.replace( card__input, classes.card__inputWarning );
-        ref.current.placeholder = 'not empty!';
-      }
-      else {
-        ref.current.classList.replace( classes.card__inputWarning, card__input );
-      }
-    } );
-  }
 
-  function changeLengthPassword() {
-    setPasswordLength( () => newPasswordRef.current.value.length );
-  }
-
-  function toggleSuccessClass( evt ) {
-    if ( evt.target.value.length > 0 ) {
-      evt.target.classList.replace( classes.card__inputWarning, card__input );
-    }
-  }
-
-  if ( passwordLength >= 6 || passwordLength === 0 ) {
-    card__inputWarning = false;
-    warning = false;
-  }
-  else {
-    warning = classes.warning;
-    card__inputWarning = classes.card__inputWarning;
-  }
+  const onSubmit = async ( data ) => {
+    console.log( data );
+    updateUser( data, user.token );
+  };
 
   return (
     <div className={card}>
       <h6 className={card__title}>Edit Profile</h6>
-      <div className={card__forms}>
+      <form className={card__forms} onSubmit={handleSubmit( onSubmit )}>
         <label className={card__label}>
           Username
-          <input ref={usernameRef}
-                 className={card__input}
-                 type='text'
-                 defaultValue={`${firstName} ${lastName}`}
-                 onChange={toggleSuccessClass}
+          <input
+            ref={register( { required: true } )}
+            name="username"
+            className={errors.username && card__inputWarning || card__input}
+            type="text"
+            defaultValue={user.username}
           />
+          {errors.username && errors.username.type === 'required' && <span className={warning}>Email is required</span>}
+          <span className={warning}>{usernameValid}</span>
+
         </label>
         <label className={card__label}>
           Email address
-          <input ref={emailRef}
-                 className={card__input}
-                 type='email'
-                 defaultValue={email}
-                 onChange={toggleSuccessClass}
-          />
+          <input
+            ref={register( { required: true } )}
+            name="email"
+            className={errors.email && card__inputWarning || card__input}
+            type="email"
+            defaultValue={user.email} />
+          {errors.email && errors.email.type === 'required' && <span className={warning}>Email is required</span>}
+          <span className={warning}>{emailValid}</span>
         </label>
         <label className={card__label}>
           New password
-          <input ref={newPasswordRef}
-                 className={card__inputWarning || card__input}
-                 minLength='6'
-                 type='password'
-                 placeholder='New password'
-                 onChange={changeLengthPassword}
+          <input
+            ref={register( { minLength: 8, maxLength: 40 } )}
+            name="password"
+            className={errors.password && card__inputWarning || card__input}
+            type="password"
+            required
+            placeholder="New password"
           />
-          <span className={warning || classes.hideSpan}>
-            Your password needs to be at least 6 characters.
-          </span>
+          {errors.password && errors.password.type === 'minLength' &&
+          <span className={warning}>Your password needs to be at least 8 characters.</span>}
+          {errors.password && errors.password.type === 'maxLength' &&
+          <span className={warning}>Your password needs to be less than 41 characters.</span>}
         </label>
         <label className={card__label}>
           Avatar image (url)
-          <input ref={avatarUrlRef}
-                 className={card__input}
-                 type='url'
-                 placeholder='Avatar image'
-                 onChange={toggleSuccessClass}
-          />
+          <input
+            ref={register()}
+            name="avatar"
+            className={errors.email && card__inputWarning || card__input}
+            type="url"
+            required
+            defaultValue={user.image} />
+          {errors.avatar && <span className={warning}>Url is required</span>}
+          {responseValidation && <span className={warning}>{responseValidation}</span>}
         </label>
-      </div>
-      <button className={card__button}
-              onClick={() => logIn( [ usernameRef, emailRef, newPasswordRef, avatarUrlRef ] )}
-              type='submit'>Save
+      </form>
+      <button className={card__button} onClick={handleSubmit( onSubmit )} type="submit">
+        Save
       </button>
     </div>
   );
 };
 
+EditProfile.defaultProp = {};
+EditProfile.propTypes = {
+  updateUser: PropTypes.func.isRequired,
+  responseValidation: PropTypes.string.isRequired,
+  emailValid: PropTypes.string.isRequired,
+  usernameValid: PropTypes.string.isRequired,
+  auth: PropTypes.objectOf.isRequired,
+  user: PropTypes.objectOf.isRequired,
+};
+
 const mapStateToProps = ( state ) => (
   {
-    firstName: state.firstName,
-    lastName: state.lastName,
-    email: state.email,
+    responseValidation: state.responseValidation,
+    auth: state.auth,
+    user: state.user,
+    emailValid: state.emailValid,
+    usernameValid: state.usernameValid,
   });
-
-EditProfile.defaultProp = {
-  firstName: '',
-  lastName: '',
-  email: '',
-};
-EditProfile.propTypes = {
-  firstName: PropTypes.string.isRequired,
-  lastName: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-};
 
 export default connect( mapStateToProps, actions )( EditProfile );

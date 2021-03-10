@@ -1,148 +1,136 @@
-import React, { useRef, useState } from 'react';
-import { connect }                 from 'react-redux';
-import { Link }                    from 'react-router-dom';
-import * as actions from '../../redux/actions';
-import classes      from './SignUp.module.scss';
+import React, { useRef }  from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import PropTypes          from 'prop-types';
+import { connect }        from 'react-redux';
+import { useForm }        from 'react-hook-form';
+import * as actions       from '../../redux/actions';
+import classes            from './SignUp.module.scss';
+
 
 const { card__title, card, card__forms, card__label, card__button, card__input, card__p } = classes;
-let { warning, card__inputWarning } = classes;
+const { warning, card__inputWarning } = classes;
 
-const SignUp = ( ) => {
-  const [ passwordLength, setPasswordLength ] = useState( 0 );
-  const [ repeatPasswordWarning, setRepeatPasswordWarning ] = useState( false );
-  const [ warningMatchPassword, setWarningMatchPassword ] = useState( false );
-  // const [ repeatPasswordWarning, setRepeatPasswordWarning ] = useState( false );
-  const usernameRef = useRef();
-  const emailRef = useRef( '' );
-  const passwordRef = useRef( '' );
-  const repeatPasswordRef = useRef( '' );
+const SingUp = ( { auth, signUp, usernameValidation, responseValidation, emailValid, usernameValid } ) => {
+  const { register, handleSubmit, watch, errors } = useForm();
+  const password = useRef( {} );
+  password.current = watch( 'password', '' );
 
 
-  function logIn( refs ) {
-    const refForFocus = refs.find( ref => ref.current.value.length === 0 );
-    if ( refForFocus ) {
-      refForFocus.current.focus();
-    }
-    refs.forEach( ( ref ) => {
-      if ( ref.current.value.length === 0 ) {
-        ref.current.classList.replace( card__input, classes.card__inputWarning );
-        ref.current.placeholder = 'not empty!';
-      }
-      else {
-        ref.current.classList.replace( classes.card__inputWarning, card__input );
-      }
-    } );
-  }
 
-  function comparePassword () {
-    if(passwordRef.current.value === repeatPasswordRef.current.value) {
-      setRepeatPasswordWarning(false)
-      setWarningMatchPassword(false)
-    }
-    else {
-      setRepeatPasswordWarning(() => classes.card__passwordRepeatWarning)
-      setWarningMatchPassword(() => classes.warningMatchPassword)
-    }
-  }
+  const onSubmit = async ( data ) => {
+    signUp( data );
+  };
 
-  function changeLengthPassword() {
-    setPasswordLength( () => passwordRef.current.value.length );
-  }
-
-  function toggleSuccessClass( evt ) {
-    if ( evt.target.value.length > 0 ){
-      evt.target.classList.replace( classes.card__inputWarning, card__input  );
-    }
-  }
-
-  if ( passwordLength >= 6 || passwordLength === 0 ) {
-    card__inputWarning = false;
-    warning = false;
-  }
-  else {
-    warning = classes.warning;
-    card__inputWarning = classes.card__inputWarning;
+  if ( auth ) {
+    return <Redirect to='/' />;
   }
 
   return (
     <div className={card}>
       <h6 className={card__title}>Create new account</h6>
-      <div className={card__forms}>
+      <form className={card__forms} onSubmit={handleSubmit( onSubmit )}>
         <label className={card__label}>
           Username
-          <input ref={usernameRef}
-                 className={card__input}
-                 type='text'
-                 placeholder="you name"
-                 minLength='3'
-                 maxLength="20"
-                 onChange={toggleSuccessClass}
+          <input
+            ref={register( { required: true } )}
+            name="username"
+            className={errors.username && card__inputWarning || card__input}
+            type="text"
+            required
+            placeholder="name"
           />
+          {<span className={warning}>{usernameValid}</span>}
+          {errors.username && errors.username.type === 'required' &&
+          <span className={warning}>Username is required</span>}
+          {usernameValidation && <span className={warning}>{usernameValid}</span>}
         </label>
         <label className={card__label}>
           Email address
-          <input ref={emailRef}
-                 className={card__input}
-                 type='email'
-                 placeholder="email"
-                 onChange={toggleSuccessClass}
-          />
+          <input
+            ref={register( { required: true } )}
+            name="email"
+            className={errors.email && card__inputWarning || card__input}
+            type="email"
+            required
+            placeholder="Email address" />
+          {<span className={warning}>{emailValid}</span>}
+          {errors.email && errors.email.type === 'required' && <span className={warning}>Email is required</span>}
+          {responseValidation && <span className={warning}>{responseValidation}</span>}
         </label>
         <label className={card__label}>
           Password
-          <input ref={passwordRef}
-                 className={card__inputWarning || card__input}
-                 minLength='6'
-                 type='password'
-                 placeholder='password'
-                 onChange={changeLengthPassword}
+          <input
+            ref={register( { required: true, minLength: 8, maxLength: 40 } )}
+            name="password"
+            className={errors.password && card__inputWarning || card__input}
+            type="password"
+            required
+            placeholder="Password"
           />
-          <span className={warning || classes.hideSpan}>
-            Your password needs to be at least 6 characters.
-          </span>
+          {errors.password && errors.password.type === 'minLength' &&
+          <span className={warning}>Your password needs to be at least 8 characters.</span>}
+          {errors.password && errors.password.type === 'maxLength' &&
+          <span className={warning}>Your password needs to be less than 41 characters.</span>}
+          {errors.password && errors.password.type === 'required' &&
+          <span className={warning}>Password is required.</span>}
+          {responseValidation && <span className={warning}>{responseValidation}</span>}
         </label>
         <label className={card__label}>
           Repeat Password
-          <input ref={repeatPasswordRef}
-                 className={repeatPasswordWarning || card__input}
-                 type='password'
-                 placeholder='Repeat password'
-                 onChange={comparePassword}
+          <input
+            ref={register( {
+                             validate: value =>
+                               value === password.current || 'The passwords do not match',
+                           } )}
+            name="password_repeat"
+            className={errors.password && card__inputWarning || card__input}
+            type="password"
+            placeholder="Repeat Password"
           />
-          <span className={warningMatchPassword || classes.hideSpan}>
-            Passwords must match.
-          </span>
+          {errors.password_repeat && <span className={warning}>Password don match</span>}
+          {errors.password_repeat && errors.password_repeat.type === 'required' &&
+          <span className={warning}>Password is required.</span>}
+          {responseValidation && <span className={warning}>{responseValidation}</span>}
         </label>
-      </div>
-      <label className={classes.card__checkbox}>
-        <input type="checkbox"/>
-        <span className={classes.checkmark} />
-        I agree to the processing of my personal
-        information
-      </label>
-      <button className={card__button}
-              onClick={() => logIn( [ usernameRef, emailRef, passwordRef, repeatPasswordRef ] )}
-              type='submit'>Create
+        <label className={classes.card__checkbox}>
+          <input
+            ref={register( { required: 'This is required' } )}
+            name="agree"
+            type="checkbox"
+          />
+          <span className={classes.checkmark} />
+          I agree to the processing of my personal
+          information
+        </label>
+        {errors.agree && errors.agree.type === 'required' &&
+        <span className={warning}>You need check agree</span>}
+      </form>
+      <button className={card__button} onClick={handleSubmit( onSubmit )} type="submit">
+        Login
       </button>
-      <p className={card__p}>Don’t have an account? <Link to='/signIn'>Sign In.</Link></p>
+      <p className={card__p}>
+        Don’t have an account? <Link to="/signIn">Sign In</Link>
+      </p>
     </div>
   );
 };
 
+SingUp.defaultProp = {};
+SingUp.propTypes = {
+  signUp: PropTypes.func.isRequired,
+  usernameValidation: PropTypes.string.isRequired,
+  responseValidation: PropTypes.string.isRequired,
+  emailValid: PropTypes.string.isRequired,
+  usernameValid: PropTypes.string.isRequired,
+  auth: PropTypes.bool.isRequired,
+};
+
 const mapStateToProps = ( state ) => (
   {
-    firstName: state.firstName,
-    lastName: state.lastName,
-    email: state.email,
+    auth: state.auth,
+    responseValidation: state.responseValidation,
+    emailValid: state.emailValid,
+    usernameValid: state.usernameValid,
   });
 
-SignUp.defaultProp = {
-  firstName: '',
-  lastName: '',
-  email: '',
-};
-SignUp.propTypes = {
-
-};
-
-export default connect( mapStateToProps, actions )( SignUp );
+export default connect( mapStateToProps, actions )( SingUp );

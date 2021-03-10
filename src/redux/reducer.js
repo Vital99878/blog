@@ -8,6 +8,13 @@ const reducer = ( state , action ) => {
         responseValidation : action.message
       };
 
+    case 'SIGN_UP_ERRORS':
+      return {
+        ...state,
+        emailValid: action.emailValid,
+        usernameValid: action.usernameValid,
+      };
+
     case 'SIGN_IN':
       return {
         ...state,
@@ -15,6 +22,16 @@ const reducer = ( state , action ) => {
         user: action.user,
         username: action.user.username,
         responseValidation: false
+      };
+
+    case 'SIGN_UP':
+      return {
+        ...state,
+        auth: true,
+        user: action.user,
+        username: action.user.username,
+        emailValid: '',
+        usernameValid: ''
       };
 
     case 'LOGOUT':

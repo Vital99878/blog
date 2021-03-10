@@ -37,6 +37,7 @@ function PostList( { posts, offset, getArticles, loading, page_number, pages, se
         onChange={(page) => {
           const updated_offset = page * 5 - 5
           set_offset(page , updated_offset);
+          window.scrollTo(0, 0);
         }}
       />
     </>

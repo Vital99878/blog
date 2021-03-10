@@ -38,7 +38,8 @@
     "no-param-reassign": "off",
     "spaced-comment": "off",
     "no-unused-expressions": "off",
-    "no-restricted-globals": "off"
+    "no-restricted-globals": "off",
+    "consistent-return": "off"
   },
   "settings": {
     "react": {

@@ -14,12 +14,31 @@ export function signIn( mail, password ) {
   };
 };
 
-export const isLogOut = () => (
-  {
-    type: 'LOGOUT',
-  });
+export function signUp( newUser ) {
+  return async ( dispatch ) => {
+    const user = await auth_api.create_user( newUser );
+    if ( user.user) {
+      dispatch( { type: 'SIGN_UP', user: user.user} );
+    }
+    if ( user.errors) {
+      const {email: emailValid, username: usernameValid} = user.errors;
+      dispatch( { type: 'SIGN_UP_ERRORS', emailValid, usernameValid  } );
+    }
+  };
+};
 
-// async actions Articles
+export function updateUser( newUser, token ) {
+  return async ( dispatch ) => {
+    const user = await auth_api.update_user( newUser, token );
+    if ( user.user) {
+      dispatch( { type: 'SIGN_UP', user: user.user} );
+    }
+    if ( user.errors) {
+      const {email: emailValid, username: usernameValid} = user.errors;
+      dispatch( { type: 'SIGN_UP_ERRORS', emailValid, usernameValid  } );
+    }
+  };
+};
 
 export function getArticles( offset, token = '' ) {
   return async ( dispatch ) => {
@@ -27,6 +46,13 @@ export function getArticles( offset, token = '' ) {
     dispatch( { type: 'GET_ARTICLES', articles, articlesCount } );
   };
 }
+
+export const isLogOut = () => (
+  {
+    type: 'LOGOUT',
+  });
+
+// async actions Articles
 
 export function getOneArticle( slug, user ) {
   return async ( dispatch ) => {

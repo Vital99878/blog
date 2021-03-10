@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { Link }                    from 'react-router-dom';
+import React  from 'react';
+import { Link, Redirect }                    from 'react-router-dom';
 import PropTypes                   from 'prop-types';
 import { connect }                 from 'react-redux';
 import { useForm }                 from 'react-hook-form';
@@ -10,13 +10,17 @@ import classes                     from './SignIn.module.scss';
 const { card__title, card, card__forms, card__label, card__button, card__input, card__p } = classes;
 const { warning, card__inputWarning } = classes;
 
-const SingIn = ( { signIn, responseValidation } ) => {
-
-  const { register, handleSubmit, watch, errors } = useForm();
+const SingIn = ( { signIn, responseValidation, auth } ) => {
+  const { register, handleSubmit, errors } = useForm();
+  
   const onSubmit = async ( data ) => {
     const {email, password} = data;
-    signIn (email, password)
+    signIn (email.toLowerCase(), password)
   };
+
+  if (auth ) {
+    return <Redirect to='/'/>
+  }
 
     return (
     <div className={card}>
@@ -33,7 +37,6 @@ const SingIn = ( { signIn, responseValidation } ) => {
             placeholder="Email address" />
           {errors.email && errors.email.type === 'required' && <span className={warning}>Email is required</span>}
           {responseValidation && <span className={warning}>{responseValidation}</span>}
-
         </label>
         <label className={card__label}>
           Password
@@ -68,12 +71,13 @@ SingIn.defaultProp = {};
 SingIn.propTypes = {
   signIn: PropTypes.func.isRequired,
   responseValidation: PropTypes.string.isRequired,
+  auth: PropTypes.objectOf.isRequired
 };
 
 const mapStateToProps = ( state ) => (
   {
     responseValidation: state.responseValidation,
-
+    auth: state.auth
   });
 
 export default connect( mapStateToProps, actions )( SingIn );

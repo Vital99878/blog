@@ -8,14 +8,17 @@ import User         from '../User';
 
 const {list, item, signIn, signUp, logOut, createArticle} = classes;
 
-const Auth_hoc = ( { auth, user, isLogOut }) => {
+const Auth_hoc = ( { auth, user, isLogOut, getArticles }) => {
 
   if (auth ) {
     return (
       <ul className={list}>
         <li className={`${item} ${createArticle}`}><Link to='/createArticle'>Create article</Link></li>
         <li className={item}><Link to='/editProfile'><User user={user}/></Link></li>
-        <li className={`${item} ${logOut}`}><Link  onClick={isLogOut} to='/'>Log Out</Link></li>
+        <li className={`${item} ${logOut}`}><Link  onClick={() => {
+          isLogOut()
+          getArticles(5)
+        }} to='/'>Log Out</Link></li>
       </ul>
     )
   }
@@ -32,8 +35,9 @@ Auth_hoc.defaultProp = {
 };
 Auth_hoc.propTypes = {
   user: PropTypes.objectOf.isRequired,
-  auth: PropTypes.bool.isRequired,
-  isLogOut:  PropTypes.func.isRequired};
+  getArticles: PropTypes.func.isRequired,
+  isLogOut:  PropTypes.func.isRequired,
+  auth: PropTypes.bool.isRequired}
 const mapStateToProps = (state) => ({
   auth: state.auth,
   user: state.user,
