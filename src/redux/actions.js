@@ -6,7 +6,10 @@ export function signIn( mail, password ) {
   return async ( dispatch ) => {
     const user = await auth_api.get_user( mail, password );
     if ( typeof user !== 'string' ) {
-      dispatch( { type: 'SIGN_IN', user } );
+      dispatch( { type: 'SIGN_IN', user, message: '' } );
+    }
+    if ( typeof user === 'string' ) {
+      dispatch( { type: 'NO_EMAIL_ORE_PASSWORD', message: 'email ore password wrong' } );
     }
   };
 };
@@ -24,8 +27,6 @@ export function getArticles( offset, token = '' ) {
     dispatch( { type: 'GET_ARTICLES', articles, articlesCount } );
   };
 }
-
-
 
 export function getOneArticle( slug, user ) {
   return async ( dispatch ) => {
@@ -48,15 +49,12 @@ export function removeFromFavorite( slug, token ) {
   };
 }
 
-
 // export function removeFromFavorite( slug, token ) {
 //   return async ( dispatch ) => {
 //     await articles_service.remove_from_favorite( slug, token );
 //     dispatch( { type: 'DISLIKE' } );
 //   };
 // }
-
-
 
 export const set_offset = ( page, offset ) => (
   {
