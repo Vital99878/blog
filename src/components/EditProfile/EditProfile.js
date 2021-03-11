@@ -1,5 +1,4 @@
 import React        from 'react';
-import { Redirect } from 'react-router-dom';
 import PropTypes    from 'prop-types';
 import { connect }  from 'react-redux';
 import { useForm }  from 'react-hook-form';
@@ -7,16 +6,15 @@ import * as actions from '../../redux/actions';
 import classes      from './EditProfile.module.scss';
 
 
-const { card__title, card, card__forms, card__label, card__button, card__input, card__p } = classes;
+const { card__title, card, card__forms, card__label, card__button, card__input } = classes;
 const { warning, card__inputWarning } = classes;
 
-const EditProfile = ( { updateUser, responseValidation, auth, user, emailValid, usernameValid } ) => {
+const EditProfile = ( { updateUser, responseValidation,  user, emailValid, usernameValid } ) => {
   const { register, handleSubmit, errors } = useForm();
   
 
 
   const onSubmit = async ( data ) => {
-    console.log( data );
     updateUser( data, user.token );
   };
 
@@ -89,14 +87,12 @@ EditProfile.propTypes = {
   responseValidation: PropTypes.string.isRequired,
   emailValid: PropTypes.string.isRequired,
   usernameValid: PropTypes.string.isRequired,
-  auth: PropTypes.objectOf.isRequired,
   user: PropTypes.objectOf.isRequired,
 };
 
 const mapStateToProps = ( state ) => (
   {
     responseValidation: state.responseValidation,
-    auth: state.auth,
     user: state.user,
     emailValid: state.emailValid,
     usernameValid: state.usernameValid,
