@@ -23,6 +23,28 @@ class Articles_Service {
     return response.json();
   }
 
+  async post_article( article, token ) {
+    const {title, description, body: content, tagList} = article;
+    const myHeaders = new Headers();
+    myHeaders.append( 'Authorization', `Token ${token}` );
+    const raw = JSON.stringify( {
+                                  article: {
+                                    title,
+                                    description,
+                                    body: content,
+                                    tagList
+                                  },
+                                } );
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw
+    };
+    const response = await fetch( base, requestOptions );
+    const body = await response.json();
+    return body.article;
+  }
+
   async get_one_article( slug, user ) {
     if ( user ) {
       const myHeaders = new Headers();
@@ -71,9 +93,7 @@ class Articles_Service {
     return body.article;
   }
 
-  // POST /api/articles/:slug/favorite
-  // async edit_article() {
-  // }
+
 }
 
 export default new Articles_Service();

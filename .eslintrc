@@ -39,7 +39,8 @@
     "spaced-comment": "off",
     "no-unused-expressions": "off",
     "no-restricted-globals": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "guard-for-in": "off"
   },
   "settings": {
     "react": {

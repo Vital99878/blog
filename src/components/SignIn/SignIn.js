@@ -49,7 +49,7 @@ const SingIn = ( { signIn, responseValidation, auth } ) => {
             placeholder="Password"
           />
           {errors.password && errors.password.type === 'minLength' &&
-          <span className={warning}>Your password needs to be at least 8 characters.</span>}
+          <span className={warning}>Your password needs to be at lea♂st 8 characters.</span>}
           {errors.password && errors.password.type === 'maxLength' &&
           <span className={warning}>Your password needs to be less than 41 characters.</span>}
           {errors.password && errors.password.type === 'required' &&

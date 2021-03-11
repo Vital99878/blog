@@ -48,6 +48,13 @@ export function getArticles( offset, token = '' ) {
   };
 }
 
+export function postArticle(  article, token) {
+  return async ( dispatch ) => {
+    await articles_service.post_article( article, token );
+    dispatch( { type: 'POST_ARTICLE'} );
+  };
+}
+
 export const isLogOut = () => (
   {
     type: 'LOGOUT',

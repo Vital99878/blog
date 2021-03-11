@@ -11,7 +11,6 @@ const { warning, card__inputWarning } = classes;
 
 const EditProfile = ( { updateUser, responseValidation,  user, emailValid, usernameValid } ) => {
   const { register, handleSubmit, errors } = useForm();
-  
 
 
   const onSubmit = async ( data ) => {

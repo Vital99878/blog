@@ -1,10 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
-import PropTypes                              from 'prop-types';
-import { connect }                            from 'react-redux';
-import { useForm }                 from 'react-hook-form';
-import * as actions                           from '../../redux/actions';
-import classes                                from './CreateArticle.module.scss';
-
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import * as actions from '../../redux/actions';
+import classes from './CreateArticle.module.scss';
 
 const {
   article__title,
@@ -20,42 +19,29 @@ const {
   article__delete_tag,
 } = classes;
 
-const CreateArticle = ( { create_article } ) => {
-
+const CreateArticle = ({ postArticle, token }) => {
   const { register, handleSubmit, errors } = useForm();
 
-  const onSubmit = ( data ) => {
-    const {title,description, body, tags} = data;
-    console.log(data)
-    console.log('wwwr')
-  };
+  const [tagsList, setTagsList] = useState([{ id: 1 }]);
 
-  function createTag() {
-    const index = Math.random() * 1500;
-    return {
-      tag: (
-        <div className={article__tag}>
-          <input className={article__input} type="text" required placeholder="tag" />
-          <button className={article__delete_tag} data-ind={index} type="button">
-            Delete
-          </button>
-        </div>
-      ),
-      index,
-    };
-  }
-
-  const [ tagsList, setTagsList ] = useState( [ createTag() ] );
-
-  function deleteTag( evt ) {
+  function deleteTag(evt) {
     const targetInd = Number(evt.target.dataset.ind);
-    setTagsList( tagsList.filter( tag => tag.index !== targetInd ) );
+    setTagsList(list => list.filter( item => item.id !== targetInd ) );
   }
 
-  useEffect( () => {
-    const tags_button_delete = document.querySelectorAll( `.${article__delete_tag}` );
-    tags_button_delete.forEach( button => button.addEventListener( 'click', deleteTag ) );
-  }, [ tagsList ] );
+  const tags = tagsList.map((item) => (
+    <div className={article__tag}>
+      <input className={article__input} type="text" ref={register()} name={item.id} placeholder="tag" />
+      <button className={article__delete_tag} onClick={deleteTag} data-ind={item.id} type="button">
+        Delete
+      </button>
+    </div>
+  ));
+
+  const onSubmit = (data) => {
+    const { title, description, body } = data;
+    postArticle( { ...data, ...{tagList:['tag_1', 'tag_2']} })
+  };
 
   return (
     <div className={article}>
@@ -63,41 +49,56 @@ const CreateArticle = ( { create_article } ) => {
       <div className={article__forms}>
         <label className={article__label}>
           Title
-          <input ref={register({required: true})}
-                 name='title'
-                 className={article__input}
-                 type="text"
-                 placeholder="Title" />
-          {errors.title && errors.title.type === 'required' && <span className={classes.warning}>Title is required</span>}
+          <input
+            ref={register({ required: true })}
+            name="title"
+            className={article__input}
+            type="text"
+            placeholder="Title"
+          />
+          {errors.title && errors.title.type === 'required' && (
+            <span className={classes.warning}>Title is required</span>
+          )}
         </label>
         <label className={article__label}>
           Short description
           <input
-            ref={register({required: true})}
-            name='description'
-            className={article__input} type="text" required placeholder="Short description" />
-          {errors.description && errors.description.type === 'required' && <span className={classes.warning}>Description is required</span>}
+            ref={register({ required: true })}
+            name="description"
+            className={article__input}
+            type="text"
+            required
+            placeholder="Short description"
+          />
+          {errors.description && errors.description.type === 'required' && (
+            <span className={classes.warning}>Description is required</span>
+          )}
         </label>
         <label className={article__label}>
           Text
           <textarea
-            ref={register({required: true, minLength: 30})}
-            name='body'
-            className={article__body} cols={30} required placeholder="Text" />
-          {errors.body && errors.body.type === 'required' && <span className={classes.warning}>Body of article is required</span>}
-          {errors.body && errors.body.type === 'minLength' && <span className={classes.warning}>
-            minimum characters of article is 30</span>}
+            ref={register({ required: true, minLength: 30 })}
+            name="body"
+            className={article__body}
+            cols={30}
+            required
+            placeholder="Text"
+          />
+          {errors.body && errors.body.type === 'required' && (
+            <span className={classes.warning}>Body of article is required</span>
+          )}
+          {errors.body && errors.body.type === 'minLength' && (
+            <span className={classes.warning}>minimum characters of article is 30</span>
+          )}
         </label>
         <form className={article__tags}>
           Tags
-          {tagsList.map( ( item ) => item.tag )}
+          {tags}
           <button
             className={article__add_tag}
-            onClick={() =>
-              setTagsList( () => [ ...tagsList, createTag() ] )
-            }
-            type="button"
-          >
+            onClick={() => setTagsList(
+              (list) => [...list, { id: Math.round(Math.random() * 100) }])}
+            type="button">
             Add tag
           </button>
         </form>
@@ -111,7 +112,13 @@ const CreateArticle = ( { create_article } ) => {
 
 CreateArticle.defaultProp = {};
 CreateArticle.propTypes = {
-  create_article: PropTypes.func.isRequired,
+  postArticle: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
 };
 
-export default connect( null, actions )( CreateArticle );
+const mapStateToProps = ( state ) => (
+  {
+    token: state.user.token,
+  });
+
+export default connect(mapStateToProps, actions)(CreateArticle);
