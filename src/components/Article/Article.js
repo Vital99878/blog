@@ -4,7 +4,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React  from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -17,10 +17,14 @@ import classes from './Article.module.scss';
 const spinStyle = { fontSize: 48, marginTop: '180px', color: 'lightgreen' };
 const antIcon = <LoadingOutlined style={spinStyle} spin />;
 
-function Article({ article, username, user, addToFavorite, removeFromFavorite }) {
+function Article({ article, username, user, addToFavorite, removeFromFavorite, deleteArticle }) {
 
   if (!article) {
     return <Spin indicator={antIcon} />;
+  }
+
+  if (!article.title ) {
+    return <Redirect to='/'/>
   }
 
   const { author, title, body, createdAt, description, favorited, favoritesCount, tagList, slug } = article;
@@ -63,12 +67,13 @@ function Article({ article, username, user, addToFavorite, removeFromFavorite })
       <div className={classes.paragraph}>
         <p className={classes.description}> {description}</p>
         {article.author.username === username && (
-          <ul className={classes.list}>
-            <li className={`${classes.item} ${classes.deleteArticle}`}>Delete</li>
-            <li className={`${classes.item} ${classes.editArticle}`}>
+          <div className={classes.list}>
+              <button className={`${classes.item} ${classes.deleteArticle}`}type='button'
+              onClick={() => deleteArticle(article.slug, user.token)}>Delete</button>
+            <button type='button' className={`${classes.item} ${classes.editArticle}`}>
               <Link to="/editArticle">Edit</Link>
-            </li>
-          </ul>
+            </button>
+          </div>
         )}
       </div>
       <div className={classes.content}>
@@ -85,9 +90,11 @@ Article.defaultProp = {
 Article.propTypes = {
   article: PropTypes.objectOf.isRequired,
   username: PropTypes.string.isRequired,
+  token: PropTypes.string.isRequired,
   user: PropTypes.objectOf.isRequired,
   addToFavorite: PropTypes.func.isRequired,
   removeFromFavorite: PropTypes.func.isRequired,
+  deleteArticle: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -96,6 +103,5 @@ const mapStateToProps = (state) => ({
   user: state.user,
 });
 
-// lihoy84@yandex.ru
 
 export default connect(mapStateToProps, actions)(Article);

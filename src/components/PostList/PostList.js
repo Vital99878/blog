@@ -23,12 +23,12 @@ function PostList( { posts, offset, getArticles, loading, page_number, pages, se
     return <Spin indicator={antIcon} />
   }
 
-  const task_list = posts.map( ( post ) => (
+  const posts_list = posts.map( ( post ) => (
     <Post post={post} />
   ) );
   return (
     <>
-    <ul className={classes.list}>{task_list}</ul>
+    <ul className={classes.list}>{posts_list}</ul>
       <Pagination
         current={page_number}
         pageSize={5}

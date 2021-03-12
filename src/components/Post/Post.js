@@ -44,7 +44,10 @@ function Post({ post, getOneArticle, user, addToFavorite, removeFromFavorite }) 
       <li className={classes.item} key={Math.random() * 515}>
         <Writer author={author} createdAt={createdAt} />
         <div className={classes.title}>
-          <Link to="/article" onClick={() => getOneArticle(slug, user)}>
+          <Link to="/article" onClick={() => {
+            window.scrollTo(0, 0)
+            getOneArticle(slug, user)
+          }}>
             <h5>{title}</h5>
           </Link>
           <div className={classes.favorited}>

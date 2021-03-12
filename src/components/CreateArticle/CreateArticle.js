@@ -20,9 +20,10 @@ const {
 } = classes;
 
 const CreateArticle = ({ postArticle, token }) => {
+  console.log(token)
   const { register, handleSubmit, errors } = useForm();
 
-  const [tagsList, setTagsList] = useState([{ id: 1 }]);
+  const [tagsList, setTagsList] = useState([]);
 
   function deleteTag(evt) {
     const targetInd = Number(evt.target.dataset.ind);
@@ -40,7 +41,7 @@ const CreateArticle = ({ postArticle, token }) => {
 
   const onSubmit = (data) => {
     const { title, description, body } = data;
-    postArticle( { ...data, ...{tagList:['tag_1', 'tag_2']} })
+    postArticle( { ...data, ...{tagList:["reactjs", "Vital", "react"]} }, token)
   };
 
   return (

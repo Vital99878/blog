@@ -24,25 +24,43 @@ class Articles_Service {
   }
 
   async post_article( article, token ) {
-    const {title, description, body: content, tagList} = article;
+    const { title, description, body: content, tagList } = article;
+    console.log( article );
     const myHeaders = new Headers();
     myHeaders.append( 'Authorization', `Token ${token}` );
+    myHeaders.append( 'Content-Type', 'application/json' );
     const raw = JSON.stringify( {
-                                  article: {
-                                    title,
-                                    description,
-                                    body: content,
-                                    tagList
-                                  },
+                                  article:
+                                    {
+                                      title,
+                                      description,
+                                      body: content,
+                                      tagList,
+                                    },
                                 } );
     const requestOptions = {
       method: 'POST',
       headers: myHeaders,
-      body: raw
+      body: raw,
+      redirect: 'follow',
     };
     const response = await fetch( base, requestOptions );
     const body = await response.json();
-    return body.article;
+    console.log( body );
+
+  }
+
+  async delete_article( slug, token ) {
+    const myHeaders = new Headers();
+    myHeaders.append( 'Authorization', `Token ${token}` );
+
+    const requestOptions = {
+      method: 'DELETE',
+      headers: myHeaders,
+    };
+    const response = await fetch( `${base}/${slug}`, requestOptions );
+    const body = await response.json();
+    return body
   }
 
   async get_one_article( slug, user ) {
@@ -92,7 +110,6 @@ class Articles_Service {
     const body = await response.json();
     return body.article;
   }
-
 
 }
 
