@@ -4,7 +4,7 @@
 import React  from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import * as actions from '../../redux/actions';
 import Writer from '../Writer';
 import classes from './Post.module.scss';
@@ -44,10 +44,7 @@ function Post({ post, getOneArticle, user, addToFavorite, removeFromFavorite }) 
       <li className={classes.item} key={Math.random() * 515}>
         <Writer author={author} createdAt={createdAt} />
         <div className={classes.title}>
-          <Link to="/article" onClick={() => {
-            window.scrollTo(0, 0)
-            getOneArticle(slug, user)
-          }}>
+          <Link to={`/article/${slug}`}>
             <h5>{title}</h5>
           </Link>
           <div className={classes.favorited}>

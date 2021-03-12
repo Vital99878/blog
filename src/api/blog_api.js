@@ -16,7 +16,7 @@ class Articles_Service {
       return response.json();
     }
 
-    const response = await fetch( `${base}?tag=React&limit=5&offset=${offset}` );
+    const response = await fetch( `${base}?tag=react&limit=5&offset=${offset}` );
     if ( !response.ok ) {
       throw new Error( `Not working fetch ${base}/search/movie: ${response.status}` );
     }
@@ -25,7 +25,6 @@ class Articles_Service {
 
   async post_article( article, token ) {
     const { title, description, body: content, tagList } = article;
-    console.log( article );
     const myHeaders = new Headers();
     myHeaders.append( 'Authorization', `Token ${token}` );
     myHeaders.append( 'Content-Type', 'application/json' );
@@ -46,8 +45,7 @@ class Articles_Service {
     };
     const response = await fetch( base, requestOptions );
     const body = await response.json();
-    console.log( body );
-
+    console.log(body)
   }
 
   async delete_article( slug, token ) {

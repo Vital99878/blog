@@ -1,9 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { useForm } from 'react-hook-form';
-import * as actions from '../../redux/actions';
-import classes from './CreateArticle.module.scss';
+import PropTypes                              from 'prop-types';
+import { connect }                            from 'react-redux';
+import { useForm }                            from 'react-hook-form';
+import * as actions                           from '../../redux/actions';
+import classes                                from './CreateArticle.module.scss';
+
 
 const {
   article__title,
@@ -19,29 +20,43 @@ const {
   article__delete_tag,
 } = classes;
 
-const CreateArticle = ({ postArticle, token }) => {
-  console.log(token)
+const CreateArticle = ( { postArticle, token } ) => {
   const { register, handleSubmit, errors } = useForm();
 
-  const [tagsList, setTagsList] = useState([]);
+  const [ tagsList, setTagsList ] = useState( [] );
 
-  function deleteTag(evt) {
-    const targetInd = Number(evt.target.dataset.ind);
-    setTagsList(list => list.filter( item => item.id !== targetInd ) );
+  const [ tagsValues, setTagsValue ] = useState( {} );
+  const get_label = ( event ) => {
+    const { name, value } = event.target;
+    setTagsValue( { ...tagsValues, ...{ [ name ]: value } } );
+  };
+
+  function deleteTag( evt ) {
+    const targetInd = Number( evt.target.dataset.ind );
+    setTagsValue( ( oldTags ) => {
+      const newTags = { ...oldTags };
+      delete newTags [ targetInd ];
+      return newTags;
+    } );
+    setTagsList( list => list.filter( item => item.id !== targetInd ) );
   }
 
-  const tags = tagsList.map((item) => (
+  const tags = tagsList.map( ( item ) => (
     <div className={article__tag}>
-      <input className={article__input} type="text" ref={register()} name={item.id} placeholder="tag" />
+      <input className={article__input} type="text"  onChange={get_label} name={item.id} placeholder="tag" />
       <button className={article__delete_tag} onClick={deleteTag} data-ind={item.id} type="button">
         Delete
       </button>
     </div>
-  ));
+  ) );
 
-  const onSubmit = (data) => {
-    const { title, description, body } = data;
-    postArticle( { ...data, ...{tagList:["reactjs", "Vital", "react"]} }, token)
+  const onSubmit = ( data ) => {
+    const tagList = [];
+    for( const key in tagsValues) {
+      tagList.push(tagsValues[key])
+    }
+    console.log(tagList)
+    postArticle( { ...data, tagList }, token);
   };
 
   return (
@@ -51,7 +66,7 @@ const CreateArticle = ({ postArticle, token }) => {
         <label className={article__label}>
           Title
           <input
-            ref={register({ required: true })}
+            ref={register( { required: true } )}
             name="title"
             className={article__input}
             type="text"
@@ -64,7 +79,7 @@ const CreateArticle = ({ postArticle, token }) => {
         <label className={article__label}>
           Short description
           <input
-            ref={register({ required: true })}
+            ref={register( { required: true } )}
             name="description"
             className={article__input}
             type="text"
@@ -78,7 +93,7 @@ const CreateArticle = ({ postArticle, token }) => {
         <label className={article__label}>
           Text
           <textarea
-            ref={register({ required: true, minLength: 30 })}
+            ref={register( { required: true, minLength: 30 } )}
             name="body"
             className={article__body}
             cols={30}
@@ -98,13 +113,13 @@ const CreateArticle = ({ postArticle, token }) => {
           <button
             className={article__add_tag}
             onClick={() => setTagsList(
-              (list) => [...list, { id: Math.round(Math.random() * 100) }])}
+              ( list ) => [ ...list, { id: Math.round( Math.random() * 100 ) } ] )}
             type="button">
             Add tag
           </button>
         </form>
       </div>
-      <button className={article__button} onClick={handleSubmit(onSubmit)} type="submit">
+      <button className={article__button} onClick={handleSubmit( onSubmit )} type="submit">
         Send
       </button>
     </div>
@@ -122,4 +137,4 @@ const mapStateToProps = ( state ) => (
     token: state.user.token,
   });
 
-export default connect(mapStateToProps, actions)(CreateArticle);
+export default connect( mapStateToProps, actions )( CreateArticle );

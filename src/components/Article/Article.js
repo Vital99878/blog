@@ -2,7 +2,7 @@
 /* eslint-disable prefer-const */
 /* eslint-disable no-shadow */
 /* eslint-disable react-hooks/rules-of-hooks */
-import React  from 'react';
+import React, {useEffect}  from 'react';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -17,7 +17,13 @@ import classes from './Article.module.scss';
 const spinStyle = { fontSize: 48, marginTop: '180px', color: 'lightgreen' };
 const antIcon = <LoadingOutlined style={spinStyle} spin />;
 
-function Article({ article, username, user, addToFavorite, removeFromFavorite, deleteArticle }) {
+function Article({ article, username, user, addToFavorite, removeFromFavorite, deleteArticle, getOneArticle, slug }) {
+  console.log( 'slug:', slug)
+
+  useEffect( (  ) => {
+    window.scrollTo(0,0)
+    getOneArticle(slug, user)
+  }, [])
 
   if (!article) {
     return <Spin indicator={antIcon} />;
@@ -27,7 +33,9 @@ function Article({ article, username, user, addToFavorite, removeFromFavorite, d
     return <Redirect to='/'/>
   }
 
-  const { author, title, body, createdAt, description, favorited, favoritesCount, tagList, slug } = article;
+  const { author, title, body, createdAt, description, favorited, favoritesCount, tagList } = article;
+
+
 
   const tags = tagList.map((tag) => (
     <li className={classes.tag}>
@@ -90,11 +98,13 @@ Article.defaultProp = {
 Article.propTypes = {
   article: PropTypes.objectOf.isRequired,
   username: PropTypes.string.isRequired,
+  slug: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
   user: PropTypes.objectOf.isRequired,
   addToFavorite: PropTypes.func.isRequired,
   removeFromFavorite: PropTypes.func.isRequired,
   deleteArticle: PropTypes.func.isRequired,
+  getOneArticle: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

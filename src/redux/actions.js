@@ -51,7 +51,7 @@ export function getArticles( offset, token = '' ) {
 export function postArticle(  article, token) {
     return async ( dispatch ) => {
     const newArticle = await articles_service.post_article( article, token );
-    // dispatch( { type: 'ONE_ARTICLE', article: newArticle} );
+    dispatch( { type: 'ONE_ARTICLE', article: newArticle} );
   };
 }
 
