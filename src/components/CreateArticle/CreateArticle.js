@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { withRouter }      from 'react-router-dom';
-import PropTypes           from 'prop-types';
-import { connect }         from 'react-redux';
-import { useForm }         from 'react-hook-form';
-import * as actions        from '../../redux/actions';
-import classes             from './CreateArticle.module.scss';
-
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import * as actions from '../../redux/actions';
+import classes from './CreateArticle.module.scss';
 
 const {
   article__title,
@@ -21,69 +20,81 @@ const {
   article__delete_tag,
 } = classes;
 
-const CreateArticle = ( { postArticle,updateArticle, token, history, location } ) => {
-
-  console.log(location.state)
+const CreateArticle = ({ postArticle, updateArticle, token, history, location, params }) => {
   let defaultArticleHeader = 'Create new article';
-  let defaultTitle = null
-  let defaultDescription = null
-  let defaultBody = null
-
-  if (location.state ) {
-    const {title, description, body, slug } = location.state.updateArticle
-    defaultArticleHeader = 'Edit article';
-    defaultTitle = title
-    defaultDescription = description
-    defaultBody = body
-  }
+  let defaultTitle = null;
+  let defaultDescription = null;
+  let defaultBody = null;
 
   const { register, handleSubmit, errors } = useForm();
 
-  const [ tagsList, setTagsList ] = useState( [] );
+  const [tagsList, setTagsList] = useState(
+    location.state
+      ? location.state.updateArticle.tagList.map((item) => ({
+          id: Math.round(Math.random() * 100),
+          defaultValue: item,
+        }))
+      : []
+  );
 
-  const [ tagsValues, setTagsValue ] = useState( {} );
-  const get_label = ( event ) => {
+  const [tagsValues, setTagsValue] = useState({});
+
+  if (location.state) {
+    const { title, description, body } = location.state.updateArticle;
+    defaultArticleHeader = 'Edit article';
+    defaultTitle = title;
+    defaultDescription = description;
+    defaultBody = body;
+  }
+
+  const get_label = (event) => {
     const { name, value } = event.target;
-    setTagsValue( { ...tagsValues, ...{ [ name ]: value } } );
+    setTagsValue({ ...tagsValues, ...{ [name]: value } });
   };
 
-  function deleteTag( evt ) {
-    const targetInd = Number( evt.target.dataset.ind );
-    setTagsValue( ( oldTags ) => {
+  function deleteTag(evt) {
+    const targetInd = Number(evt.target.dataset.ind);
+    setTagsValue((oldTags) => {
       const newTags = { ...oldTags };
-      delete newTags [ targetInd ];
+      delete newTags[targetInd];
       return newTags;
-    } );
-    setTagsList( list => list.filter( item => item.id !== targetInd ) );
+    });
+    setTagsList((list) => list.filter((item) => item.id !== targetInd));
   }
-  const tags = tagsList.map( ( item ) => (
+
+  const tags = tagsList.map((item, index) => (
     <div className={article__tag}>
-      <input className={article__input} type="text" onChange={get_label} name={item.id} placeholder="tag" />
+      <input
+        className={article__input}
+        type="text"
+        onChange={get_label}
+        defaultValue={tagsList[index].defaultValue}
+        name={item.id}
+        placeholder="tag"
+      />
       <button className={article__delete_tag} onClick={deleteTag} data-ind={item.id} type="button">
         Delete
       </button>
     </div>
-  ) );
+  ));
 
-  const onSubmit = async ( data ) => {
+  const onSubmit = async (data) => {
     const tagList = [];
-    for ( const key in tagsValues ) {
-      tagList.push( tagsValues[ key ] );
+    for (const key in tagsValues) {
+      tagList.push(tagsValues[key]);
     }
-    if (location.state ) {
-      const { slug } = location.state.updateArticle
-      const newArticle = await updateArticle( { ...data, tagList }, token, slug );
-      if ( newArticle ) {
-        history.push( `/article/${newArticle.article.slug}` );
+    if (location.state) {
+      const { slug } = location.state.updateArticle;
+      const newArticle = await updateArticle({ ...data, tagList }, token, slug);
+      if (newArticle) {
+        history.push(`/article/${newArticle.article.slug}`);
+      }
+    } else {
+      const newArticle = await postArticle({ ...data, tagList }, token);
+      if (newArticle) {
+        history.push(`/article/${newArticle.article.slug}`);
       }
     }
-    else {
-      const newArticle = await postArticle( { ...data, tagList }, token );
-      if ( newArticle ) {
-        history.push( `/article/${newArticle.article.slug}` );
-      }
-    }
-
   };
 
   return (
@@ -93,7 +104,7 @@ const CreateArticle = ( { postArticle,updateArticle, token, history, location } 
         <label className={article__label}>
           Title
           <input
-            ref={register( { required: true } )}
+            ref={register({ required: true })}
             name="title"
             className={article__input}
             type="text"
@@ -107,7 +118,7 @@ const CreateArticle = ( { postArticle,updateArticle, token, history, location } 
         <label className={article__label}>
           Short description
           <input
-            ref={register( { required: true } )}
+            ref={register({ required: true })}
             name="description"
             className={article__input}
             type="text"
@@ -122,7 +133,7 @@ const CreateArticle = ( { postArticle,updateArticle, token, history, location } 
         <label className={article__label}>
           Text
           <textarea
-            ref={register( { required: true, minLength: 30 } )}
+            ref={register({ required: true, minLength: 30 })}
             name="body"
             className={article__body}
             cols={30}
@@ -142,14 +153,14 @@ const CreateArticle = ( { postArticle,updateArticle, token, history, location } 
           {tags}
           <button
             className={article__add_tag}
-            onClick={() => setTagsList(
-              ( list ) => [ ...list, { id: Math.round( Math.random() * 100 ) } ] )}
-            type="button">
+            onClick={() => setTagsList((list) => [...list, { id: Math.round(Math.random() * 100) }])}
+            type="button"
+          >
             Add tag
           </button>
         </form>
       </div>
-      <button className={article__button} onClick={handleSubmit( onSubmit )} type="submit">
+      <button className={article__button} onClick={handleSubmit(onSubmit)} type="submit">
         Send
       </button>
     </div>
@@ -161,13 +172,13 @@ CreateArticle.propTypes = {
   postArticle: PropTypes.func.isRequired,
   updateArticle: PropTypes.func.isRequired,
   history: PropTypes.objectOf.isRequired,
+  params: PropTypes.objectOf.isRequired,
   location: PropTypes.objectOf.isRequired,
   token: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = ( state ) => (
-  {
-    token: state.user.token,
-  });
+const mapStateToProps = (state) => ({
+  token: state.user.token,
+});
 
-export default connect( mapStateToProps, actions )( withRouter( CreateArticle ) );
+export default connect(mapStateToProps, actions)(withRouter(CreateArticle));

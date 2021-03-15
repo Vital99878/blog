@@ -78,7 +78,7 @@ function Article({ article, username, user, addToFavorite, removeFromFavorite, d
               <button className={`${classes.item} ${classes.deleteArticle}`} type='button'
               onClick={() => deleteArticle(article.slug, user.token)}>Delete</button>
             <button type='button' className={`${classes.item} ${classes.editArticle}`}>
-              <Link to={{ pathname: '/createArticle', state : { updateArticle: article } }}>Edit</Link>
+              <Link to={{ pathname: `/articles/${slug}/edit`, state : { updateArticle: article } }}>Edit</Link>
             </button>
           </div>
         )}

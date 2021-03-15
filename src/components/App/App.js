@@ -24,6 +24,10 @@ const App = () => (
                return <Article slug={slug}/>;
              }} />
       <Route path="/createArticle" component={CreateArticle} />
+      <Route path="/articles/:slug/edit"  render={ ({match}) => {
+        const {slug} = match.params;
+        return <CreateArticle slug={slug}/>
+      }}  />
     </section>
   </BrowserRouter>
 );
