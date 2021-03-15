@@ -1,0 +1,93 @@
+@import '../../mixins';
+
+.list {
+  display: flex;
+  align-items: center;
+}
+
+.item {
+  box-sizing: border-box;
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+}
+
+.item:not(:last-child) {
+  margin-right: 28px;
+}
+
+.signIn {
+  margin-right: 34px;
+
+  a {
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+}
+
+.signUp {
+  @include signUp_logOut;
+  border: 1px solid #52C41A;
+
+  a {
+    color: #52C41A;
+  }
+
+}
+
+.logOut {
+  @include signUp_logOut;
+  border: 1px solid rgba(0, 0, 0, 0.85);
+
+  a {
+    color: rgba(0, 0, 0, 0.85);
+  }
+}
+
+.createArticle {
+  a {
+    border: 1px solid #52C41A;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 6px;
+    font-family: Inter, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    color: #52C41A;
+  }
+}
+
+
+@media (max-width: 560px) {
+  .list {
+    flex-direction: column;
+    align-items: flex-end;
+
+  }
+  .item {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  .item:not(:last-child) {
+    margin-right: 0;
+  }
+  .signIn {
+    align-self: center;
+  }
+  .signUp {
+    padding: 6px 4px;
+  }
+  .logOut {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  .createArticle {
+    margin-top: 12px;
+    order: 3;
+    font-size: 8px;
+  }
+
+}

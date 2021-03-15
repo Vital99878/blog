@@ -36,7 +36,11 @@
     "prefer-rest-params": "off",
     "no-underscore-dangle": "off",
     "no-param-reassign": "off",
-    "spaced-comment": "off"
+    "spaced-comment": "off",
+    "no-unused-expressions": "off",
+    "no-restricted-globals": "off",
+    "consistent-return": "off",
+    "guard-for-in": "off"
   },
   "settings": {
     "react": {

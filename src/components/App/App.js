@@ -1,24 +1,31 @@
-import React, { useState } from 'react';
-import classes                        from './App.module.scss';
-import Header                         from '../Header';
-import Test                           from '../Test';
-import NewTaskForm                    from '../NewTaskForm';
-import PostList                       from '../PostList';
+import React                    from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Header                   from '../Header';
+import SingIn                   from '../SignIn';
+import PostList                 from '../PostList/PostList';
+import SignUp                   from '../SignUp';
+import CreateArticle            from '../CreateArticle';
+import classes                  from './App.module.scss';
+import EditProfile              from '../EditProfile/EditProfile';
+import Article                  from '../Article';
 
 
-const App = () => {
-  const [todo_list, setTodos] = useState();
-  const [filter, setFilter] = useState('all');
-  const fn = () => {}
-
-    return (
+const App = () => (
+  <BrowserRouter>
+    <Header />
     <section className={classes.app}>
-      <Header  />
-      <NewTaskForm add_new_todo={fn}/>
-      <PostList toggle_status={fn} remove_todo={fn}/>
-      <Test/>
+      <Route path="/" exact component={PostList} />
+      <Route path="/signIn" component={SingIn} />
+      <Route path="/signUp" component={SignUp} />
+      <Route path="/editProfile" component={EditProfile} />
+      <Route path="/article/:slug"
+             render={( { match } ) => {
+               const { slug } = match.params;
+               return <Article slug={slug}/>;
+             }} />
+      <Route path="/createArticle" component={CreateArticle} />
     </section>
-  );
-};
-
+  </BrowserRouter>
+);
 export default App;
+

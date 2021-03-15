@@ -1,4 +1,5 @@
 /node_modules
+/src/utilities.js
 /public
 /src/components/Test
 /src/cash.md

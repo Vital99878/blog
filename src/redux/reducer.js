@@ -1,74 +1,109 @@
 
+const reducer = ( state , action ) => {
+  switch ( action.type ) {
 
-const initial_state = [
-  {
-    label: 'Active task',
-    created: new Date(2021, 0, 25, 14, 55),
-    id: 11,
-    status: 'active',
-    min: 10,
-    sec: 30,
-  },
-  {
-    label: 'Completed task',
-    created: new Date(2020, 11, 12, 14, 55),
-    id: 52,
-    status: 'completed',
-    min: 8,
-    sec: 30,
-  },
-  {
-    label: 'Active task',
-    created: new Date(2021, 0, 20, 10, 55),
-    id: 3,
-    status: 'active',
-    min: 0,
-    sec: 3,
-  },
-]
-const reducer = (state = initial_state, action) => {
-  switch (action.type) {
-    case 'TRANSFERS':
+    case 'NO_EMAIL_ORE_PASSWORD':
       return {
         ...state,
-        transfers: action.transfers,
-        active_all: action.transfers.length === 4,
-        index: 0,
+        responseValidation : action.message
       };
 
-    case 'ALL_TRANSFERS':
+    case 'SIGN_UP_ERRORS':
       return {
         ...state,
-        active_all: action.active_all,
-        transfers: action.transfers,
-        index: 0,
+        emailValid: action.emailValid,
+        usernameValid: action.usernameValid,
       };
 
-    case 'SET_ID':
-      return { ...state, searchId: action.searchId };
-
-    case 'NEW_TICKETS':
-
+    case 'SIGN_IN':
       return {
         ...state,
-        index: 0,
+        auth: true,
+        user: action.user,
+        username: action.user.username,
+        responseValidation: false
       };
 
-    case 'TAB':
+    case 'SIGN_UP':
       return {
         ...state,
-        tab_value: action.tab_value,
-        index: 0,
+        auth: true,
+        user: action.user,
+        username: action.user.username,
+        emailValid: '',
+        usernameValid: ''
       };
 
-    case 'MORE':
+    case 'LOGOUT':
       return {
         ...state,
-        index: action.index,
+        auth: false,
+        user: null,
+        username: '',
+        responseValidation: false
       };
+
+    case 'LIKE':
+      return {
+        ...state,
+        posts: state.posts.map(post => {
+          if (post.slug === action.article.slug ) {
+            return action.article
+          }
+          return  post
+        }),
+        article: action.article
+      };
+
+    case 'DISLIKE':
+      return {
+        ...state,
+        posts: state.posts.map(post => {
+          if (post.slug === action.article.slug ) {
+            return action.article
+          }
+          return  post
+        }),
+        article: action.article
+      };
+
+    case 'ARTICLE_NULL':
+      return {
+        ...state,
+        article: null,
+      };
+      
+    case 'ONE_ARTICLE':
+      return {
+        ...state,
+        article: action.article,
+      };
+
+    case 'GET_ARTICLES':
+      return {
+        ...state,
+        posts: action.articles,
+        pages: Math.round( action.articlesCount / 5 ),
+        loading: false,
+      };
+
+    case 'OFFSET':
+      return { ...state, offset: action.offset, page_number: action.page, loading: true };
 
     default:
-      return { todos: initial_state };
+      return {
+        posts: [],
+        firstName: 'Vital',
+        lastName: 'Lihoy',
+        email: 'mail@mail.ru',
+        auth: false,
+        user: null,
+        page_number: 1,
+        loading: true,
+        username: '',
+        article: null,
+        responseValidation: ''
+      };
   }
 };
 
