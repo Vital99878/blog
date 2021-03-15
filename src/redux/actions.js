@@ -2,6 +2,7 @@ import articles_service from '../api/blog_api';
 import auth_api         from '../api/auth_api';
 
 // async actions auth
+
 export function signIn( mail, password ) {
   return async ( dispatch ) => {
     const user = await auth_api.get_user( mail, password );
@@ -41,6 +42,14 @@ export function updateUser( newUser, token ) {
   };
 };
 
+export const isLogOut = () => (
+  {
+    type: 'LOGOUT',
+  });
+
+
+// async actions Articles
+
 export function getArticles( offset, token = '' ) {
   return async ( dispatch ) => {
     const { articles, articlesCount } = await articles_service.get_articles( offset, token );
@@ -48,32 +57,24 @@ export function getArticles( offset, token = '' ) {
   };
 }
 
-export function postArticle(  article, token) {
-    return async ( dispatch ) => {
-    const newArticle = await articles_service.post_article( article, token );
-    dispatch( { type: 'ONE_ARTICLE', article: newArticle} );
-  };
-}
-
-export function deleteArticle(  slug, token) {
-
-  return async ( dispatch ) => {
-    const newArticle = await articles_service.delete_article( slug, token );
-    dispatch( { type: 'ONE_ARTICLE', article: newArticle} );
-  };
-}
-
-export const isLogOut = () => (
-  {
-    type: 'LOGOUT',
-  });
-
-// async actions Articles
-
 export function getOneArticle( slug, user ) {
   return async ( dispatch ) => {
     const article = await articles_service.get_one_article( slug, user );
     dispatch( { type: 'ONE_ARTICLE', article } );
+  };
+}
+
+export function postArticle(  article, token) {
+  return async ( dispatch ) => {
+    const newArticle = await articles_service.post_article( article, token );
+    return newArticle
+  };
+}
+
+export function deleteArticle(  slug, token) {
+  return async ( dispatch ) => {
+    const newArticle = await articles_service.delete_article( slug, token );
+    dispatch( { type: 'ONE_ARTICLE', article: newArticle} );
   };
 }
 
@@ -90,13 +91,6 @@ export function removeFromFavorite( slug, token ) {
     dispatch( { type: 'DISLIKE', article } );
   };
 }
-
-// export function removeFromFavorite( slug, token ) {
-//   return async ( dispatch ) => {
-//     await articles_service.remove_from_favorite( slug, token );
-//     dispatch( { type: 'DISLIKE' } );
-//   };
-// }
 
 export const set_offset = ( page, offset ) => (
   {

@@ -18,7 +18,6 @@ const spinStyle = { fontSize: 48, marginTop: '180px', color: 'lightgreen' };
 const antIcon = <LoadingOutlined style={spinStyle} spin />;
 
 function Article({ article, username, user, addToFavorite, removeFromFavorite, deleteArticle, getOneArticle, slug }) {
-  console.log( 'slug:', slug)
 
   useEffect( (  ) => {
     window.scrollTo(0,0)
@@ -76,7 +75,7 @@ function Article({ article, username, user, addToFavorite, removeFromFavorite, d
         <p className={classes.description}> {description}</p>
         {article.author.username === username && (
           <div className={classes.list}>
-              <button className={`${classes.item} ${classes.deleteArticle}`}type='button'
+              <button className={`${classes.item} ${classes.deleteArticle}`} type='button'
               onClick={() => deleteArticle(article.slug, user.token)}>Delete</button>
             <button type='button' className={`${classes.item} ${classes.editArticle}`}>
               <Link to="/editArticle">Edit</Link>

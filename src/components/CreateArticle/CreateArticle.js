@@ -1,9 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react';
-import PropTypes                              from 'prop-types';
-import { connect }                            from 'react-redux';
-import { useForm }                            from 'react-hook-form';
-import * as actions                           from '../../redux/actions';
-import classes                                from './CreateArticle.module.scss';
+import React, { useState } from 'react';
+import { withRouter }      from 'react-router-dom';
+import PropTypes           from 'prop-types';
+import { connect }         from 'react-redux';
+import { useForm }         from 'react-hook-form';
+import * as actions        from '../../redux/actions';
+import classes             from './CreateArticle.module.scss';
 
 
 const {
@@ -20,7 +21,7 @@ const {
   article__delete_tag,
 } = classes;
 
-const CreateArticle = ( { postArticle, token } ) => {
+const CreateArticle = ( { postArticle, token, history } ) => {
   const { register, handleSubmit, errors } = useForm();
 
   const [ tagsList, setTagsList ] = useState( [] );
@@ -43,20 +44,22 @@ const CreateArticle = ( { postArticle, token } ) => {
 
   const tags = tagsList.map( ( item ) => (
     <div className={article__tag}>
-      <input className={article__input} type="text"  onChange={get_label} name={item.id} placeholder="tag" />
+      <input className={article__input} type="text" onChange={get_label} name={item.id} placeholder="tag" />
       <button className={article__delete_tag} onClick={deleteTag} data-ind={item.id} type="button">
         Delete
       </button>
     </div>
   ) );
 
-  const onSubmit = ( data ) => {
+  const onSubmit = async ( data ) => {
     const tagList = [];
-    for( const key in tagsValues) {
-      tagList.push(tagsValues[key])
+    for ( const key in tagsValues ) {
+      tagList.push( tagsValues[ key ] );
     }
-    console.log(tagList)
-    postArticle( { ...data, tagList }, token);
+    const newArticle = await postArticle( { ...data, tagList }, token );
+    if ( newArticle ) {
+      history.push( `/article/${newArticle.article.slug}` );
+    }
   };
 
   return (
@@ -129,6 +132,7 @@ const CreateArticle = ( { postArticle, token } ) => {
 CreateArticle.defaultProp = {};
 CreateArticle.propTypes = {
   postArticle: PropTypes.func.isRequired,
+  history: PropTypes.objectOf.isRequired,
   token: PropTypes.string.isRequired,
 };
 
@@ -137,4 +141,4 @@ const mapStateToProps = ( state ) => (
     token: state.user.token,
   });
 
-export default connect( mapStateToProps, actions )( CreateArticle );
+export default connect( mapStateToProps, actions )( withRouter( CreateArticle ) );

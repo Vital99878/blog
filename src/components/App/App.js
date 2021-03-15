@@ -18,12 +18,9 @@ const App = () => (
       <Route path="/signIn" component={SingIn} />
       <Route path="/signUp" component={SignUp} />
       <Route path="/editProfile" component={EditProfile} />
-      {/*<Route path="/article" component={Article} />*/}
       <Route path="/article/:slug"
              render={( { match } ) => {
-               console.log( match );
                const { slug } = match.params;
-               console.log( slug );
                return <Article slug={slug}/>;
              }} />
       <Route path="/createArticle" component={CreateArticle} />
