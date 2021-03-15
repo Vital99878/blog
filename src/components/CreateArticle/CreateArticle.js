@@ -21,7 +21,22 @@ const {
   article__delete_tag,
 } = classes;
 
-const CreateArticle = ( { postArticle, token, history } ) => {
+const CreateArticle = ( { postArticle,updateArticle, token, history, location } ) => {
+
+  console.log(location.state)
+  let defaultArticleHeader = 'Create new article';
+  let defaultTitle = null
+  let defaultDescription = null
+  let defaultBody = null
+
+  if (location.state ) {
+    const {title, description, body, slug } = location.state.updateArticle
+    defaultArticleHeader = 'Edit article';
+    defaultTitle = title
+    defaultDescription = description
+    defaultBody = body
+  }
+
   const { register, handleSubmit, errors } = useForm();
 
   const [ tagsList, setTagsList ] = useState( [] );
@@ -41,7 +56,6 @@ const CreateArticle = ( { postArticle, token, history } ) => {
     } );
     setTagsList( list => list.filter( item => item.id !== targetInd ) );
   }
-
   const tags = tagsList.map( ( item ) => (
     <div className={article__tag}>
       <input className={article__input} type="text" onChange={get_label} name={item.id} placeholder="tag" />
@@ -56,15 +70,25 @@ const CreateArticle = ( { postArticle, token, history } ) => {
     for ( const key in tagsValues ) {
       tagList.push( tagsValues[ key ] );
     }
-    const newArticle = await postArticle( { ...data, tagList }, token );
-    if ( newArticle ) {
-      history.push( `/article/${newArticle.article.slug}` );
+    if (location.state ) {
+      const { slug } = location.state.updateArticle
+      const newArticle = await updateArticle( { ...data, tagList }, token, slug );
+      if ( newArticle ) {
+        history.push( `/article/${newArticle.article.slug}` );
+      }
     }
+    else {
+      const newArticle = await postArticle( { ...data, tagList }, token );
+      if ( newArticle ) {
+        history.push( `/article/${newArticle.article.slug}` );
+      }
+    }
+
   };
 
   return (
     <div className={article}>
-      <h6 className={article__title}>Create new article</h6>
+      <h6 className={article__title}>{defaultArticleHeader}</h6>
       <div className={article__forms}>
         <label className={article__label}>
           Title
@@ -74,6 +98,7 @@ const CreateArticle = ( { postArticle, token, history } ) => {
             className={article__input}
             type="text"
             placeholder="Title"
+            defaultValue={defaultTitle}
           />
           {errors.title && errors.title.type === 'required' && (
             <span className={classes.warning}>Title is required</span>
@@ -88,6 +113,7 @@ const CreateArticle = ( { postArticle, token, history } ) => {
             type="text"
             required
             placeholder="Short description"
+            defaultValue={defaultDescription}
           />
           {errors.description && errors.description.type === 'required' && (
             <span className={classes.warning}>Description is required</span>
@@ -101,6 +127,7 @@ const CreateArticle = ( { postArticle, token, history } ) => {
             className={article__body}
             cols={30}
             required
+            defaultValue={defaultBody}
             placeholder="Text"
           />
           {errors.body && errors.body.type === 'required' && (
@@ -132,7 +159,9 @@ const CreateArticle = ( { postArticle, token, history } ) => {
 CreateArticle.defaultProp = {};
 CreateArticle.propTypes = {
   postArticle: PropTypes.func.isRequired,
+  updateArticle: PropTypes.func.isRequired,
   history: PropTypes.objectOf.isRequired,
+  location: PropTypes.objectOf.isRequired,
   token: PropTypes.string.isRequired,
 };
 

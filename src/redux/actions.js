@@ -71,6 +71,13 @@ export function postArticle(  article, token) {
   };
 }
 
+export function updateArticle(  article, token, slug) {
+  return async ( dispatch ) => {
+    const newArticle = await articles_service.update_article( article, token, slug );
+    return newArticle
+  };
+}
+
 export function deleteArticle(  slug, token) {
   return async ( dispatch ) => {
     const newArticle = await articles_service.delete_article( slug, token );

@@ -47,6 +47,31 @@ class Articles_Service {
     return body
   }
 
+  async update_article( article, token, slug ) {
+    const { title, description, body: content, tagList } = article;
+    const myHeaders = new Headers();
+    myHeaders.append( 'Authorization', `Token ${token}` );
+    myHeaders.append( 'Content-Type', 'application/json' );
+    const raw = JSON.stringify( {
+                                  article:
+                                    {
+                                      title,
+                                      description,
+                                      body: content,
+                                      tagList,
+                                    },
+                                } );
+    const requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow',
+    };
+    const response = await fetch( `${base}/${slug}`, requestOptions );
+    const body = await response.json();
+    return body
+  }
+
   async delete_article( slug, token ) {
     const myHeaders = new Headers();
     myHeaders.append( 'Authorization', `Token ${token}` );
