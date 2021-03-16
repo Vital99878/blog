@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { withRouter, Redirect } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { useForm } from 'react-hook-form';
-import * as actions from '../../redux/actions';
-import classes from './CreateArticle.module.scss';
+import React, { useState, useEffect } from 'react';
+import { withRouter, Redirect }       from 'react-router-dom';
+import PropTypes                      from 'prop-types';
+import { connect }                    from 'react-redux';
+import { useForm }                    from 'react-hook-form';
+import * as actions                   from '../../redux/actions';
+import classes                        from './CreateArticle.module.scss';
+import Loader                         from '../Loader';
 
 const {
   article__title,
-  article,
   article__forms,
   article__label,
   article__button,
@@ -20,27 +20,51 @@ const {
   article__delete_tag,
 } = classes;
 
-const CreateArticle = ({ postArticle, updateArticle, token, history, location }) => {
+
+
+const CreateArticle = ({ postArticle, updateArticle, token, history, location, user, article, getOneArticle }) => {
+
   let defaultArticleHeader = 'Create new article';
   let defaultTitle = null;
   let defaultDescription = null;
   let defaultBody = null;
-
   const { register, handleSubmit, errors } = useForm();
 
+  useEffect(() => {
+    if (location.pathname !== '/createArticle' ) {
+      const slug = location.pathname.split('/')[2];
+      getOneArticle(slug, user);
+    }
+  }, []);
+
   const [tagsList, setTagsList] = useState(
-    location.state
-      ? location.state.updateArticle.tagList.map((item) => ({
+    article
+      ? article.tagList.map((item) => ({
           id: Math.round(Math.random() * 100),
           defaultValue: item,
         }))
       : []
   );
 
+  useEffect(() => {
+    if (article ) {
+      setTagsList(article.tagList.map(item => (
+        {
+          id: Math.round(Math.random() * 100),
+          defaultValue: item
+        }
+      )))
+    }
+  }, [article]);
+
   const [tagsValues, setTagsValue] = useState({});
 
-  if (location.state) {
-    const { title, description, body } = location.state.updateArticle;
+  if (!article && location.pathname !== '/createArticle' ) {
+    return <Loader />;
+  }
+
+  if (location.pathname !== '/createArticle') {
+    const { title, description, body } = article;
     defaultArticleHeader = 'Edit article';
     defaultTitle = title;
     defaultDescription = description;
@@ -83,9 +107,8 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location })
     for (const key in tagsValues) {
       tagList.push(tagsValues[key]);
     }
-    if (location.state) {
-      const { slug } = location.state.updateArticle;
-      const newArticle = await updateArticle({ ...data, tagList }, token, slug);
+    if (location.pathname !== '/createArticle') {
+      const newArticle = await updateArticle({ ...data, tagList }, token, article.slug);
       if (newArticle) {
         history.push(`/article/${newArticle.article.slug}`);
       }
@@ -97,12 +120,12 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location })
     }
   };
 
-  if (!token ) {
-    return  <Redirect to='/signIn'/>
+  if (!token) {
+    return <Redirect to="/signIn" />;
   }
 
   return (
-    <div className={article}>
+    <div className={classes.article}>
       <h6 className={article__title}>{defaultArticleHeader}</h6>
       <div className={article__forms}>
         <label className={article__label}>
@@ -175,13 +198,18 @@ CreateArticle.defaultProp = {};
 CreateArticle.propTypes = {
   postArticle: PropTypes.func.isRequired,
   updateArticle: PropTypes.func.isRequired,
+  getOneArticle: PropTypes.func.isRequired,
   history: PropTypes.objectOf.isRequired,
+  user: PropTypes.objectOf.isRequired,
+  article: PropTypes.objectOf.isRequired,
   location: PropTypes.objectOf.isRequired,
   token: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   token: state.user ? state.user.token : null,
+  user: state.user,
+  article: state.article,
 });
 
 export default connect(mapStateToProps, actions)(withRouter(CreateArticle));

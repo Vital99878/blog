@@ -10,10 +10,8 @@ import User         from '../User';
 const {list, item, signIn, signUp, logOut, createArticle} = classes;
 
 const Auth_hoc = ( { user, isLogOut, getArticles, update_user_from_cookies }) => {
-  console.log(user)
 
   if (!user && Cookies.get('username') ) {
-    console.log('cc')
     update_user_from_cookies()
   }
 

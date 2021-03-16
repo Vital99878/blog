@@ -32,7 +32,6 @@ export function signUp( newUser ) {
 export function updateUser( newUser, token ) {
   return async ( dispatch ) => {
     const user = await auth_api.update_user( newUser, token );
-    console.log(user)
     if ( user.user) {
       dispatch( { type: 'SIGN_UP', user: user.user} );
     }

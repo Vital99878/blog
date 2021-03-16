@@ -3,19 +3,16 @@
 /* eslint-disable no-shadow */
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, {useEffect}  from 'react';
-import PropTypes from 'prop-types';
-import { Link, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
-import ReactMarkdown from 'react-markdown';
-import gfm from 'remark-gfm';
-import * as actions from '../../redux/actions';
-import Writer from '../Writer';
-import classes from './Article.module.scss';
+import PropTypes           from 'prop-types';
+import { Link, Redirect }  from 'react-router-dom';
+import { connect }         from 'react-redux';
+import ReactMarkdown       from 'react-markdown';
+import gfm                 from 'remark-gfm';
+import * as actions        from '../../redux/actions';
+import Writer              from '../Writer';
+import classes             from './Article.module.scss';
+import Loader              from '../Loader';
 
-const spinStyle = { fontSize: 48, marginTop: '180px', color: 'lightgreen' };
-const antIcon = <LoadingOutlined style={spinStyle} spin />;
 
 function Article({ article, user, addToFavorite, removeFromFavorite, deleteArticle, getOneArticle, slug }) {
 
@@ -25,7 +22,7 @@ function Article({ article, user, addToFavorite, removeFromFavorite, deleteArtic
   }, [])
 
   if (!article) {
-    return <Spin indicator={antIcon} />;
+    return <Loader />;
   }
 
   if (!article.title ) {
@@ -76,7 +73,7 @@ function Article({ article, user, addToFavorite, removeFromFavorite, deleteArtic
               <button className={`${classes.item} ${classes.deleteArticle}`} type='button'
               onClick={() => deleteArticle(article.slug, user.token)}>Delete</button>
             <button type='button' className={`${classes.item} ${classes.editArticle}`}>
-              <Link to={{ pathname: `/articles/${slug}/edit`, state : { updateArticle: article } }}>Edit</Link>
+              <Link to={{ pathname: `/article/${slug}/edit`, state : { updateArticle: article } }}>Edit</Link>
             </button>
           </div>
         )}

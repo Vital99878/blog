@@ -21,7 +21,6 @@ class Auth_api {
     };
     const body = await fetch(`${base}/users`, requestOptions);
     const user = await body.json()
-    console.log(user)
     return user;
   }
 

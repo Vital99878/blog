@@ -15,7 +15,7 @@ class Articles_Service {
       }
       return response.json();
     }
-    const response = await fetch( `${base}?tag=react&limit=5&offset=${offset}` );
+    const response = await fetch( `${base}?author=Vital&limit=5&offset=${offset}` );
     if ( !response.ok ) {
       throw new Error( `Not working fetch ${base}/search/movie: ${response.status}` );
     }
