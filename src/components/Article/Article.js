@@ -17,7 +17,7 @@ import classes from './Article.module.scss';
 const spinStyle = { fontSize: 48, marginTop: '180px', color: 'lightgreen' };
 const antIcon = <LoadingOutlined style={spinStyle} spin />;
 
-function Article({ article, username, user, addToFavorite, removeFromFavorite, deleteArticle, getOneArticle, slug }) {
+function Article({ article, user, addToFavorite, removeFromFavorite, deleteArticle, getOneArticle, slug }) {
 
   useEffect( (  ) => {
     window.scrollTo(0,0)
@@ -33,8 +33,6 @@ function Article({ article, username, user, addToFavorite, removeFromFavorite, d
   }
 
   const { author, title, body, createdAt, description, favorited, favoritesCount, tagList } = article;
-
-
 
   const tags = tagList.map((tag) => (
     <li className={classes.tag}>
@@ -73,7 +71,7 @@ function Article({ article, username, user, addToFavorite, removeFromFavorite, d
       <ul className={classes.tags}>{tags}</ul>
       <div className={classes.paragraph}>
         <p className={classes.description}> {description}</p>
-        {article.author.username === username && (
+        {user && article.author.username === user.username && (
           <div className={classes.list}>
               <button className={`${classes.item} ${classes.deleteArticle}`} type='button'
               onClick={() => deleteArticle(article.slug, user.token)}>Delete</button>

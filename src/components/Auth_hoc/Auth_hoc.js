@@ -2,15 +2,31 @@ import React        from 'react';
 import { connect }  from 'react-redux';
 import PropTypes    from 'prop-types';
 import {Link}       from 'react-router-dom';
+import Cookies from 'js-cookie'
 import * as actions from '../../redux/actions';
 import classes      from './Auth_hoc.module.scss';
 import User         from '../User';
 
 const {list, item, signIn, signUp, logOut, createArticle} = classes;
 
-const Auth_hoc = ( { auth, user, isLogOut, getArticles }) => {
+const Auth_hoc = ( { user, isLogOut, getArticles, update_user_from_cookies }) => {
+  console.log(user)
 
-  if (auth ) {
+  if (!user && Cookies.get('username') ) {
+    console.log('cc')
+    update_user_from_cookies()
+  }
+
+  if (user) {
+    Cookies.set( 'email', user.email )
+    Cookies.set( 'token', user.token )
+    Cookies.set( 'image', user.image )
+    Cookies.set( 'username', user.username )
+    Cookies.set( 'createdAt', user.createdAt )
+    Cookies.set( 'updatedAt', user.updatedAt )
+  }
+
+  if (user ) {
     return (
       <ul className={list}>
         <li className={`${item} ${createArticle}`}><Link to='/createArticle'>Create article</Link></li>
@@ -20,7 +36,7 @@ const Auth_hoc = ( { auth, user, isLogOut, getArticles }) => {
           getArticles(5)
         }} to='/'>Log Out</Link></li>
       </ul>
-    )
+    );
   }
   return (
     <ul className={list}>
@@ -36,8 +52,9 @@ Auth_hoc.defaultProp = {
 Auth_hoc.propTypes = {
   user: PropTypes.objectOf.isRequired,
   getArticles: PropTypes.func.isRequired,
+  update_user_from_cookies: PropTypes.func.isRequired,
   isLogOut:  PropTypes.func.isRequired,
-  auth: PropTypes.bool.isRequired}
+}
 const mapStateToProps = (state) => ({
   auth: state.auth,
   user: state.user,

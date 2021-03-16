@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie'
 import articles_service from '../api/blog_api';
 import auth_api         from '../api/auth_api';
 
@@ -42,11 +43,17 @@ export function updateUser( newUser, token ) {
   };
 };
 
-export const isLogOut = () => (
-  {
+export const isLogOut = () => {
+  Cookies.remove( 'email' )
+  Cookies.remove( 'token' )
+  Cookies.remove( 'image' )
+  Cookies.remove( 'username')
+  Cookies.remove( 'createdAt' )
+  Cookies.remove( 'updatedAt' )
+  return   {
     type: 'LOGOUT',
-  });
-
+  }
+}
 
 // async actions Articles
 
@@ -99,10 +106,17 @@ export function removeFromFavorite( slug, token ) {
   };
 }
 
-export const set_offset = ( page, offset ) => (
-  {
+export const set_offset = ( page, offset ) => ({
     type: 'OFFSET',
     offset, page,
   });
+
+export const update_user_from_cookies = (  ) => {
+  const user = Cookies.get()
+  return {
+    type: 'COOKIES',
+    user
+  }
+}
 
 

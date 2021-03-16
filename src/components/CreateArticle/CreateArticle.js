@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -20,7 +20,7 @@ const {
   article__delete_tag,
 } = classes;
 
-const CreateArticle = ({ postArticle, updateArticle, token, history, location, params }) => {
+const CreateArticle = ({ postArticle, updateArticle, token, history, location }) => {
   let defaultArticleHeader = 'Create new article';
   let defaultTitle = null;
   let defaultDescription = null;
@@ -97,6 +97,10 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, p
     }
   };
 
+  if (!token ) {
+    return  <Redirect to='/signIn'/>
+  }
+
   return (
     <div className={article}>
       <h6 className={article__title}>{defaultArticleHeader}</h6>
@@ -172,13 +176,12 @@ CreateArticle.propTypes = {
   postArticle: PropTypes.func.isRequired,
   updateArticle: PropTypes.func.isRequired,
   history: PropTypes.objectOf.isRequired,
-  params: PropTypes.objectOf.isRequired,
   location: PropTypes.objectOf.isRequired,
   token: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  token: state.user.token,
+  token: state.user ? state.user.token : null,
 });
 
 export default connect(mapStateToProps, actions)(withRouter(CreateArticle));

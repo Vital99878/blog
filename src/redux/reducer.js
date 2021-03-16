@@ -15,6 +15,12 @@ const reducer = ( state , action ) => {
         usernameValid: action.usernameValid,
       };
 
+    case 'COOKIES':
+      return {
+        ...state,
+        user: action.user,
+      };
+
     case 'SIGN_IN':
       return {
         ...state,
