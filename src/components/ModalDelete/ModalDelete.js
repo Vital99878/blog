@@ -6,6 +6,7 @@ function ModalDelete({ deleteArticle, open, closeModal }) {
   return (
     open && (
       <div className={classes.modal}>
+        <div className={classes.triangle}>tr</div>
         <p>Are you sure to delete this article?</p>
         <div className={classes.buttons}>
           <button

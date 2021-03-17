@@ -9,7 +9,7 @@
   padding: 16px;
   filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.15));
   top: -2px;
-  left: 82px;
+  left: 88px;
   color: #0a569c;
 
   .buttons {
@@ -37,19 +37,19 @@
   button {
     box-sizing: border-box;
     cursor: pointer;
-    border: 1px solid #D9D9D9;
+    border: 1px solid #d9d9d9;
     padding: 4px 8px;
     border-radius: 4px;
     font-family: Roboto, sans-serif;
   }
 
   button:hover {
-    transition: all .6s;
+    transition: all 0.6s;
     color: #f12929;
   }
 
   .yes {
-    background-color: #1890FF;
+    background-color: #1890ff;
     margin-left: 8px;
     color: white;
   }
@@ -58,11 +58,36 @@
   }
 }
 
+.triangle {
+  position: absolute;
+  top: 12px;
+  left: -8px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 10px solid white;
+  transform: rotate(90deg);
+  font-size: 0;
+}
+
 @media (max-width: 1272px) {
   .modal {
     left: unset;
-    top: 44px;
+    top: 48px;
     right: 0;
   }
-}
 
+  .triangle {
+    position: absolute;
+    left: unset;
+    top: -8px;
+    right: 12px;
+    transform: rotate(180deg);
+  }
+}
+@media (max-width: 560px) {
+  .modal {
+    margin-top: -8px;
+  }
+}
