@@ -2,31 +2,32 @@
 /* eslint-disable prefer-const */
 /* eslint-disable no-shadow */
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, {useEffect}  from 'react';
-import PropTypes           from 'prop-types';
-import { Link, Redirect }  from 'react-router-dom';
-import { connect }         from 'react-redux';
-import ReactMarkdown       from 'react-markdown';
-import gfm                 from 'remark-gfm';
-import * as actions        from '../../redux/actions';
-import Writer              from '../Writer';
-import classes             from './Article.module.scss';
-import Loader              from '../Loader';
-
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import ReactMarkdown from 'react-markdown';
+import gfm from 'remark-gfm';
+import * as actions from '../../redux/actions';
+import Writer from '../Writer';
+import classes from './Article.module.scss';
+import Loader from '../Loader';
+import ModalDelete from '../ModalDelete';
 
 function Article({ article, user, addToFavorite, removeFromFavorite, deleteArticle, getOneArticle, slug }) {
+  let [modalIsOpen, setModalIsOpen] = useState(false);
 
-  useEffect( (  ) => {
-    window.scrollTo(0,0)
-    getOneArticle(slug, user)
-  }, [])
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    getOneArticle(slug, user);
+  }, []);
 
   if (!article) {
     return <Loader />;
   }
 
-  if (!article.title ) {
-    return <Redirect to='/'/>
+  if (!article.title) {
+    return <Redirect to="/" />;
   }
 
   const { author, title, body, createdAt, description, favorited, favoritesCount, tagList } = article;
@@ -55,6 +56,10 @@ function Article({ article, user, addToFavorite, removeFromFavorite, deleteArtic
     }
   }
 
+  function closeModal() {
+    setModalIsOpen(false);
+  }
+
   return (
     <div className={classes.article}>
       <Writer author={author} createdAt={createdAt} />
@@ -70,10 +75,22 @@ function Article({ article, user, addToFavorite, removeFromFavorite, deleteArtic
         <p className={classes.description}> {description}</p>
         {user && article.author.username === user.username && (
           <div className={classes.list}>
-              <button className={`${classes.item} ${classes.deleteArticle}`} type='button'
-              onClick={() => deleteArticle(article.slug, user.token)}>Delete</button>
-            <button type='button' className={`${classes.item} ${classes.editArticle}`}>
-              <Link to={{ pathname: `/article/${slug}/edit`, state : { updateArticle: article } }}>Edit</Link>
+            <button
+              className={`${classes.item} ${classes.deleteArticle}`}
+              type="button"
+              onClick={() => {
+                setModalIsOpen(true);
+              }}
+            >
+              <ModalDelete
+                deleteArticle={() => deleteArticle(article.slug, user.token)}
+                open={modalIsOpen}
+                closeModal={closeModal}
+              />
+              Delete
+            </button>
+            <button type="button" className={`${classes.item} ${classes.editArticle}`}>
+              <Link to={{ pathname: `/article/${slug}/edit`, state: { updateArticle: article } }}>Edit</Link>
             </button>
           </div>
         )}
@@ -106,6 +123,5 @@ const mapStateToProps = (state) => ({
   username: state.username,
   user: state.user,
 });
-
 
 export default connect(mapStateToProps, actions)(Article);

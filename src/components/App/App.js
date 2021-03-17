@@ -9,11 +9,13 @@ import classes                  from './App.module.scss';
 import EditProfile              from '../EditProfile/EditProfile';
 import Article                  from '../Article';
 import Loader                   from '../Loader';
+import Modal                    from '../Test';
 
 
 const App = () => (
   <BrowserRouter>
     <Header />
+
     <section className={classes.app}>
       <Route path="/" exact component={PostList} />
       <Route path="/signIn" component={SingIn} />

@@ -111,6 +111,7 @@
 }
 
 .list {
+  position: relative;
   display: flex;
   align-items: center;
 }
@@ -135,9 +136,12 @@
 }
 
 .deleteArticle {
+  position: relative;
   @include delete_edit_article;
   border: 1px solid  #F5222D;
   color:  #F5222D;
+
+
 
 }
 
