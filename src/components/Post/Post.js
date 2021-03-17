@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable prefer-const */
 /* eslint-disable no-shadow */
-import React  from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
@@ -10,8 +10,7 @@ import Writer from '../Writer';
 import classes from './Post.module.scss';
 
 function Post({ post, getOneArticle, user, addToFavorite, removeFromFavorite }) {
-  
-  const { author, title,  createdAt, favorited, favoritesCount, tagList, slug, description } = post;
+  const { author, title, createdAt, favorited, favoritesCount, tagList, slug, description } = post;
   let heartButtonClass;
   const tags = tagList.map((tag) => (
     <li className={classes.tag}>
@@ -19,22 +18,19 @@ function Post({ post, getOneArticle, user, addToFavorite, removeFromFavorite }) 
     </li>
   ));
 
-
-  if ( favorited ) {
+  if (favorited) {
     heartButtonClass = classes.redHeart;
-  }
-  else {
+  } else {
     heartButtonClass = classes.heart;
   }
 
-  function toggleFavorite( favorited ) {
-
-    if ( user ) {
-      if ( favorited ) {
-        removeFromFavorite(slug, user.token)
+  function toggleFavorite(favorited) {
+    if (user) {
+      if (favorited) {
+        removeFromFavorite(slug, user.token);
       }
-      if ( !favorited ) {
-        addToFavorite( slug, user.token)
+      if (!favorited) {
+        addToFavorite(slug, user.token);
       }
     }
   }
@@ -70,10 +66,8 @@ Post.propTypes = {
   removeFromFavorite: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ( state ) => (
-  {
-    // post: state.post,
-    user: state.user
-  });
+const mapStateToProps = (state) => ({
+  user: state.authReducer.user,
+});
 
 export default connect(mapStateToProps, actions)(Post);

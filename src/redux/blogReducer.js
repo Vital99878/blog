@@ -1,52 +1,6 @@
-const reducer = (state, action) => {
+const blogReducer = (state, action) => {
   switch (action.type) {
-    case 'SIGN_IN':
-      return {
-        ...state,
-        auth: true,
-        user: action.user,
-        username: action.user.username,
-        responseValidation: false,
-      };
-
-    case 'SIGN_UP':
-      return {
-        ...state,
-        auth: true,
-        user: action.user,
-        username: action.user.username,
-        emailValid: '',
-        usernameValid: '',
-      };
-
-    case 'LOGOUT':
-      return {
-        ...state,
-        auth: false,
-        user: null,
-        username: '',
-        responseValidation: false,
-      };
-
-    case 'COOKIES':
-      return {
-        ...state,
-        user: action.user,
-      };
-
-    case 'NO_EMAIL_ORE_PASSWORD':
-      return {
-        ...state,
-        responseValidation: action.message,
-      };
-
-    case 'SIGN_UP_ERRORS':
-      return {
-        ...state,
-        emailValid: action.emailValid,
-        usernameValid: action.usernameValid,
-      };
-
+    
     case 'GET_ARTICLES':
       return {
         ...state,
@@ -96,9 +50,6 @@ const reducer = (state, action) => {
 
     default:
       return {
-        auth: false,
-        user: null,
-        responseValidation: '',
         posts: [],
         page_number: 1,
         loading: true,
@@ -107,4 +58,4 @@ const reducer = (state, action) => {
   }
 };
 
-export default reducer;
+export default blogReducer;

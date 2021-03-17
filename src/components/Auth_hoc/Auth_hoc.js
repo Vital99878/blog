@@ -54,7 +54,6 @@ Auth_hoc.propTypes = {
   isLogOut:  PropTypes.func.isRequired,
 }
 const mapStateToProps = (state) => ({
-  auth: state.auth,
-  user: state.user,
+  user: state.authReducer.user,
 });
 export default connect(mapStateToProps, actions)(Auth_hoc);

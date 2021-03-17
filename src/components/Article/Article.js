@@ -119,9 +119,9 @@ Article.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  article: state.article,
-  username: state.username,
-  user: state.user,
+  article: state.blogReducer.article,
+  username: state.authReducer.user.sername,
+  user: state.authReducer.user,
 });
 
 export default connect(mapStateToProps, actions)(Article);

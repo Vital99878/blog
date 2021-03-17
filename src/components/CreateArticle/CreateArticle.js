@@ -207,9 +207,9 @@ CreateArticle.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  token: state.user ? state.user.token : null,
-  user: state.user,
-  article: state.article,
+  token: state.authReducer.user ? state.authReducer.user.token : null,
+  user: state.authReducer.user,
+  article: state.blogReducer.article,
 });
 
 export default connect(mapStateToProps, actions)(withRouter(CreateArticle));

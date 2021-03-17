@@ -3,7 +3,6 @@ import PropTypes           from 'prop-types';
 import { Link }     from 'react-router-dom';
 import {connect}    from 'react-redux'
 import Auth_hoc     from '../Auth_hoc/Auth_hoc';
-
 import classes      from './Header.module.scss';
 
 function Header({setArticleNull}) {
