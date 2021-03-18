@@ -1,4 +1,11 @@
-const blogReducer = (state, action) => {
+const initialState = {
+  posts: [],
+  page_number: 1,
+  loading: true,
+  article: null,
+}
+
+const blogReducer = (state = initialState, action) => {
   switch (action.type) {
     
     case 'GET_ARTICLES':
@@ -49,12 +56,7 @@ const blogReducer = (state, action) => {
       };
 
     default:
-      return {
-        posts: [],
-        page_number: 1,
-        loading: true,
-        article: null,
-      };
+      return state
   }
 };
 

@@ -1,4 +1,10 @@
-const authReducer = (state, action) => {
+const initialState = {
+  user: null,
+  responseValidation: '',
+  loading: true
+}
+
+const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SIGN_IN':
       return {
@@ -47,11 +53,7 @@ const authReducer = (state, action) => {
       };
 
     default:
-      return {
-        user: null,
-        responseValidation: '',
-        loading: true
-      };
+      return state
   }
 };
 
