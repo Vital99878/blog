@@ -23,6 +23,7 @@ const {
 
 
 const CreateArticle = ({ postArticle, updateArticle, token, history, location, user, article, getOneArticle }) => {
+  
 
   let defaultArticleHeader = 'Create new article';
   let defaultTitle = null;
@@ -108,10 +109,10 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
       tagList.push(tagsValues[key]);
     }
     if (location.pathname !== '/createArticle') {
-      const newArticle = await updateArticle({ ...data, tagList }, token, article.slug);
-      if (newArticle) {
-        history.push(`/article/${newArticle.article.slug}`);
-      }
+      const updatedArticle = await updateArticle({ ...data, tagList }, token, article.slug);
+      if (updatedArticle && !updatedArticle.errors ) {
+        history.push(`/article/${updatedArticle.article.slug}`);
+      }else {history.push('/alert')}
     } else {
       const newArticle = await postArticle({ ...data, tagList }, token);
       if (newArticle) {

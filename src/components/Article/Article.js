@@ -8,6 +8,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
+import { Alert } from 'antd';
 import * as actions from '../../redux/actions';
 import Writer from '../Writer';
 import classes from './Article.module.scss';
@@ -16,7 +17,7 @@ import ModalDelete from '../ModalDelete';
 
 function Article({ article, user, addToFavorite, removeFromFavorite, deleteArticle, getOneArticle, slug }) {
   let [modalIsOpen, setModalIsOpen] = useState(false);
-
+  
   useEffect(() => {
     window.scrollTo(0, 0);
     getOneArticle(slug, user);
