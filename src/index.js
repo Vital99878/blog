@@ -6,7 +6,7 @@ import ReduxThunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import blogReducer  from './redux/blogReducer';
 import authReducer  from './redux/authReducer';
-import reducer  from './redux/reducer';
+
 import App          from './components/App';
 
 const loggerMiddleware = (store) => (next) => (action) => {

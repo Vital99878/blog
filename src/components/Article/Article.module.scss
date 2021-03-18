@@ -16,6 +16,8 @@
   display: flex;
   align-items: center;
   margin-bottom: 8px;
+  max-width: 600px;
+  word-break: break-word;
 
   h5 {
     margin-right: 14px;
@@ -30,7 +32,8 @@
 
 .favorited {
   display: flex;
-  align-self: flex-end;
+  align-self: center;
+  margin-top: 4px;
 
   p {
     margin-top: .8px;
@@ -79,7 +82,7 @@
 
 .paragraph {
   display: flex;
-
+  word-break: break-word;
   justify-content: space-between;
 
 }
@@ -88,6 +91,7 @@
   width: 80%;
   font-family: Inter, sans-serif;
   line-height: 22px;
+  word-break: break-word;
 }
 
 .updateButtons {
@@ -150,6 +154,7 @@
   margin-top: 26px;
   font-size: 18px;
   line-height: 28px;
+  word-break: break-word;
 }
 
 @media (max-width: 560px) {

@@ -120,7 +120,6 @@ Article.propTypes = {
 
 const mapStateToProps = (state) => ({
   article: state.blogReducer.article,
-  username: state.authReducer.user.sername,
   user: state.authReducer.user,
 });
 
