@@ -17,8 +17,6 @@ const SingUp = ({ user, signUp, usernameValidation, responseValidation, emailVal
   const password = useRef({});
   password.current = watch('password', '');
 
-  console.log('usernameValid: ', usernameValid);
-
   const onSubmit = async (data) => {
     setOnce(true);
     setTimeout(() => setOnce(false), 2500);
