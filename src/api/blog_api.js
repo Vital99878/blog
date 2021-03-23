@@ -9,13 +9,13 @@ class Articles_Service {
         method: 'GET',
         headers: myHeaders,
       };
-      const response = await fetch( `${base}?tag=react&limit=5&offset=${offset}`, requestOptions );
+      const response = await fetch( `${base}?limit=5&offset=${offset}`, requestOptions );
       if ( !response.ok ) {
         throw new Error( `Not working fetch ${base}/search/movie: ${response.status}` );
       }
       return response.json();
     }
-    const response = await fetch( `${base}?tag=react&limit=5&offset=${offset}` );
+    const response = await fetch( `${base}?limit=5&offset=${offset}` );
     if ( !response.ok ) {
       throw new Error( `Not working fetch ${base}/search/movie: ${response.status}` );
     }

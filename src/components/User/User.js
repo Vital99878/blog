@@ -1,7 +1,7 @@
 import React     from 'react';
 import PropTypes from 'prop-types';
 import classes   from './User.module.scss';
-import mock from '../../img/mocka_ava.jpg';
+import mock from '../../img/defaultAvatar.png';
 
 const User = ( { user } ) => {
   const { username, image } = user;

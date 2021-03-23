@@ -14,7 +14,7 @@ export function signIn( mail, password ) {
       dispatch( { type: 'NO_EMAIL_ORE_PASSWORD', message: 'email ore password wrong' } );
     }
   };
-};
+}
 
 export function signUp( newUser ) {
   return async ( dispatch ) => {
@@ -27,7 +27,7 @@ export function signUp( newUser ) {
       dispatch( { type: 'SIGN_UP_ERRORS', emailValid, usernameValid  } );
     }
   };
-};
+}
 
 export function updateUser( newUser, token ) {
   return async ( dispatch ) => {
@@ -40,7 +40,7 @@ export function updateUser( newUser, token ) {
       dispatch( { type: 'SIGN_UP_ERRORS', emailValid, usernameValid  } );
     }
   };
-};
+}
 
 export const isLogOut = () => {
   Cookies.remove( 'email' )
@@ -71,14 +71,14 @@ export function getOneArticle( slug, user ) {
 }
 
 export function postArticle(  article, token) {
-  return async ( dispatch ) => {
+  return async (  ) => {
     const newArticle = await articles_service.post_article( article, token );
     return newArticle
   };
 }
 
 export function updateArticle(  article, token, slug) {
-  return async ( dispatch ) => {
+  return async (  ) => {
     const newArticle = await articles_service.update_article( article, token, slug );
     return newArticle
   };

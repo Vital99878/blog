@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -10,8 +10,11 @@ const { warning, card__inputWarning } = classes;
 
 const EditProfile = ({ updateUser, responseValidation, user, emailValid, usernameValid }) => {
   const { register, handleSubmit, errors } = useForm();
+  const [once, setOnce] = useState(false);
 
   const onSubmit = async (data) => {
+    setOnce(true);
+    setTimeout(() => setOnce(false), 2500);
     updateUser(data, user.token);
   };
 
@@ -28,7 +31,9 @@ const EditProfile = ({ updateUser, responseValidation, user, emailValid, usernam
             type="text"
             defaultValue={user.username}
           />
-          {errors.username && errors.username.type === 'required' && <span className={warning}>Email is required</span>}
+          {errors.username && errors.username.type === 'required' && (
+            <span className={warning}>Username is required</span>
+          )}
           <span className={warning}>{usernameValid}</span>
         </label>
         <label className={card__label}>
@@ -62,19 +67,10 @@ const EditProfile = ({ updateUser, responseValidation, user, emailValid, usernam
         </label>
         <label className={card__label}>
           Avatar image (url)
-          <input
-            ref={register()}
-            name="avatar"
-            className={(errors.email && card__inputWarning) || card__input}
-            type="url"
-            required
-            defaultValue={user.image}
-          />
-          {errors.avatar && <span className={warning}>Url is required</span>}
-          {responseValidation && <span className={warning}>{responseValidation}</span>}
+          <input ref={register()} name="avatar" className={card__input} type="url" required defaultValue={user.image} />
         </label>
       </form>
-      <button className={card__button} onClick={handleSubmit(onSubmit)} type="submit">
+      <button className={card__button} onClick={handleSubmit(onSubmit)} disabled={once} type="submit">
         Save
       </button>
     </div>

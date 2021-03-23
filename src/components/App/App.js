@@ -28,26 +28,26 @@ const App = () => (
       }}
     />
     <section className={classes.app}>
-      <Route path="/" exact component={PostList} />
-      <Route path="/signIn" component={SingIn} />
-      <Route path="/signUp" component={SignUp} />
-      <Route path="/editProfile" component={EditProfile} />
+      <Route path="/articles" exact component={PostList} />
       <Route
-        path="/article/:slug"
+        path="/articles/:slug"
         exact
         render={({ match }) => {
           const { slug } = match.params;
           return <Article slug={slug} />;
         }}
       />
-      <Route path="/createArticle" component={CreateArticle} />
+      <Route path="/new-article" component={CreateArticle} />
       <Route
-        path="/article/:slug/edit"
+        path="/articles/:slug/edit"
         render={({ match }) => {
           const { slug } = match.params;
           return <CreateArticle slug={slug} />;
         }}
       />
+      <Route path="/sign-in" component={SingIn} />
+      <Route path="/sign-up" component={SignUp} />
+      <Route path="/profile" component={EditProfile} />
     </section>
   </BrowserRouter>
 );

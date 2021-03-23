@@ -4,7 +4,7 @@ body {
     'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #E5E5E5;
+  background-color: #EBEEF3;
   box-sizing: border-box;
 
 }
@@ -15,15 +15,11 @@ h1, h2, h3, h4, h5, h6, p {
 
 
 #root {
+  height: 100%;
   width: 100%;
   margin: 0;
   display: grid;
   place-items: center;
-
-
-  //@media (max-width: 768px) {
-  //  width: 80%;
-  //}
 }
  li {
    @include reset-list;

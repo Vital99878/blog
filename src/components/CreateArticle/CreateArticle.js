@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { withRouter, Redirect }       from 'react-router-dom';
-import PropTypes                      from 'prop-types';
-import { connect }                    from 'react-redux';
-import { useForm }                    from 'react-hook-form';
-import * as actions                   from '../../redux/actions';
-import classes                        from './CreateArticle.module.scss';
-import Loader                         from '../Loader';
+import { withRouter, Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import * as actions from '../../redux/actions';
+import classes from './CreateArticle.module.scss';
+import Loader from '../Loader';
 
 const {
   article__title,
@@ -20,11 +20,7 @@ const {
   article__delete_tag,
 } = classes;
 
-
-
 const CreateArticle = ({ postArticle, updateArticle, token, history, location, user, article, getOneArticle }) => {
-  
-
   let defaultArticleHeader = 'Create new article';
   let defaultTitle = null;
   let defaultDescription = null;
@@ -32,14 +28,14 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
   const { register, handleSubmit, errors } = useForm();
 
   useEffect(() => {
-    if (location.pathname !== '/createArticle' ) {
+    if (location.pathname !== '/new-article') {
       const slug = location.pathname.split('/')[2];
       getOneArticle(slug, user);
     }
   }, []);
 
   const [tagsList, setTagsList] = useState(
-    article
+    article && location.pathname !== '/new-article'
       ? article.tagList.map((item) => ({
           id: Math.round(Math.random() * 100),
           defaultValue: item,
@@ -48,28 +44,34 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
   );
 
   useEffect(() => {
-    if (article ) {
-      setTagsList(article.tagList.map(item => (
-        {
+    if (article && location.pathname !== '/new-article') {
+      setTagsList(
+        article.tagList.map((item) => ({
           id: Math.round(Math.random() * 100),
-          defaultValue: item
-        }
-      )))
+          defaultValue: item,
+        }))
+      );
     }
   }, [article]);
+  const [once, setOnce] = useState( false );
+
 
   const [tagsValues, setTagsValue] = useState({});
 
-  if (!article && location.pathname !== '/createArticle' ) {
+  if (!article && location.pathname !== '/new-article') {
     return <Loader />;
   }
 
-  if (location.pathname !== '/createArticle') {
+  if (location.pathname !== '/new-article') {
     const { title, description, body } = article;
     defaultArticleHeader = 'Edit article';
     defaultTitle = title;
     defaultDescription = description;
     defaultBody = body;
+  }
+
+  if (location.pathname !== '/new-article' && user.username !== article.author.username) {
+    return <Redirect to="/articles" />;
   }
 
   const get_label = (event) => {
@@ -104,19 +106,22 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
   ));
 
   const onSubmit = async (data) => {
+    setOnce(true)
     const tagList = [];
     for (const key in tagsValues) {
       tagList.push(tagsValues[key]);
     }
-    if (location.pathname !== '/createArticle') {
+    if (location.pathname !== '/new-article') {
       const updatedArticle = await updateArticle({ ...data, tagList }, token, article.slug);
-      if (updatedArticle && !updatedArticle.errors ) {
-        history.push(`/article/${updatedArticle.article.slug}`);
-      }else {history.push('/alert')}
+      if (updatedArticle && !updatedArticle.errors) {
+        history.push(`/articles/${updatedArticle.article.slug}`);
+      } else {
+        history.push('/alert');
+      }
     } else {
       const newArticle = await postArticle({ ...data, tagList }, token);
       if (newArticle) {
-        history.push(`/article/${newArticle.article.slug}`);
+        history.push(`/articles/${newArticle.article.slug}`);
       }
     }
   };
@@ -188,7 +193,7 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
           </button>
         </form>
       </div>
-      <button className={article__button} onClick={handleSubmit(onSubmit)} type="submit">
+      <button className={article__button} onClick={handleSubmit(onSubmit)} type="submit" disabled={once}>
         Send
       </button>
     </div>

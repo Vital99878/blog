@@ -8,7 +8,7 @@ import classes      from './Header.module.scss';
 function Header({setArticleNull}) {
   return (
     <div className={classes.header}>
-      <Link className={classes.logo} to='/' onClick={setArticleNull}>
+      <Link className={classes.logo} to='/articles' onClick={setArticleNull}>
         Realworld Blog
       </Link>
       <Auth_hoc/>

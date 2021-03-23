@@ -27,19 +27,19 @@ const Auth_hoc = ( { user, isLogOut, getArticles, update_user_from_cookies }) =>
   if (user ) {
     return (
       <ul className={list}>
-        <li className={`${item} ${createArticle}`}><Link to='/createArticle'>Create article</Link></li>
-        <li className={item}><Link to='/editProfile'><User user={user}/></Link></li>
+        <li className={`${item} ${createArticle}`}><Link to='/new-article'>Create article</Link></li>
+        <li className={item}><Link to='/profile'><User user={user}/></Link></li>
         <li className={`${item} ${logOut}`}><Link  onClick={() => {
           isLogOut()
           getArticles(5)
-        }} to='/'>Log Out</Link></li>
+        }} to='/articles'>Log Out</Link></li>
       </ul>
     );
   }
   return (
     <ul className={list}>
-      <li className={`${item} ${signIn}`}><Link to="/signIn">Sign In</Link></li>
-      <li className={`${item} ${signUp}`}><Link to='signUp'>Sign Up</Link></li>
+      <li className={`${item} ${signIn}`}><Link to="/sign-in">Sign In</Link></li>
+      <li className={`${item} ${signUp}`}><Link to='sign-up'>Sign Up</Link></li>
     </ul>
   )
 }

@@ -5,8 +5,7 @@ import { monthNames } from '../../utilities';
 
 
 const Writer = ( { author, createdAt } ) => {
-
-  const date = `${monthNames[ new Date( createdAt ).getMonth() ]} ${new Date( createdAt ).getDay()}, ${new Date( createdAt ).getFullYear()}`;
+  const date = `${monthNames[ new Date( createdAt ).getMonth() ]} ${new Date( createdAt ).getDate()}, ${new Date( createdAt ).getFullYear()}`;
 
   const { username, image } = author;
   return (

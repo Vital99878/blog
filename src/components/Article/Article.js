@@ -8,7 +8,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
-import { Alert } from 'antd';
+
 import * as actions from '../../redux/actions';
 import Writer from '../Writer';
 import classes from './Article.module.scss';
@@ -28,7 +28,7 @@ function Article({ article, user, addToFavorite, removeFromFavorite, deleteArtic
   }
 
   if (!article.title) {
-    return <Redirect to="/" />;
+    return <Redirect to="/articles" />;
   }
 
   const { author, title, body, createdAt, description, favorited, favoritesCount, tagList } = article;
@@ -91,7 +91,7 @@ function Article({ article, user, addToFavorite, removeFromFavorite, deleteArtic
               Delete
             </button>
             <button type="button" className={`${classes.item} ${classes.editArticle}`}>
-              <Link to={{ pathname: `/article/${slug}/edit`, state: { updateArticle: article } }}>Edit</Link>
+              <Link to={{ pathname: `/articles/${slug}/edit`, state: { updateArticle: article } }}>Edit</Link>
             </button>
           </div>
         )}

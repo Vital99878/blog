@@ -67,17 +67,12 @@ class Auth_api {
     };
     const body = await fetch(`${base}/users/login`, requestOptions);
     if ( body.status === 422) {
-      return 'email ore password wrong'
+      return 'email ore password is invalid'
     }
     const user = await body.json()
     return user.user;
   }
 
-  // async create_article() {
-  // }
-  //
-  // async edit_article() {
-  // }
 }
 
 export default new Auth_api();
