@@ -88,7 +88,7 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
       <input
         className={article__input}
         type="text"
-        onChange={(e) => get_label(e.target.value, item.id)}
+        onChange={(evt) => get_label(evt.target.value, item.id)}
         value={item.value}
         name={item.id}
         placeholder="tag"
