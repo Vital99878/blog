@@ -36,27 +36,21 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
 
   const [tagsList, setTagsList] = useState(
     article && location.pathname !== '/new-article'
-      ? article.tagList.map((item) => ({
-          id: Math.round(Math.random() * 100),
-          defaultValue: item,
-        }))
-      : []
+      ? article.tagList.map((item, index) => ({ id: index, value: item }))
+      : [{ id: 0, value: '' }]
   );
 
   useEffect(() => {
     if (article && location.pathname !== '/new-article') {
       setTagsList(
-        article.tagList.map((item) => ({
-          id: Math.round(Math.random() * 100),
-          defaultValue: item,
+        article.tagList.map((item, index) => ({
+          id: index,
+          value: item,
         }))
       );
     }
   }, [article]);
-  const [once, setOnce] = useState( false );
-
-
-  const [tagsValues, setTagsValue] = useState({});
+  const [once, setOnce] = useState(false);
 
   if (!article && location.pathname !== '/new-article') {
     return <Loader />;
@@ -74,43 +68,42 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
     return <Redirect to="/articles" />;
   }
 
-  const get_label = (event) => {
-    const { name, value } = event.target;
-    setTagsValue({ ...tagsValues, ...{ [name]: value } });
+  const get_label = (label, id) => {
+    setTagsList(
+      tagsList.map((item) => {
+        if (item.id === id) {
+          item.value = label;
+        }
+        return item;
+      })
+    );
   };
 
-  function deleteTag(evt) {
-    const targetInd = Number(evt.target.dataset.ind);
-    setTagsValue((oldTags) => {
-      const newTags = { ...oldTags };
-      delete newTags[targetInd];
-      return newTags;
-    });
-    setTagsList((list) => list.filter((item) => item.id !== targetInd));
+  function deleteTag(id) {
+    setTagsList(tagsList.filter((item) => item.id !== id));
   }
 
-  const tags = tagsList.map((item, index) => (
+  const tags = tagsList.map((item) => (
     <div className={article__tag}>
       <input
         className={article__input}
         type="text"
-        onChange={get_label}
-        defaultValue={tagsList[index].defaultValue}
+        onChange={(e) => get_label(e.target.value, item.id)}
+        value={item.value}
         name={item.id}
         placeholder="tag"
       />
-      <button className={article__delete_tag} onClick={deleteTag} data-ind={item.id} type="button">
+      <button className={article__delete_tag} onClick={() => deleteTag(item.id)} data-ind={item.id} type="button">
         Delete
       </button>
     </div>
   ));
 
   const onSubmit = async (data) => {
-    setOnce(true)
-    const tagList = [];
-    for (const key in tagsValues) {
-      tagList.push(tagsValues[key]);
-    }
+    setOnce(true);
+    const tagList = tagsList.map((item) => item.value);
+    setTimeout(() => setOnce(false), 1000);
+
     if (location.pathname !== '/new-article') {
       const updatedArticle = await updateArticle({ ...data, tagList }, token, article.slug);
       if (updatedArticle && !updatedArticle.errors) {
@@ -186,7 +179,10 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
           {tags}
           <button
             className={article__add_tag}
-            onClick={() => setTagsList((list) => [...list, { id: Math.round(Math.random() * 100) }])}
+            onClick={() => {
+              const maxId = tagsList.reduce((acc, el) => el.id, 0);
+              setTagsList(() => [...tagsList, { id: maxId + 1 }]);
+            }}
             type="button"
           >
             Add tag
