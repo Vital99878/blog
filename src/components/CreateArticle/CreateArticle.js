@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { withRouter, Redirect } from 'react-router-dom';
+import { withRouter, Redirect, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -25,20 +25,23 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
   let defaultTitle = null;
   let defaultDescription = null;
   let defaultBody = null;
+
   const { register, handleSubmit, errors } = useForm();
+  const { slug } = useParams();
+
+  const initialTags =
+    article && location.pathname !== '/new-article'
+      ? article.tagList.map((item, index) => ({ id: index, value: item }))
+      : [{ id: 0, value: '' }];
+
+  const [tagsList, setTagsList] = useState(initialTags);
+  const [once, setOnce] = useState(false);
 
   useEffect(() => {
     if (location.pathname !== '/new-article') {
-      const slug = location.pathname.split('/')[2];
       getOneArticle(slug, user);
     }
   }, []);
-
-  const [tagsList, setTagsList] = useState(
-    article && location.pathname !== '/new-article'
-      ? article.tagList.map((item, index) => ({ id: index, value: item }))
-      : [{ id: 0, value: '' }]
-  );
 
   useEffect(() => {
     if (article && location.pathname !== '/new-article') {
@@ -50,7 +53,6 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
       );
     }
   }, [article]);
-  const [once, setOnce] = useState(false);
 
   if (!article && location.pathname !== '/new-article') {
     return <Loader />;

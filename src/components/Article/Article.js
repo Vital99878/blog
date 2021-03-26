@@ -4,20 +4,20 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
-
 import * as actions from '../../redux/actions';
 import Writer from '../Writer';
 import classes from './Article.module.scss';
 import Loader from '../Loader';
 import ModalDelete from '../ModalDelete';
 
-function Article({ article, user, addToFavorite, removeFromFavorite, deleteArticle, getOneArticle, slug }) {
+const Article = ({ article, user, addToFavorite, removeFromFavorite, deleteArticle, getOneArticle }) => {
   let [modalIsOpen, setModalIsOpen] = useState(false);
-  
+  const { slug } = useParams();
+
   useEffect(() => {
     window.scrollTo(0, 0);
     getOneArticle(slug, user);
@@ -38,13 +38,9 @@ function Article({ article, user, addToFavorite, removeFromFavorite, deleteArtic
       <a href="">{tag}</a>
     </li>
   ));
-  let heartButtonClass;
 
-  if (favorited) {
-    heartButtonClass = classes.redHeart;
-  } else {
-    heartButtonClass = classes.heart;
-  }
+  let heartButtonClass;
+  favorited ? (heartButtonClass = classes.redHeart) : (heartButtonClass = classes.heart);
 
   function toggleFavorite() {
     if (user) {
@@ -101,7 +97,7 @@ function Article({ article, user, addToFavorite, removeFromFavorite, deleteArtic
       </div>
     </div>
   );
-}
+};
 
 Article.defaultProp = {
   post: {},

@@ -4,12 +4,12 @@ import PropTypes    from 'prop-types';
 import {Link}       from 'react-router-dom';
 import Cookies from 'js-cookie'
 import * as actions from '../../redux/actions';
-import classes      from './Auth_hoc.module.scss';
+import classes      from './Auth.module.scss';
 import User         from '../User';
 
 const {list, item, signIn, signUp, logOut, createArticle} = classes;
 
-const Auth_hoc = ( { user, isLogOut, getArticles, update_user_from_cookies }) => {
+const Auth = ( { user, isLogOut, getArticles, update_user_from_cookies }) => {
 
   if (!user && Cookies.get('username') ) {
     update_user_from_cookies()
@@ -44,10 +44,10 @@ const Auth_hoc = ( { user, isLogOut, getArticles, update_user_from_cookies }) =>
   )
 }
 
-Auth_hoc.defaultProp = {
+Auth.defaultProp = {
 
 };
-Auth_hoc.propTypes = {
+Auth.propTypes = {
   user: PropTypes.objectOf.isRequired,
   getArticles: PropTypes.func.isRequired,
   update_user_from_cookies: PropTypes.func.isRequired,
@@ -56,4 +56,4 @@ Auth_hoc.propTypes = {
 const mapStateToProps = (state) => ({
   user: state.authReducer.user,
 });
-export default connect(mapStateToProps, actions)(Auth_hoc);
+export default connect(mapStateToProps, actions)( Auth);

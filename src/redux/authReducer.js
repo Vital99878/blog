@@ -11,7 +11,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         auth: true,
         user: action.user,
-        responseValidation: false,
+        responseError: false,
       };
 
     case 'SIGN_UP':
@@ -39,10 +39,10 @@ const authReducer = (state = initialState, action) => {
         user: action.user,
       };
 
-    case 'NO_EMAIL_ORE_PASSWORD':
+    case 'EMAIL_OR_PASSWORD_IS_INVALID':
       return {
         ...state,
-        responseValidation: action.message,
+        responseError: action.message,
       };
 
     case 'SIGN_UP_ERRORS':

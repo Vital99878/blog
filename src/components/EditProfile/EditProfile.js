@@ -39,13 +39,14 @@ const EditProfile = ({ updateUser, responseValidation, user, emailValid, usernam
         <label className={card__label}>
           Email address
           <input
-            ref={register({ required: true })}
+            ref={register({ required: true, pattern: /\S+@\S+\.\S+/ })}
             name="email"
             className={(errors.email && card__inputWarning) || card__input}
             type="email"
             defaultValue={user.email}
           />
           {errors.email && errors.email.type === 'required' && <span className={warning}>Email is required</span>}
+          {errors.email && errors.email.type === 'pattern' && <span className={warning}>Email is invalid</span>}
           <span className={warning}>{emailValid}</span>
         </label>
         <label className={card__label}>
@@ -67,7 +68,16 @@ const EditProfile = ({ updateUser, responseValidation, user, emailValid, usernam
         </label>
         <label className={card__label}>
           Avatar image (url)
-          <input ref={register()} name="avatar" className={card__input} type="url" required defaultValue={user.image} />
+          <input
+            ref={register({ required: true, pattern: /^(https:|http:|www\.)\S*/ })}
+            name="avatar"
+            className={card__input}
+            type="url"
+            required
+            defaultValue={user.image}
+          />
+          {errors.avatar && errors.avatar.required && <span className={warning}>URL is required</span>}
+          {errors.avatar && <span className={warning}>URL is invalid</span>}
         </label>
       </form>
       <button className={card__button} onClick={handleSubmit(onSubmit)} disabled={once} type="submit">

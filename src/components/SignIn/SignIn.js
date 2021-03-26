@@ -5,26 +5,18 @@ import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import * as actions from '../../redux/actions';
 import classes from './SignIn.module.scss';
-import { validateEmail } from '../../utilities';
 
 const { card__title, card, card__forms, card__label, card__button, card__input, card__p } = classes;
 const { warning, card__inputWarning } = classes;
 
-const SingIn = ({ signIn, responseValidation, user }) => {
+const SingIn = ({ signIn, user, responseError }) => {
   const { register, handleSubmit, errors } = useForm();
   const [once, setOnce] = useState(false);
-  const [invalid, setInvalid] = useState(false);
 
   const onSubmit = async (data) => {
     setOnce(true);
-    setTimeout(() => setOnce(false), 2500);
     const { email, password } = data;
-    if (validateEmail(email)) {
-      signIn(email.toLowerCase(), password);
-      setInvalid(false)
-    } else {
-      setInvalid(true);
-    }
+    signIn(email.toLowerCase(), password);
   };
 
   if (user) {
@@ -38,7 +30,8 @@ const SingIn = ({ signIn, responseValidation, user }) => {
         <label className={card__label}>
           Email address
           <input
-            ref={register({ required: true })}
+            onChange={() => setOnce(false)}
+            ref={register({ required: true, pattern: /\S+@\S+\.\S+/ })}
             name="email"
             className={(errors.email && card__inputWarning) || card__input}
             type="email"
@@ -46,8 +39,8 @@ const SingIn = ({ signIn, responseValidation, user }) => {
             placeholder="Email address"
           />
           {errors.email && errors.email.type === 'required' && <span className={warning}>Email is required</span>}
-          {responseValidation && <span className={warning}>{responseValidation}</span>}
-          {invalid && <span className={warning}>Email not valid</span>}
+          {errors.email && errors.email.type === 'pattern' && <span className={warning}>Email not valid</span>}
+          {responseError && <span className={warning}>{responseError}</span>}
         </label>
         <label className={card__label}>
           Password
@@ -58,6 +51,7 @@ const SingIn = ({ signIn, responseValidation, user }) => {
             type="password"
             required
             placeholder="Password"
+            onChange={() => setOnce(false)}
           />
           {errors.password && errors.password.type === 'minLength' && (
             <span className={warning}>Your password needs to be at least 8 characters.</span>
@@ -68,7 +62,7 @@ const SingIn = ({ signIn, responseValidation, user }) => {
           {errors.password && errors.password.type === 'required' && (
             <span className={warning}>Password is required.</span>
           )}
-          {responseValidation && <span className={warning}>{responseValidation}</span>}
+          {responseError && <span className={warning}>{responseError}</span>}
         </label>
       </form>
       <button className={card__button} onClick={handleSubmit(onSubmit)} type="submit" disabled={once}>
@@ -84,13 +78,14 @@ const SingIn = ({ signIn, responseValidation, user }) => {
 SingIn.defaultProp = {};
 SingIn.propTypes = {
   signIn: PropTypes.func.isRequired,
-  responseValidation: PropTypes.string.isRequired,
+  responseError: PropTypes.string.isRequired,
   user: PropTypes.objectOf.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   responseValidation: state.authReducer.responseValidation,
   user: state.authReducer.user,
+  responseError: state.authReducer.responseError,
 });
 
 export default connect(mapStateToProps, actions)(SingIn);

@@ -6,19 +6,20 @@ import auth_api         from '../api/auth_api';
 
 export function signIn( mail, password ) {
   return async ( dispatch ) => {
-    const user = await auth_api.get_user( mail, password );
+    const { user, errors } = await auth_api.get_user( mail, password );
+    console.log(errors)
     if ( typeof user !== 'string' ) {
       dispatch( { type: 'SIGN_IN', user, message: '' } );
     }
-    if ( typeof user === 'string' ) {
-      dispatch( { type: 'NO_EMAIL_ORE_PASSWORD', message: 'email ore password wrong' } );
+    if (errors ) {
+      dispatch( { type: 'EMAIL_OR_PASSWORD_IS_INVALID', message: 'email or password is invalid' } );
     }
   };
 }
 
 export function signUp( newUser ) {
   return async ( dispatch ) => {
-    const user = await auth_api.create_user( newUser );
+    const { user, errors } = await auth_api.create_user( newUser );
     if ( user.user) {
       dispatch( { type: 'SIGN_UP', user: user.user} );
     }

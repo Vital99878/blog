@@ -28,23 +28,10 @@ const App = () => (
       }}
     />
     <section className={classes.app}>
-      <Route path="/articles" exact component={PostList} />
-      <Route
-        path="/articles/:slug"
-        exact
-        render={({ match }) => {
-          const { slug } = match.params;
-          return <Article slug={slug} />;
-        }}
-      />
+      <Route path={['/', '/articles']} exact component={PostList} />
+      <Route path="/articles/:slug" exact component={Article} />
       <Route path="/new-article" component={CreateArticle} />
-      <Route
-        path="/articles/:slug/edit"
-        render={({ match }) => {
-          const { slug } = match.params;
-          return <CreateArticle slug={slug} />;
-        }}
-      />
+      <Route path="/articles/:slug/edit" component={CreateArticle} />
       <Route path="/sign-in" component={SingIn} />
       <Route path="/sign-up" component={SignUp} />
       <Route path="/profile" component={EditProfile} />

@@ -13,19 +13,12 @@ const { warning, card__inputWarning } = classes;
 const SingUp = ({ user, signUp, usernameValidation, responseValidation, emailValid, usernameValid }) => {
   const { register, handleSubmit, watch, errors } = useForm();
   const [once, setOnce] = useState(false);
-  const [invalid, setInvalid] = useState(false);
   const password = useRef({});
   password.current = watch('password', '');
 
   const onSubmit = async (data) => {
     setOnce(true);
-    setTimeout(() => setOnce(false), 2500);
-    if (validateEmail(data.email)) {
-      signUp(data);
-      setInvalid(false);
-    } else {
-      setInvalid(true);
-    }
+    signUp(data);
   };
 
   if (user) {
@@ -39,6 +32,7 @@ const SingUp = ({ user, signUp, usernameValidation, responseValidation, emailVal
         <label className={card__label}>
           Username
           <input
+            onChange={() => setOnce(false)}
             ref={register({ required: true })}
             name="username"
             className={(errors.username && card__inputWarning) || card__input}
@@ -55,7 +49,8 @@ const SingUp = ({ user, signUp, usernameValidation, responseValidation, emailVal
         <label className={card__label}>
           Email address
           <input
-            ref={register({ required: true })}
+            onChange={() => setOnce(false)}
+            ref={register({ required: true, pattern: /\S+@\S+\.\S+/ })}
             name="email"
             className={(errors.email && card__inputWarning) || card__input}
             type="email"
@@ -64,8 +59,8 @@ const SingUp = ({ user, signUp, usernameValidation, responseValidation, emailVal
           />
           {<span className={warning}>{emailValid}</span>}
           {errors.email && errors.email.type === 'required' && <span className={warning}>Email is required</span>}
+          {errors.email && errors.email.type === 'pattern' && <span className={warning}>Email not valid</span>}
           {responseValidation && <span className={warning}>{responseValidation}</span>}
-          {invalid && <span className={warning}>Email not valid</span>}
         </label>
         <label className={card__label}>
           Password
