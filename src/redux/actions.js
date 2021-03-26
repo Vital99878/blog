@@ -7,7 +7,6 @@ import auth_api         from '../api/auth_api';
 export function signIn( mail, password ) {
   return async ( dispatch ) => {
     const { user, errors } = await auth_api.get_user( mail, password );
-    console.log(errors)
     if ( typeof user !== 'string' ) {
       dispatch( { type: 'SIGN_IN', user, message: '' } );
     }
