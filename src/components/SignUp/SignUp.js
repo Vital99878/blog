@@ -110,7 +110,7 @@ const SingUp = ({ user, signUp, usernameValidation, responseValidation, emailVal
         Login
       </button>
       <p className={card__p}>
-        Don’t have an account? <Link to="/signIn">Sign In</Link>
+        Don’t have an account? <Link to="/sign-in">Sign In</Link>
       </p>
     </div>
   );

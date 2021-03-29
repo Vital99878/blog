@@ -69,7 +69,7 @@ const SingIn = ({ signIn, user, responseError }) => {
         Login
       </button>
       <p className={card__p}>
-        Don’t have an account? <Link to="/signUp">Sign Up.</Link>
+        Don’t have an account? <Link to="/sign-up">Sign Up.</Link>
       </p>
     </div>
   );
