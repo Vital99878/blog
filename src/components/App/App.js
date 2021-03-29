@@ -10,12 +10,11 @@ import CreateArticle            from '../CreateArticle';
 import classes                  from './App.module.scss';
 import EditProfile              from '../EditProfile/EditProfile';
 import Article                  from '../Article';
-import Test                     from '../Test';
+
 
 const App = () => (
   <BrowserRouter>
     <Header />
-    {/*<Test/>*/}
     <Route
       path="/alert"
       render={() => {
