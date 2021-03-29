@@ -2,29 +2,26 @@ import React        from 'react';
 import { connect }  from 'react-redux';
 import PropTypes    from 'prop-types';
 import {Link}       from 'react-router-dom';
-import Cookies from 'js-cookie'
 import * as actions from '../../redux/actions';
 import classes      from './Auth.module.scss';
 import User         from '../User';
 
 const {list, item, signIn, signUp, logOut, createArticle} = classes;
 
-const Auth = ( { user, isLogOut, getArticles, update_user_from_cookies }) => {
+const Auth = ( { user, isLogOut, getArticles, user_from_ls }) => {
 
-  if (!user && Cookies.get('username') ) {
-    update_user_from_cookies()
+  if (!user && localStorage.getItem('username') ) {
+    user_from_ls()
   }
 
   if (user) {
-    Cookies.set( 'email', user.email )
-    Cookies.set( 'token', user.token )
-    Cookies.set( 'image', user.image )
-    Cookies.set( 'username', user.username )
-    Cookies.set( 'createdAt', user.createdAt )
-    Cookies.set( 'updatedAt', user.updatedAt )
-  }
+    localStorage.setItem( 'email', user.email )
+    localStorage.setItem( 'token', user.token )
+    localStorage.setItem( 'image', user.image )
+    localStorage.setItem( 'username', user.username )
+    localStorage.setItem( 'createdAt', user.createdAt )
+    localStorage.setItem( 'updatedAt', user.updatedAt )
 
-  if (user ) {
     return (
       <ul className={list}>
         <li className={`${item} ${createArticle}`}><Link to='/new-article'>Create article</Link></li>
@@ -36,6 +33,7 @@ const Auth = ( { user, isLogOut, getArticles, update_user_from_cookies }) => {
       </ul>
     );
   }
+
   return (
     <ul className={list}>
       <li className={`${item} ${signIn}`}><Link to="/sign-in">Sign In</Link></li>
@@ -50,7 +48,7 @@ Auth.defaultProp = {
 Auth.propTypes = {
   user: PropTypes.objectOf.isRequired,
   getArticles: PropTypes.func.isRequired,
-  update_user_from_cookies: PropTypes.func.isRequired,
+  user_from_ls: PropTypes.func.isRequired,
   isLogOut:  PropTypes.func.isRequired,
 }
 const mapStateToProps = (state) => ({

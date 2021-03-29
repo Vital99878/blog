@@ -1,4 +1,4 @@
-import Cookies from 'js-cookie'
+
 import articles_service from '../api/blog_api';
 import auth_api         from '../api/auth_api';
 
@@ -43,12 +43,12 @@ export function updateUser( newUser, token ) {
 }
 
 export const isLogOut = () => {
-  Cookies.remove( 'email' )
-  Cookies.remove( 'token' )
-  Cookies.remove( 'image' )
-  Cookies.remove( 'username')
-  Cookies.remove( 'createdAt' )
-  Cookies.remove( 'updatedAt' )
+  localStorage.removeItem( 'email' )
+  localStorage.removeItem( 'token' )
+  localStorage.removeItem( 'image' )
+  localStorage.removeItem( 'username')
+  localStorage.removeItem( 'createdAt' )
+  localStorage.removeItem( 'updatedAt' )
   return   {
     type: 'LOGOUT',
   }
@@ -110,8 +110,16 @@ export const set_offset = ( page, offset ) => ({
     offset, page,
   });
 
-export const update_user_from_cookies = (  ) => {
-  const user = Cookies.get()
+export const user_from_ls = (  ) => {
+
+  const user = {
+    email: localStorage.getItem( 'email' ),
+    token : localStorage.getItem( 'token' ),
+    image : localStorage.getItem( 'image' ),
+    username: localStorage.getItem( 'username' ),
+    createdAt: localStorage.getItem( 'createdAt' ),
+    updatedAt: localStorage.getItem( 'updatedAt' )
+  }
   return {
     type: 'COOKIES',
     user
