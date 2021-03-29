@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import * as actions from '../../redux/actions';
 import classes from './SignIn.module.scss';
 
-const { card__title, card, card__forms, card__label, card__button, card__input, card__p } = classes;
+const { card__title, card, card__form, card__label, card__button, card__input, card__p } = classes;
 const { warning, card__inputWarning } = classes;
 
 const SingIn = ({ signIn, user, responseError }) => {
@@ -14,9 +14,11 @@ const SingIn = ({ signIn, user, responseError }) => {
   const [once, setOnce] = useState(false);
 
   const onSubmit = async (data) => {
-    setOnce(true);
-    const { email, password } = data;
-    signIn(email.toLowerCase(), password);
+    if (!once) {
+      setOnce(true);
+      const { email, password } = data;
+      signIn(email.toLowerCase(), password);
+    }
   };
 
   if (user) {
@@ -26,7 +28,7 @@ const SingIn = ({ signIn, user, responseError }) => {
   return (
     <div className={card}>
       <h6 className={card__title}>Sign In</h6>
-      <form className={card__forms} onSubmit={handleSubmit(onSubmit)}>
+      <form className={card__form} onSubmit={handleSubmit(onSubmit)}>
         <label className={card__label}>
           Email address
           <input
@@ -64,10 +66,10 @@ const SingIn = ({ signIn, user, responseError }) => {
           )}
           {responseError && <span className={warning}>{responseError}</span>}
         </label>
+        <button className={card__button} onClick={handleSubmit(onSubmit)} type="submit" disabled={once}>
+          Login
+        </button>
       </form>
-      <button className={card__button} onClick={handleSubmit(onSubmit)} type="submit" disabled={once}>
-        Login
-      </button>
       <p className={card__p}>
         Don’t have an account? <Link to="/sign-up">Sign Up.</Link>
       </p>

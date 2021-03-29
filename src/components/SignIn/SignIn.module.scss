@@ -23,7 +23,7 @@
   color: #262626;
 }
 
-.card__forms {
+.card__form {
   margin: 21px 0;
 }
 
@@ -68,6 +68,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all .4s;
+  margin-top: 8px;
 }
 
 .card__button:focus {

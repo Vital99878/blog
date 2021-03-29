@@ -19,11 +19,11 @@ export function signIn( mail, password ) {
 export function signUp( newUser ) {
   return async ( dispatch ) => {
     const { user, errors } = await auth_api.create_user( newUser );
-    if ( user.user) {
-      dispatch( { type: 'SIGN_UP', user: user.user} );
+    if ( user) {
+      dispatch( { type: 'SIGN_UP', user} );
     }
-    if ( user.errors) {
-      const {email: emailValid, username: usernameValid} = user.errors;
+    if ( errors) {
+      const {email: emailValid, username: usernameValid} = errors;
       dispatch( { type: 'SIGN_UP_ERRORS', emailValid, usernameValid  } );
     }
   };
