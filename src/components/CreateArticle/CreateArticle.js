@@ -21,19 +21,17 @@ const {
 } = classes;
 
 const CreateArticle = ({ postArticle, updateArticle, token, history, location, user, article, getOneArticle }) => {
-  let articleHeader = 'Create new article';
-  let articleTitle;
-  let articleDescription;
-  let articleBody = null;
+
   const articleTags =
     article && location.pathname !== '/new-article'
       ? article.tagList.map((item, index) => ({ id: index, value: item }))
       : [{ id: 0, value: '' }];
-  const { slug } = useParams();
+
 
   const [tagsList, setTagsList] = useState(articleTags);
   const [once, setOnce] = useState(false);
   const { register, handleSubmit, errors } = useForm();
+  const { slug } = useParams();
 
   useEffect(() => {
     if (location.pathname !== '/new-article') {
@@ -52,16 +50,12 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
     }
   }, [article]);
 
-  if (!article && location.pathname !== '/new-article') {
-    return <Loader />;
+  if (location.pathname === '/new-article') {
+    article = {title: null, description: null, body: null};
   }
 
-  if (location.pathname !== '/new-article') {
-    const { title, description, body } = article;
-    articleHeader = 'Edit article';
-    articleTitle = title;
-    articleDescription = description;
-    articleBody = body;
+  if (!article && location.pathname !== '/new-article') {
+    return <Loader />;
   }
 
   if (location.pathname !== '/new-article' && user?.username !== article.author.username) {
@@ -77,7 +71,7 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
         return item;
       })
     );
-  };
+  }
 
   function deleteTag(id) {
     setTagsList(tagsList.filter((item) => item.id !== id));
@@ -99,33 +93,34 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
     </div>
   ));
 
-  const onSubmit = async (data) => {
-    setOnce(true);
-    const tagList = tagsList.map((item) => item.value);
-    setTimeout(() => setOnce(false), 1000);
+  async function onSubmit  (data)  {
+    if (!once ) {
+      setOnce(true);
+      const tagList = tagsList.map((item) => item.value);
 
-    if (location.pathname !== '/new-article') {
-      const updatedArticle = await updateArticle({ ...data, tagList }, token, article.slug);
-      if (updatedArticle && !updatedArticle.errors) {
-        history.push(`/articles/${updatedArticle.article.slug}`);
+      if (location.pathname !== '/new-article') {
+        const updatedArticle = await updateArticle({ ...data, tagList }, token, article.slug);
+        if (updatedArticle && !updatedArticle.errors) {
+          history.push(`/articles/${updatedArticle.article.slug}`);
+        } else {
+          history.push('/alert');
+        }
       } else {
-        history.push('/alert');
-      }
-    } else {
-      const newArticle = await postArticle({ ...data, tagList }, token);
-      if (newArticle) {
-        history.push(`/articles/${newArticle.article.slug}`);
+        const newArticle = await postArticle({ ...data, tagList }, token);
+        if (newArticle) {
+          history.push(`/articles/${newArticle.article.slug}`);
+        }
       }
     }
-  };
+  }
 
   if (!token) {
-    return <Redirect to="/signIn" />;
+    return <Redirect to="/sign-in" />;
   }
 
   return (
     <div className={classes.article}>
-      <h6 className={article__title}>{articleHeader}</h6>
+      <h6 className={article__title}>{article.title ? 'Edit Article' : 'Create Article'}</h6>
       <div className={article__forms}>
         <label className={article__label}>
           Title
@@ -135,7 +130,7 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
             className={article__input}
             type="text"
             placeholder="Title"
-            defaultValue={articleTitle}
+            defaultValue={article.title}
           />
           {errors.title && errors.title.type === 'required' && (
             <span className={classes.warning}>Title is required</span>
@@ -150,7 +145,7 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
             type="text"
             required
             placeholder="Short description"
-            defaultValue={articleDescription}
+            defaultValue={article.description}
           />
           {errors.description && errors.description.type === 'required' && (
             <span className={classes.warning}>Description is required</span>
@@ -164,7 +159,7 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
             className={article__body}
             cols={30}
             required
-            defaultValue={articleBody}
+            defaultValue={article.body}
             placeholder="Text"
           />
           {errors.body && errors.body.type === 'required' && (
