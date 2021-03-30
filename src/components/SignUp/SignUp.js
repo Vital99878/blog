@@ -17,8 +17,10 @@ const SingUp = ({ user, signUp, usernameValidation, responseValidation, emailVal
   password.current = watch('password', '');
 
   const onSubmit = async (data) => {
-    setOnce(true);
-    signUp(data);
+    if (!once ) {
+      setOnce(true);
+      signUp(data);
+    }
   };
 
   if (user) {

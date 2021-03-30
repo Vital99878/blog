@@ -21,12 +21,10 @@ const {
 } = classes;
 
 const CreateArticle = ({ postArticle, updateArticle, token, history, location, user, article, getOneArticle }) => {
-
   const articleTags =
     article && location.pathname !== '/new-article'
       ? article.tagList.map((item, index) => ({ id: index, value: item }))
       : [{ id: 0, value: '' }];
-
 
   const [tagsList, setTagsList] = useState(articleTags);
   const [once, setOnce] = useState(false);
@@ -51,7 +49,7 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
   }, [article]);
 
   if (location.pathname === '/new-article') {
-    article = {title: null, description: null, body: null};
+    article = { title: null, description: null, body: null };
   }
 
   if (!article && location.pathname !== '/new-article') {
@@ -62,7 +60,7 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
     return <Redirect to="/articles" />;
   }
 
-  function getTagLabel (label, id) {
+  function getTagLabel(label, id) {
     setTagsList(
       tagsList.map((item) => {
         if (item.id === id) {
@@ -93,8 +91,8 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
     </div>
   ));
 
-  async function onSubmit  (data)  {
-    if (!once ) {
+  async function onSubmit(data) {
+    if (!once) {
       setOnce(true);
       const tagList = tagsList.map((item) => item.value);
 

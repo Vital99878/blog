@@ -13,9 +13,10 @@ const EditProfile = ({ updateUser,  user, emailValid, usernameValid }) => {
   const [once, setOnce] = useState(false);
 
   const onSubmit = async (data) => {
-    setOnce(true);
-    setTimeout(() => setOnce(false), 2500);
-    updateUser(data, user.token);
+    if (!once ) {
+      setOnce(true);
+      updateUser(data, user.token);
+    }
   };
 
   return (
@@ -31,6 +32,7 @@ const EditProfile = ({ updateUser,  user, emailValid, usernameValid }) => {
               className={(errors.username && card__inputWarning) || card__input}
               type="text"
               defaultValue={user.username}
+              onChange={() => setOnce(false)}
             />
             {errors.username && errors.username.type === 'required' && (
               <span className={warning}>Username is required</span>
@@ -47,6 +49,7 @@ const EditProfile = ({ updateUser,  user, emailValid, usernameValid }) => {
               className={(errors.email && card__inputWarning) || card__input}
               type="email"
               defaultValue={user.email}
+              onChange={() => setOnce(false)}
             />
             {errors.email && errors.email.type === 'required' && <span className={warning}>Email is required</span>}
             {errors.email && errors.email.type === 'pattern' && <span className={warning}>Email is invalid</span>}
@@ -63,6 +66,7 @@ const EditProfile = ({ updateUser,  user, emailValid, usernameValid }) => {
               type="password"
               required
               placeholder="New password"
+              onChange={() => setOnce(false)}
             />
             {errors.password && errors.password.type === 'minLength' && (
               <span className={warning}>Your password needs to be at least 8 characters.</span>
@@ -82,6 +86,7 @@ const EditProfile = ({ updateUser,  user, emailValid, usernameValid }) => {
               type="url"
               required
               defaultValue={user.image}
+              onChange={() => setOnce(false)}
             />
             {errors.avatar && errors.avatar.required && <span className={warning}>URL is required</span>}
             {errors.avatar && <span className={warning}>URL is invalid</span>}
