@@ -110,7 +110,7 @@ export const set_offset = ( page, offset ) => ({
     offset, page,
   });
 
-export const user_from_ls = (  ) => {
+export const userFromLocalStorage = (  ) => {
 
   const user = {
     email: localStorage.getItem( 'email' ),

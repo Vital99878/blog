@@ -8,10 +8,10 @@ import User         from '../User';
 
 const {list, item, signIn, signUp, logOut, createArticle} = classes;
 
-const Auth = ( { user, isLogOut, getArticles, user_from_ls }) => {
+const Auth = ( { user, isLogOut, getArticles, userFromLocalStorage }) => {
 
   if (!user && localStorage.getItem('username') ) {
-    user_from_ls()
+    userFromLocalStorage()
   }
 
   if (user) {
@@ -48,7 +48,7 @@ Auth.defaultProp = {
 Auth.propTypes = {
   user: PropTypes.objectOf.isRequired,
   getArticles: PropTypes.func.isRequired,
-  user_from_ls: PropTypes.func.isRequired,
+  userFromLocalStorage: PropTypes.func.isRequired,
   isLogOut:  PropTypes.func.isRequired,
 }
 const mapStateToProps = (state) => ({

@@ -26,7 +26,6 @@ const Article = ({ article, user, addToFavorite, removeFromFavorite, deleteArtic
   if (!article) {
     return <Loader />;
   }
-
   if (!article.title) {
     return <Redirect to="/articles" />;
   }
@@ -39,22 +38,13 @@ const Article = ({ article, user, addToFavorite, removeFromFavorite, deleteArtic
     </li>
   ));
 
-  let heartButtonClass;
-  favorited ? (heartButtonClass = classes.redHeart) : (heartButtonClass = classes.heart);
+  let favoriteClass;
+  favorited ? (favoriteClass = classes.favorite) : (favoriteClass = classes.noFavorite);
 
   function toggleFavorite() {
     if (user) {
-      if (favorited) {
-        removeFromFavorite(slug, user.token);
-      }
-      if (!favorited) {
-        addToFavorite(slug, user.token);
-      }
+      favorited ? removeFromFavorite(slug, user.token) : addToFavorite(slug, user.token);
     }
-  }
-
-  function closeModal() {
-    setModalIsOpen(false);
   }
 
   return (
@@ -63,7 +53,7 @@ const Article = ({ article, user, addToFavorite, removeFromFavorite, deleteArtic
       <div className={classes.title}>
         <h5>{title}</h5>
         <div className={classes.favorited}>
-          <button type="button" className={heartButtonClass} onClick={() => toggleFavorite()} />
+          <button type="button" className={favoriteClass} onClick={() => toggleFavorite()} />
           <p>{favoritesCount}</p>
         </div>
       </div>
@@ -82,7 +72,7 @@ const Article = ({ article, user, addToFavorite, removeFromFavorite, deleteArtic
               <ModalDelete
                 deleteArticle={() => deleteArticle(article.slug, user.token)}
                 open={modalIsOpen}
-                closeModal={closeModal}
+                closeModal={(  ) => setModalIsOpen(false)}
               />
               Delete
             </button>

@@ -102,12 +102,12 @@
 
 }
 
-.heart {
+.noFavorite {
   @include heart;
   background: url('../../img/heart.svg') no-repeat;
 }
 
-.redHeart {
+.favorite {
   @include heart;
   background: url('../../img/red_heart.svg') no-repeat;
 }

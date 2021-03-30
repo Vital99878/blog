@@ -4,34 +4,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as actions from '../../redux/actions';
 import Writer from '../Writer';
 import classes from './Post.module.scss';
 
-function Post({ post, getOneArticle, user, addToFavorite, removeFromFavorite }) {
+function Post({ post, user, addToFavorite, removeFromFavorite }) {
   const { author, title, createdAt, favorited, favoritesCount, tagList, slug, description } = post;
-  let heartButtonClass;
+
   const tags = tagList.map((tag) => (
     <li className={classes.tag}>
       <a href="">{tag}</a>
     </li>
   ));
 
-  if (favorited) {
-    heartButtonClass = classes.redHeart;
-  } else {
-    heartButtonClass = classes.heart;
-  }
+  let favoriteClass;
+  favorited ? (favoriteClass = classes.favorite) : (favoriteClass = classes.noFavorite);
 
-  function toggleFavorite(favorited) {
+  function toggleFavorite() {
     if (user) {
-      if (favorited) {
-        removeFromFavorite(slug, user.token);
-      }
-      if (!favorited) {
-        addToFavorite(slug, user.token);
-      }
+      favorited ? removeFromFavorite(slug, user.token) : addToFavorite(slug, user.token);
     }
   }
 
@@ -44,7 +36,7 @@ function Post({ post, getOneArticle, user, addToFavorite, removeFromFavorite }) 
             <h5>{title}</h5>
           </Link>
           <div className={classes.favorited}>
-            <button type="button" className={heartButtonClass} onClick={() => toggleFavorite(favorited)} />
+            <button type="button" className={favoriteClass} onClick={() => toggleFavorite(favorited)} />
             <p>{favoritesCount}</p>
           </div>
         </div>
@@ -61,7 +53,6 @@ Post.defaultProp = {
 Post.propTypes = {
   user: PropTypes.objectOf.isRequired,
   post: PropTypes.objectOf.isRequired,
-  getOneArticle: PropTypes.func.isRequired,
   addToFavorite: PropTypes.func.isRequired,
   removeFromFavorite: PropTypes.func.isRequired,
 };

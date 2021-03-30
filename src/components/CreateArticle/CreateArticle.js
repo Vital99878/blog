@@ -21,21 +21,19 @@ const {
 } = classes;
 
 const CreateArticle = ({ postArticle, updateArticle, token, history, location, user, article, getOneArticle }) => {
-  let defaultArticleHeader = 'Create new article';
-  let defaultTitle = null;
-  let defaultDescription = null;
-  let defaultBody = null;
-
-  const { register, handleSubmit, errors } = useForm();
-  const { slug } = useParams();
-
-  const initialTags =
+  let articleHeader = 'Create new article';
+  let articleTitle;
+  let articleDescription;
+  let articleBody = null;
+  const articleTags =
     article && location.pathname !== '/new-article'
       ? article.tagList.map((item, index) => ({ id: index, value: item }))
       : [{ id: 0, value: '' }];
+  const { slug } = useParams();
 
-  const [tagsList, setTagsList] = useState(initialTags);
+  const [tagsList, setTagsList] = useState(articleTags);
   const [once, setOnce] = useState(false);
+  const { register, handleSubmit, errors } = useForm();
 
   useEffect(() => {
     if (location.pathname !== '/new-article') {
@@ -60,17 +58,17 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
 
   if (location.pathname !== '/new-article') {
     const { title, description, body } = article;
-    defaultArticleHeader = 'Edit article';
-    defaultTitle = title;
-    defaultDescription = description;
-    defaultBody = body;
+    articleHeader = 'Edit article';
+    articleTitle = title;
+    articleDescription = description;
+    articleBody = body;
   }
 
-  if (location.pathname !== '/new-article' && user.username !== article.author.username) {
+  if (location.pathname !== '/new-article' && user?.username !== article.author.username) {
     return <Redirect to="/articles" />;
   }
 
-  const get_label = (label, id) => {
+  function getTagLabel (label, id) {
     setTagsList(
       tagsList.map((item) => {
         if (item.id === id) {
@@ -90,7 +88,7 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
       <input
         className={article__input}
         type="text"
-        onChange={(evt) => get_label(evt.target.value, item.id)}
+        onChange={(evt) => getTagLabel(evt.target.value, item.id)}
         value={item.value}
         name={item.id}
         placeholder="tag"
@@ -127,7 +125,7 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
 
   return (
     <div className={classes.article}>
-      <h6 className={article__title}>{defaultArticleHeader}</h6>
+      <h6 className={article__title}>{articleHeader}</h6>
       <div className={article__forms}>
         <label className={article__label}>
           Title
@@ -137,7 +135,7 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
             className={article__input}
             type="text"
             placeholder="Title"
-            defaultValue={defaultTitle}
+            defaultValue={articleTitle}
           />
           {errors.title && errors.title.type === 'required' && (
             <span className={classes.warning}>Title is required</span>
@@ -152,7 +150,7 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
             type="text"
             required
             placeholder="Short description"
-            defaultValue={defaultDescription}
+            defaultValue={articleDescription}
           />
           {errors.description && errors.description.type === 'required' && (
             <span className={classes.warning}>Description is required</span>
@@ -166,7 +164,7 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
             className={article__body}
             cols={30}
             required
-            defaultValue={defaultBody}
+            defaultValue={articleBody}
             placeholder="Text"
           />
           {errors.body && errors.body.type === 'required' && (
