@@ -8,7 +8,7 @@ import User         from '../User';
 
 const {list, item, signIn, signUp, logOut, createArticle} = classes;
 
-const Auth = ( { user, isLogOut, getArticles, userFromLocalStorage }) => {
+const Auth = ( { user, isLogOut, getArticles, userFromLocalStorage, offset }) => {
 
   if (!user && localStorage.getItem('username') ) {
     userFromLocalStorage()
@@ -28,7 +28,7 @@ const Auth = ( { user, isLogOut, getArticles, userFromLocalStorage }) => {
         <li className={item}><Link to='/profile'><User user={user}/></Link></li>
         <li className={`${item} ${logOut}`}><Link  onClick={() => {
           isLogOut()
-          getArticles(5)
+          getArticles(offset)
         }} to='/articles'>Log Out</Link></li>
       </ul>
     );
@@ -48,10 +48,12 @@ Auth.defaultProp = {
 Auth.propTypes = {
   user: PropTypes.objectOf.isRequired,
   getArticles: PropTypes.func.isRequired,
+  offset: PropTypes.number.isRequired,
   userFromLocalStorage: PropTypes.func.isRequired,
   isLogOut:  PropTypes.func.isRequired,
 }
 const mapStateToProps = (state) => ({
   user: state.authReducer.user,
+  offset: state.blogReducer.offset,
 });
 export default connect(mapStateToProps, actions)( Auth);

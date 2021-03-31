@@ -1,23 +1,28 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState , useEffect} from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import * as actions from '../../redux/actions';
 import classes from './SignUp.module.scss';
-import { validateEmail } from '../../utilities';
 
 const { card__title, card, card__forms, card__label, card__button, card__input, card__p, card__formInput } = classes;
-const { warning, card__inputWarning } = classes;
+const { warning, card__inputWarning, card__button__disabled } = classes;
 
-const SingUp = ({ user, signUp, usernameValidation, responseValidation, emailValid, usernameValid }) => {
+const SingUp = ({ user, signUp, usernameValidation, responseValidation, newUserEmail, newUserName }) => {
   const { register, handleSubmit, watch, errors } = useForm();
   const [once, setOnce] = useState(false);
+  const [buttonClass, setButtonClass] = useState(card__button);
+
+  useEffect( (  ) => {
+    setButtonClass(once ? card__button__disabled : card__button)
+  }, [once])
+
   const password = useRef({});
   password.current = watch('password', '');
 
   const onSubmit = async (data) => {
-    if (!once ) {
+    if (!once) {
       setOnce(true);
       signUp(data);
     }
@@ -43,11 +48,11 @@ const SingUp = ({ user, signUp, usernameValidation, responseValidation, emailVal
               required
               placeholder="name"
             />
-            {<span className={warning}>{usernameValid}</span>}
+            {<span className={warning}>{newUserName}</span>}
             {errors.username && errors.username.type === 'required' && (
               <span className={warning}>Username is required</span>
             )}
-            {usernameValidation && <span className={warning}>{usernameValid}</span>}
+            {usernameValidation && <span className={warning}>{newUserName}</span>}
           </label>
         </div>
         <div className={card__formInput}>
@@ -62,10 +67,10 @@ const SingUp = ({ user, signUp, usernameValidation, responseValidation, emailVal
               required
               placeholder="Email address"
             />
-            {<span className={warning}>{emailValid}</span>}
+            {<span className={warning}>{newUserEmail}</span>}
             {errors.email && errors.email.type === 'required' && <span className={warning}>Email is required</span>}
             {errors.email && errors.email.type === 'pattern' && <span className={warning}>Email not valid</span>}
-            {responseValidation && <span className={warning}>{responseValidation}</span>}
+            {responseValidation && <span className={warning}>{newUserEmail}</span>}
           </label>
         </div>
         <div className={card__formInput}>
@@ -115,7 +120,7 @@ const SingUp = ({ user, signUp, usernameValidation, responseValidation, emailVal
           </label>
           {errors.agree && errors.agree.type === 'required' && <span className={warning}>You need check agree</span>}
         </div>
-        <button className={card__button} onClick={handleSubmit(onSubmit)} disabled={once} type="submit">
+        <button className={buttonClass} onClick={handleSubmit(onSubmit)} disabled={once} type="submit">
           Login
         </button>
       </form>
@@ -132,14 +137,15 @@ SingUp.propTypes = {
   user: PropTypes.objectOf.isRequired,
   usernameValidation: PropTypes.string.isRequired,
   responseValidation: PropTypes.string.isRequired,
-  emailValid: PropTypes.string.isRequired,
-  usernameValid: PropTypes.string.isRequired,
+  newUserEmail: PropTypes.string.isRequired,
+  newUserName: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   user: state.authReducer.user,
   responseValidation: state.authReducer.responseValidation,
-  emailValid: state.authReducer.emailValid,
+  newUserEmail: state.authReducer.newUserEmail,
+  newUserName: state.authReducer.newUserName,
   usernameValid: state.authReducer.usernameValid,
 });
 

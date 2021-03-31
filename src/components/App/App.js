@@ -1,16 +1,15 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { Alert }                from 'antd';
+import { Alert } from 'antd';
 import './Alert.scss';
-import Header                   from '../Header';
-import SingIn                   from '../SignIn';
-import PostList                 from '../PostList/PostList';
-import SignUp                   from '../SignUp';
-import CreateArticle            from '../CreateArticle';
-import classes                  from './App.module.scss';
-import EditProfile              from '../EditProfile/EditProfile';
-import Article                  from '../Article';
-
+import Header from '../Header';
+import SingIn from '../SignIn';
+import PostList from '../PostList/PostList';
+import SignUp from '../SignUp';
+import CreateArticle from '../CreateArticle';
+import classes from './App.module.scss';
+import EditProfile from '../EditProfile/EditProfile';
+import Article from '../Article';
 
 const App = () => (
   <BrowserRouter>

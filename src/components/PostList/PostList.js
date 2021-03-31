@@ -9,6 +9,7 @@ import './Pagination.css';
 import Loader from '../Loader';
 
 function PostList({ posts, offset, getArticles, loading, page_number, pages, set_offset, user }) {
+
   useEffect(() => {
     getArticles(offset, user);
   }, [offset]);

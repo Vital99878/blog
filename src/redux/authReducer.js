@@ -48,6 +48,13 @@ const authReducer = (state = initialState, action) => {
     case 'SIGN_UP_ERRORS':
       return {
         ...state,
+        newUserEmail: action.newUserEmail,
+        newUserName: action.newUserName,
+      };
+
+    case 'EDIT_PROFILE_ERRORS':
+      return {
+        ...state,
         emailValid: action.emailValid,
         usernameValid: action.usernameValid,
       };

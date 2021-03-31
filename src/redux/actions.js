@@ -23,8 +23,8 @@ export function signUp( newUser ) {
       dispatch( { type: 'SIGN_UP', user} );
     }
     if ( errors) {
-      const {email: emailValid, username: usernameValid} = errors;
-      dispatch( { type: 'SIGN_UP_ERRORS', emailValid, usernameValid  } );
+      const {email: newUserEmail, username: newUserName} = errors;
+      dispatch( { type: 'SIGN_UP_ERRORS', newUserEmail, newUserName  } );
     }
   };
 }
@@ -37,7 +37,7 @@ export function updateUser( newUser, token ) {
     }
     if ( user.errors) {
       const {email: emailValid, username: usernameValid} = user.errors;
-      dispatch( { type: 'SIGN_UP_ERRORS', emailValid, usernameValid  } );
+      dispatch( { type: 'EDIT_PROFILE_ERRORS', emailValid, usernameValid  } );
     }
   };
 }
@@ -57,6 +57,7 @@ export const isLogOut = () => {
 // async actions Articles
 
 export function getArticles( offset, token = '' ) {
+
   return async ( dispatch ) => {
     const { articles, articlesCount } = await articles_service.get_articles( offset, token );
     dispatch( { type: 'GET_ARTICLES', articles, articlesCount } );

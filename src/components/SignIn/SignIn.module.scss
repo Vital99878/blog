@@ -59,7 +59,6 @@
   border-radius: 4px;
 }
 
-
 .card__button {
   background-color: $primary-color;
   height: 40px;
@@ -71,12 +70,20 @@
   margin-top: 8px;
 }
 
+.card__button__disabled {
+  background-color: $secondary-color;
+  height: 40px;
+  width: 100%;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
 .card__button:focus {
   background-color: #0a569c;
   transition: all .4s;
 }
-
-.card__button
 
 .card__button:active {
   transform: translateY(-8%) scale(1.02);

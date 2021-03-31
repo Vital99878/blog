@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import PropTypes                      from 'prop-types';
 import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import * as actions from '../../redux/actions';
 import classes from './EditProfile.module.scss';
 
 const { card__title, card, card__forms, card__label, card__button, card__input } = classes;
-const { warning, card__inputWarning, card__formInput } = classes;
+const { warning, card__inputWarning, card__formInput, card__button__disabled } = classes;
 
 const EditProfile = ({ updateUser,  user, emailValid, usernameValid }) => {
   const { register, handleSubmit, errors } = useForm();
   const [once, setOnce] = useState(false);
+  const [buttonClass, setButtonClass] = useState(card__button);
+
+  useEffect( (  ) => {
+    setButtonClass(once ? card__button__disabled : card__button)
+  }, [once])
 
   const onSubmit = async (data) => {
     if (!once ) {
@@ -92,7 +97,7 @@ const EditProfile = ({ updateUser,  user, emailValid, usernameValid }) => {
             {errors.avatar && <span className={warning}>URL is invalid</span>}
           </label>
         </div>
-        <button className={card__button} onClick={handleSubmit(onSubmit)} disabled={once} type="submit">
+        <button className={buttonClass} onClick={handleSubmit(onSubmit)} disabled={once} type="submit">
           Save
         </button>
       </form>

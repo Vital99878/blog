@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import { Link, Redirect, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
-import gfm from 'remark-gfm';
 import * as actions from '../../redux/actions';
 import Writer from '../Writer';
 import classes from './Article.module.scss';
@@ -72,7 +71,7 @@ const Article = ({ article, user, addToFavorite, removeFromFavorite, deleteArtic
               <ModalDelete
                 deleteArticle={() => deleteArticle(article.slug, user.token)}
                 open={modalIsOpen}
-                closeModal={(  ) => setModalIsOpen(false)}
+                closeModal={() => setModalIsOpen(false)}
               />
               Delete
             </button>
@@ -83,7 +82,7 @@ const Article = ({ article, user, addToFavorite, removeFromFavorite, deleteArtic
         )}
       </div>
       <div className={classes.content}>
-        <ReactMarkdown plugins={[gfm]}>{body}</ReactMarkdown>
+        <ReactMarkdown>{body}</ReactMarkdown>
       </div>
     </div>
   );
