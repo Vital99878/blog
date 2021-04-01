@@ -29,7 +29,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix --color",
-    "prettier": "prettier --write"
+    "format": "prettier --write ./src"
   },
   "browserslist": {
     "production": [
@@ -61,12 +61,13 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "git-format-staged -f 'prettier --ignore-unknown --stdin --stdin-filepath \"{}\"' ."
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
     "*{.js, jsx}": [
       "npm run lint:fix",
+      "format",
       "pretty-quick --staged",
       "git add"
     ]
