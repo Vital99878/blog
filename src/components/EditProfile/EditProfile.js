@@ -105,7 +105,7 @@ const EditProfile = ({ updateUser, user, emailValid, usernameValid }) => {
               className={card__input}
               type="url"
               required
-              defaultValue={user.image || ''}
+              defaultValue={user.image ? user.image : ''}
               onChange={() => setOnce(false)}
             />
             {errors.avatar && errors.avatar.required && <span className={warning}>URL is required</span>}
