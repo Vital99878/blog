@@ -1,8 +1,8 @@
 const initialState = {
   user: null,
   responseValidation: '',
-  loading: true
-}
+  loading: true,
+};
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -60,7 +60,7 @@ const authReducer = (state = initialState, action) => {
       };
 
     default:
-      return state
+      return state;
   }
 };
 

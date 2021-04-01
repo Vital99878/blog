@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Redirect }             from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -7,16 +7,16 @@ import * as actions from '../../redux/actions';
 import classes from './SignIn.module.scss';
 
 const { card__title, card, card__form, card__label, card__button, card__input, card__p } = classes;
-const { warning, card__inputWarning,card__button__disabled } = classes;
+const { warning, card__inputWarning, card__button__disabled } = classes;
 
 const SingIn = ({ signIn, user, responseError }) => {
   const { register, handleSubmit, errors } = useForm();
   const [once, setOnce] = useState(false);
   const [buttonClass, setButtonClass] = useState(card__button);
 
-  useEffect( (  ) => {
-    setButtonClass(once ? card__button__disabled : card__button)
-  }, [once])
+  useEffect(() => {
+    setButtonClass(once ? card__button__disabled : card__button);
+  }, [once]);
 
   const onSubmit = async (data) => {
     if (!once) {

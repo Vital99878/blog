@@ -29,8 +29,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix --color",
-    "format": "prettier --write ./src",
-    "prepare": "husky install"
+    "format": "prettier --write ./src"
   },
   "browserslist": {
     "production": [
@@ -68,7 +67,6 @@
   "lint-staged": {
     "*{.js, jsx}": [
       "npm run lint:fix",
-      "format",
       "pretty-quick --staged",
       "git add"
     ]

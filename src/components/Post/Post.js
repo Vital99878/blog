@@ -8,6 +8,7 @@ import { Link, Redirect } from 'react-router-dom';
 import * as actions from '../../redux/actions';
 import Writer from '../Writer';
 import classes from './Post.module.scss';
+// import classes from './Post.module.scss';
 
 function Post({ post, user, addToFavorite, removeFromFavorite }) {
   const { author, title, createdAt, favorited, favoritesCount, tagList, slug, description } = post;

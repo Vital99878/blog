@@ -9,7 +9,6 @@ import './Pagination.css';
 import Loader from '../Loader';
 
 function PostList({ posts, offset, getArticles, loading, page_number, pages, set_offset, user }) {
-
   useEffect(() => {
     getArticles(offset, user);
   }, [offset]);
@@ -52,11 +51,11 @@ PostList.propTypes = {
   user: PropTypes.objectOf.isRequired,
 };
 const mapStateToProps = (state) => ({
-    user: state.authReducer.user,
-    posts: state.blogReducer.posts,
-    pages: state.blogReducer.pages,
-    offset: state.blogReducer.offset,
-    loading: state.blogReducer.loading,
-    page_number: state.blogReducer.page_number,
-  });
+  user: state.authReducer.user,
+  posts: state.blogReducer.posts,
+  pages: state.blogReducer.pages,
+  offset: state.blogReducer.offset,
+  loading: state.blogReducer.loading,
+  page_number: state.blogReducer.page_number,
+});
 export default connect(mapStateToProps, actions)(PostList);

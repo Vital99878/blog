@@ -3,11 +3,10 @@ const initialState = {
   page_number: 1,
   loading: true,
   article: null,
-}
+};
 
 const blogReducer = (state = initialState, action) => {
   switch (action.type) {
-    
     case 'GET_ARTICLES':
       return {
         ...state,
@@ -56,7 +55,7 @@ const blogReducer = (state = initialState, action) => {
       };
 
     default:
-      return state
+      return state;
   }
 };
 
