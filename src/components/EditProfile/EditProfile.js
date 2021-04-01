@@ -21,7 +21,8 @@ const EditProfile = ({ updateUser, user, emailValid, usernameValid }) => {
   const onSubmit = async (data) => {
     if (!once) {
       setOnce(true);
-      updateUser(data, user.token);
+      await updateUser(data, user.token);
+      setOnce(false);
     }
   };
 
