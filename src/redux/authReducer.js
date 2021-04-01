@@ -18,7 +18,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         auth: true,
-        user: action.user,
+        user: { ...action.user, image: '' },
         username: action.user.username,
         emailValid: '',
         usernameValid: '',

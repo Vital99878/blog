@@ -8,7 +8,7 @@ const User = ({ user }) => {
   const [validPath, setValidPath] = useState(true);
   useEffect(() => {
     setValidPath(true);
-  }, [image]);
+  }, [image, user]);
 
   return (
     <div className={classes.author}>
