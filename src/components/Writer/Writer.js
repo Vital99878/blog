@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classes from './Writer.module.scss';
 import { date } from '../../utilities';
@@ -6,6 +6,7 @@ import mock from '../../img/defaultAvatar.png';
 
 const Writer = ({ author, createdAt }) => {
   const { username, image } = author;
+  const [validPath, setValidPath] = useState(true);
 
   return (
     <div className={classes.author}>
@@ -13,7 +14,7 @@ const Writer = ({ author, createdAt }) => {
         <div className={classes.username}>{username}</div>
         <div className={classes.created}>{date(createdAt)}</div>
       </div>
-      <img src={image || mock} alt="Author" className={classes.avatar} />
+      <img onError={() => setValidPath(false)} src={validPath ? image : mock} alt="Author" className={classes.avatar} />
     </div>
   );
 };
