@@ -1,4 +1,4 @@
-import React, { useRef, useState , useEffect} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -14,9 +14,9 @@ const SingUp = ({ user, signUp, usernameValidation, responseValidation, newUserE
   const [once, setOnce] = useState(false);
   const [buttonClass, setButtonClass] = useState(card__button);
 
-  useEffect( (  ) => {
-    setButtonClass(once ? card__button__disabled : card__button)
-  }, [once])
+  useEffect(() => {
+    setButtonClass(once ? card__button__disabled : card__button);
+  }, [once]);
 
   const password = useRef({});
   password.current = watch('password', '');
@@ -60,7 +60,10 @@ const SingUp = ({ user, signUp, usernameValidation, responseValidation, newUserE
             Email address
             <input
               onChange={() => setOnce(false)}
-              ref={register({ required: true, pattern: /\S+@\S+\.\S+/ })}
+              ref={register({
+                required: true,
+                pattern: /\S+@\S+\.\S+/,
+              })}
               name="email"
               className={(errors.email && card__inputWarning) || card__input}
               type="email"
@@ -77,7 +80,11 @@ const SingUp = ({ user, signUp, usernameValidation, responseValidation, newUserE
           <label className={card__label}>
             Password
             <input
-              ref={register({ required: true, minLength: 8, maxLength: 40 })}
+              ref={register({
+                required: true,
+                minLength: 8,
+                maxLength: 40,
+              })}
               name="password"
               className={(errors.password && card__inputWarning) || card__input}
               type="password"
@@ -100,7 +107,9 @@ const SingUp = ({ user, signUp, usernameValidation, responseValidation, newUserE
           <label className={card__label}>
             Repeat Password
             <input
-              ref={register({ validate: (value) => value === password.current || 'The passwords do not match' })}
+              ref={register({
+                validate: (value) => value === password.current || 'The passwords do not match',
+              })}
               name="password_repeat"
               className={(errors.password && card__inputWarning) || card__input}
               type="password"
@@ -115,7 +124,13 @@ const SingUp = ({ user, signUp, usernameValidation, responseValidation, newUserE
         </div>
         <div className={card__formInput}>
           <label className={classes.card__checkbox}>
-            <input ref={register({ required: 'This is required' })} name="agree" type="checkbox" />
+            <input
+              ref={register({
+                required: 'This is required',
+              })}
+              name="agree"
+              type="checkbox"
+            />
             <span className={classes.checkmark} />I agree to the processing of my personal information
           </label>
           {errors.agree && errors.agree.type === 'required' && <span className={warning}>You need check agree</span>}

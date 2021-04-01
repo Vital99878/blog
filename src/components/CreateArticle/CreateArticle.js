@@ -7,18 +7,8 @@ import * as actions from '../../redux/actions';
 import classes from './CreateArticle.module.scss';
 import Loader from '../Loader';
 
-const {
-  article__title,
-  article__forms,
-  article__label,
-  article__button,
-  article__input,
-  article__body,
-  article__tags,
-  article__tag,
-  article__add_tag,
-  article__delete_tag,
-} = classes;
+const { article__forms, article__label, article__button, article__button__disabled, article__input } = classes;
+const { article__body, article__title, article__tags, article__tag, article__add_tag, article__delete_tag } = classes;
 
 const CreateArticle = ({ postArticle, updateArticle, token, history, location, user, article, getOneArticle }) => {
   const articleTags =
@@ -28,6 +18,7 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
 
   const [tagsList, setTagsList] = useState(articleTags);
   const [once, setOnce] = useState(false);
+  const [buttonClass, setButtonClass] = useState(article__button);
   const { register, handleSubmit, errors } = useForm();
   const { slug } = useParams();
 
@@ -48,17 +39,19 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
     }
   }, [article]);
 
-  if (location.pathname === '/new-article') {
-    article = { title: null, description: null, body: null };
-  }
+  useEffect(() => {
+    setButtonClass(once ? article__button__disabled : article__button);
+  }, [once]);
 
-  if (!article && location.pathname !== '/new-article') {
-    return <Loader />;
-  }
+  if (location.pathname === '/new-article') article = { title: null, description: null, body: null };
 
   if (location.pathname !== '/new-article' && user?.username !== article.author.username) {
     return <Redirect to="/articles" />;
   }
+
+  if (!article && location.pathname !== '/new-article') return <Loader />;
+
+  if (!token) return <Redirect to="/sign-in" />;
 
   function getTagLabel(label, id) {
     setTagsList(
@@ -92,28 +85,20 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
   ));
 
   async function onSubmit(data) {
-    if (!once) {
-      setOnce(true);
-      const tagList = tagsList.map((item) => item.value);
+    if (once) return;
+    setOnce(true);
+    const tagList = tagsList.map((item) => item.value);
 
-      if (location.pathname !== '/new-article') {
-        const updatedArticle = await updateArticle({ ...data, tagList }, token, article.slug);
-        if (updatedArticle && !updatedArticle.errors) {
-          history.push(`/articles/${updatedArticle.article.slug}`);
-        } else {
-          history.push('/alert');
-        }
-      } else {
-        const newArticle = await postArticle({ ...data, tagList }, token);
-        if (newArticle) {
-          history.push(`/articles/${newArticle.article.slug}`);
-        }
-      }
+    if (location.pathname !== '/new-article') {
+      const updatedArticle = await updateArticle({ ...data, tagList }, token, article.slug);
+      if (updatedArticle && !updatedArticle.errors) {
+        history.push(`/articles/${updatedArticle.article.slug}`);
+      } else history.push('/alert');
+      return;
     }
-  }
 
-  if (!token) {
-    return <Redirect to="/sign-in" />;
+    const newArticle = await postArticle({ ...data, tagList }, token);
+    if (newArticle) history.push(`/articles/${newArticle.article.slug}`);
   }
 
   return (
@@ -182,7 +167,7 @@ const CreateArticle = ({ postArticle, updateArticle, token, history, location, u
           </button>
         </form>
       </div>
-      <button className={article__button} onClick={handleSubmit(onSubmit)} type="submit" disabled={once}>
+      <button className={buttonClass} onClick={handleSubmit(onSubmit)} type="submit" disabled={once}>
         Send
       </button>
     </div>
@@ -200,11 +185,9 @@ CreateArticle.propTypes = {
   location: PropTypes.objectOf.isRequired,
   token: PropTypes.string.isRequired,
 };
-
 const mapStateToProps = (state) => ({
   token: state.authReducer.user ? state.authReducer.user.token : null,
   user: state.authReducer.user,
   article: state.blogReducer.article,
 });
-
 export default connect(mapStateToProps, actions)(withRouter(CreateArticle));

@@ -41,9 +41,8 @@ const Article = ({ article, user, addToFavorite, removeFromFavorite, deleteArtic
   favorited ? (favoriteClass = classes.favorite) : (favoriteClass = classes.noFavorite);
 
   function toggleFavorite() {
-    if (user) {
-      favorited ? removeFromFavorite(slug, user.token) : addToFavorite(slug, user.token);
-    }
+    if (user) favorited ? removeFromFavorite(slug, user.token) : addToFavorite(slug, user.token);
+    return <Redirect to="sign-in" />;
   }
 
   return (

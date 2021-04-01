@@ -4,7 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import * as actions from '../../redux/actions';
 import Writer from '../Writer';
 import classes from './Post.module.scss';
@@ -22,9 +22,8 @@ function Post({ post, user, addToFavorite, removeFromFavorite }) {
   favorited ? (favoriteClass = classes.favorite) : (favoriteClass = classes.noFavorite);
 
   function toggleFavorite() {
-    if (user) {
-      favorited ? removeFromFavorite(slug, user.token) : addToFavorite(slug, user.token);
-    }
+    if (!user) return <Redirect to="/sign-in" />;
+    favorited ? removeFromFavorite(slug, user.token) : addToFavorite(slug, user.token);
   }
 
   return (

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes                      from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import * as actions from '../../redux/actions';
 import classes from './EditProfile.module.scss';
@@ -8,21 +9,23 @@ import classes from './EditProfile.module.scss';
 const { card__title, card, card__forms, card__label, card__button, card__input } = classes;
 const { warning, card__inputWarning, card__formInput, card__button__disabled } = classes;
 
-const EditProfile = ({ updateUser,  user, emailValid, usernameValid }) => {
+const EditProfile = ({ updateUser, user, emailValid, usernameValid }) => {
   const { register, handleSubmit, errors } = useForm();
   const [once, setOnce] = useState(false);
   const [buttonClass, setButtonClass] = useState(card__button);
 
-  useEffect( (  ) => {
-    setButtonClass(once ? card__button__disabled : card__button)
-  }, [once])
+  useEffect(() => {
+    setButtonClass(once ? card__button__disabled : card__button);
+  }, [once]);
 
   const onSubmit = async (data) => {
-    if (!once ) {
+    if (!once) {
       setOnce(true);
       updateUser(data, user.token);
     }
   };
+
+  if (!user) return <Redirect to="/sign-in" />;
 
   return (
     <div className={card}>
@@ -32,7 +35,9 @@ const EditProfile = ({ updateUser,  user, emailValid, usernameValid }) => {
           <label className={card__label}>
             Username
             <input
-              ref={register({ required: true })}
+              ref={register({
+                required: true,
+              })}
               name="username"
               className={(errors.username && card__inputWarning) || card__input}
               type="text"
@@ -49,7 +54,10 @@ const EditProfile = ({ updateUser,  user, emailValid, usernameValid }) => {
           <label className={card__label}>
             Email address
             <input
-              ref={register({ required: true, pattern: /\S+@\S+\.\S+/ })}
+              ref={register({
+                required: true,
+                pattern: /\S+@\S+\.\S+/,
+              })}
               name="email"
               className={(errors.email && card__inputWarning) || card__input}
               type="email"
@@ -65,7 +73,10 @@ const EditProfile = ({ updateUser,  user, emailValid, usernameValid }) => {
           <label className={card__label}>
             New password
             <input
-              ref={register({ minLength: 8, maxLength: 40 })}
+              ref={register({
+                minLength: 8,
+                maxLength: 40,
+              })}
               name="password"
               className={(errors.password && card__inputWarning) || card__input}
               type="password"
@@ -85,7 +96,10 @@ const EditProfile = ({ updateUser,  user, emailValid, usernameValid }) => {
           <label className={card__label}>
             Avatar image (url)
             <input
-              ref={register({ required: true, pattern: /^(https:|http:|www\.)\S*/ })}
+              ref={register({
+                required: false,
+                pattern: /^(https:|http:|www\.)\S*/,
+              })}
               name="avatar"
               className={card__input}
               type="url"
@@ -112,12 +126,10 @@ EditProfile.propTypes = {
   usernameValid: PropTypes.string.isRequired,
   user: PropTypes.objectOf.isRequired,
 };
-
 const mapStateToProps = (state) => ({
   responseValidation: state.authReducer.responseValidation,
   user: state.authReducer.user,
   emailValid: state.authReducer.emailValid,
   usernameValid: state.authReducer.usernameValid,
 });
-
 export default connect(mapStateToProps, actions)(EditProfile);

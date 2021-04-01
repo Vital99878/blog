@@ -33,5 +33,4 @@ ModalDelete.propTypes = {
   deleteArticle: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
-
 export default ModalDelete;
