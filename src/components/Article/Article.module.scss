@@ -16,6 +16,8 @@
   display: flex;
   align-items: center;
   margin-bottom: 8px;
+  max-width: 600px;
+  word-break: break-word;
 
   h5 {
     margin-right: 14px;
@@ -24,16 +26,17 @@
     font-weight: normal;
     font-size: 20px;
     line-height: 28px;
-    color: #1890FF;
+    color: #1890ff;
   }
 }
 
 .favorited {
   display: flex;
-  align-self: flex-end;
+  align-self: center;
+  margin-top: 4px;
 
   p {
-    margin-top: .8px;
+    margin-top: 0.8px;
     font-size: 12px;
     font-family: Inter, sans-serif;
     color: rgba(0, 0, 0, 0.75);
@@ -56,7 +59,6 @@
     padding: 0;
     color: rgba(0, 0, 0, 0.5);
   }
-
 }
 
 .firstTag {
@@ -79,27 +81,30 @@
 
 .paragraph {
   display: flex;
-
+  word-break: break-word;
   justify-content: space-between;
-
 }
 
 .description {
   width: 80%;
   font-family: Inter, sans-serif;
   line-height: 22px;
+  word-break: break-word;
+
+  @media (max-width: 782px) {
+    width: 70%;
+  }
 }
 
 .updateButtons {
-
 }
 
-.heart {
+.noFavorite {
   @include heart;
   background: url('../../img/heart.svg') no-repeat;
 }
 
-.redHeart {
+.favorite {
   @include heart;
   background: url('../../img/red_heart.svg') no-repeat;
 }
@@ -111,6 +116,7 @@
 }
 
 .list {
+  position: relative;
   display: flex;
   align-items: center;
 }
@@ -122,23 +128,24 @@
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
+  //height: 32px;
+  word-break: unset;
 }
 
 .editArticle {
   @include delete_edit_article;
   margin-left: 12px;
-  border: 1px solid #52C41A;
-
+  border: 1px solid #52c41a;
   a {
-    color: #52C41A;
+    color: #52c41a;
   }
 }
 
 .deleteArticle {
+  position: relative;
   @include delete_edit_article;
-  border: 1px solid  #F5222D;
-  color:  #F5222D;
-
+  border: 1px solid #f5222d;
+  color: #f5222d;
 }
 
 .content {
@@ -146,6 +153,7 @@
   margin-top: 26px;
   font-size: 18px;
   line-height: 28px;
+  word-break: break-word;
 }
 
 @media (max-width: 560px) {
@@ -167,4 +175,3 @@
     flex-direction: column;
   }
 }
-

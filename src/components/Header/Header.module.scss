@@ -1,6 +1,13 @@
 @import '../../variables';
 @import '../../mixins';
 
+.bgWrapper {
+  background-color: white;
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+
 .header {
   box-sizing: border-box;
   width: 100%;
@@ -26,6 +33,3 @@
     padding: 8px 30px;
   }
 }
-
-
-

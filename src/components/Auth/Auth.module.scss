@@ -23,17 +23,15 @@
   a {
     color: rgba(0, 0, 0, 0.85);
   }
-
 }
 
 .signUp {
   @include signUp_logOut;
-  border: 1px solid #52C41A;
+  border: 1px solid #52c41a;
 
   a {
-    color: #52C41A;
+    color: #52c41a;
   }
-
 }
 
 .logOut {
@@ -47,7 +45,7 @@
 
 .createArticle {
   a {
-    border: 1px solid #52C41A;
+    border: 1px solid #52c41a;
     box-sizing: border-box;
     border-radius: 5px;
     padding: 6px;
@@ -55,16 +53,14 @@
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
-    color: #52C41A;
+    color: #52c41a;
   }
 }
 
-
-@media (max-width: 560px) {
+@media (max-width: 900px) {
   .list {
     flex-direction: column;
     align-items: flex-end;
-
   }
   .item {
     font-size: 14px;
@@ -89,5 +85,4 @@
     order: 3;
     font-size: 8px;
   }
-
 }

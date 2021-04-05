@@ -2,62 +2,45 @@
 /* eslint-disable prefer-const */
 /* eslint-disable no-shadow */
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, {useEffect}  from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
-import gfm from 'remark-gfm';
 import * as actions from '../../redux/actions';
 import Writer from '../Writer';
 import classes from './Article.module.scss';
+import Loader from '../Loader';
+import ModalDelete from '../ModalDelete';
+import Page_404 from '../Page_404';
 
-const spinStyle = { fontSize: 48, marginTop: '180px', color: 'lightgreen' };
-const antIcon = <LoadingOutlined style={spinStyle} spin />;
+const Article = ({ article, user, addToFavorite, removeFromFavorite, deleteArticle, getOneArticle }) => {
+  let [modalIsOpen, setModalIsOpen] = useState(false);
+  const { slug } = useParams();
 
-function Article({ article, username, user, addToFavorite, removeFromFavorite, deleteArticle, getOneArticle, slug }) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    getOneArticle(slug, user);
+  }, []);
 
-  useEffect( (  ) => {
-    window.scrollTo(0,0)
-    getOneArticle(slug, user)
-  }, [])
-
-  if (!article) {
-    return <Spin indicator={antIcon} />;
-  }
-
-  if (!article.title ) {
-    return <Redirect to='/'/>
-  }
+  if (article === 404) return <Page_404 />;
+  if (!article) return <Loader />;
+  if (!article.title) return <Redirect to="/articles" />;
 
   const { author, title, body, createdAt, description, favorited, favoritesCount, tagList } = article;
-
-
 
   const tags = tagList.map((tag) => (
     <li className={classes.tag}>
       <a href="">{tag}</a>
     </li>
   ));
-  let heartButtonClass;
 
-  if (favorited) {
-    heartButtonClass = classes.redHeart;
-  } else {
-    heartButtonClass = classes.heart;
-  }
+  let favoriteClass;
+  favorited ? (favoriteClass = classes.favorite) : (favoriteClass = classes.noFavorite);
 
   function toggleFavorite() {
-    if (user) {
-      if (favorited) {
-        removeFromFavorite(slug, user.token);
-      }
-      if (!favorited) {
-        addToFavorite(slug, user.token);
-      }
-    }
+    if (user) favorited ? removeFromFavorite(slug, user.token) : addToFavorite(slug, user.token);
+    return <Redirect to="sign-in" />;
   }
 
   return (
@@ -66,29 +49,41 @@ function Article({ article, username, user, addToFavorite, removeFromFavorite, d
       <div className={classes.title}>
         <h5>{title}</h5>
         <div className={classes.favorited}>
-          <button type="button" className={heartButtonClass} onClick={() => toggleFavorite()} />
+          <button type="button" className={favoriteClass} onClick={() => toggleFavorite()} />
           <p>{favoritesCount}</p>
         </div>
       </div>
       <ul className={classes.tags}>{tags}</ul>
       <div className={classes.paragraph}>
         <p className={classes.description}> {description}</p>
-        {article.author.username === username && (
+        {user && article.author.username === user.username && (
           <div className={classes.list}>
-              <button className={`${classes.item} ${classes.deleteArticle}`} type='button'
-              onClick={() => deleteArticle(article.slug, user.token)}>Delete</button>
-            <button type='button' className={`${classes.item} ${classes.editArticle}`}>
-              <Link to="/editArticle">Edit</Link>
+            <button
+              className={`${classes.item} ${classes.deleteArticle}`}
+              type="button"
+              onClick={() => {
+                setModalIsOpen(true);
+              }}
+            >
+              <ModalDelete
+                deleteArticle={() => deleteArticle(article.slug, user.token)}
+                open={modalIsOpen}
+                closeModal={() => setModalIsOpen(false)}
+              />
+              Delete
+            </button>
+            <button type="button" className={`${classes.item} ${classes.editArticle}`}>
+              <Link to={{ pathname: `/articles/${slug}/edit`, state: { updateArticle: article } }}>Edit</Link>
             </button>
           </div>
         )}
       </div>
       <div className={classes.content}>
-        <ReactMarkdown plugins={[gfm]}>{body}</ReactMarkdown>
+        <ReactMarkdown>{body}</ReactMarkdown>
       </div>
     </div>
   );
-}
+};
 
 Article.defaultProp = {
   post: {},
@@ -107,10 +102,8 @@ Article.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  article: state.article,
-  username: state.username,
-  user: state.user,
+  article: state.blogReducer.article,
+  user: state.authReducer.user,
 });
-
 
 export default connect(mapStateToProps, actions)(Article);

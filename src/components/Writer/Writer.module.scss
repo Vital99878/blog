@@ -17,6 +17,10 @@
   font-size: 18px;
   color: rgba(0, 0, 0, 0.85);
 
+  .username {
+    word-break: break-word;
+  }
+
   .created {
     font-size: 12px;
     font-weight: normal;
@@ -30,12 +34,14 @@
   width: 46px;
   border-radius: 50%;
   margin-left: 12px;
+  object-fit: cover;
 }
 
-@media (max-width: 560px) {
-  .author{
+@media (max-width: 900px) {
+  .author {
     position: static;
+  }
+  .userData {
     margin-left: auto;
-    margin-bottom: 6px;
   }
 }

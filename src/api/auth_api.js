@@ -1,18 +1,16 @@
 const base = 'https://conduit.productionready.io/api';
 
-
 class Auth_api {
-
-  async create_user( { username, email, password }) {
+  async create_user({ username, email, password }) {
     const myHeaders = new Headers();
-    myHeaders.append( 'Content-Type', 'application/json' );
-    const raw = JSON.stringify( {
-                                  user: {
-                                    username,
-                                    email,
-                                    password,
-                                  },
-                                } );
+    myHeaders.append('Content-Type', 'application/json');
+    const raw = JSON.stringify({
+      user: {
+        username,
+        email,
+        password,
+      },
+    });
     const requestOptions = {
       method: 'POST',
       headers: myHeaders,
@@ -20,26 +18,25 @@ class Auth_api {
       redirect: 'follow',
     };
     const body = await fetch(`${base}/users`, requestOptions);
-    const user = await body.json()
-    console.log(user)
+    const user = await body.json();
     return user;
   }
 
-  async update_user( { username, email, password, avatar }, token) {
+  async update_user({ username, email, password, avatar }, token) {
     const myHeaders = new Headers();
-    myHeaders.append( 'Authorization', `Token ${token}` );
-    myHeaders.append( 'Content-Type', 'application/json' );
-    if (!password ) {
-      password = null
+    myHeaders.append('Authorization', `Token ${token}`);
+    myHeaders.append('Content-Type', 'application/json');
+    if (!password) {
+      password = null;
     }
-    const raw = JSON.stringify( {
-                                  user: {
-                                    email,
-                                    username,
-                                    password,
-                                    image:avatar
-                                  },
-                                } );
+    const raw = JSON.stringify({
+      user: {
+        email,
+        username,
+        password,
+        image: avatar,
+      },
+    });
     const requestOptions = {
       method: 'PUT',
       headers: myHeaders,
@@ -47,19 +44,19 @@ class Auth_api {
       redirect: 'follow',
     };
     const body = await fetch(`${base}/user`, requestOptions);
-    const user = await body.json()
+    const user = await body.json();
     return user;
   }
 
   async get_user(email, password) {
     const myHeaders = new Headers();
-    myHeaders.append( 'Content-Type', 'application/json' );
-    const raw = JSON.stringify( {
-                                  user: {
-                                    email,
-                                    password,
-                                  },
-                                } );
+    myHeaders.append('Content-Type', 'application/json');
+    const raw = JSON.stringify({
+      user: {
+        email,
+        password,
+      },
+    });
     const requestOptions = {
       method: 'POST',
       headers: myHeaders,
@@ -67,18 +64,9 @@ class Auth_api {
       redirect: 'follow',
     };
     const body = await fetch(`${base}/users/login`, requestOptions);
-    if ( body.status === 422) {
-      return 'email ore password wrong'
-    }
-    const user = await body.json()
-    return user.user;
+    const user = await body.json();
+    return user;
   }
-
-  // async create_article() {
-  // }
-  //
-  // async edit_article() {
-  // }
 }
 
 export default new Auth_api();
