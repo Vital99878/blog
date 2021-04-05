@@ -1,3 +1,5 @@
+import Page_404 from '../components/Page_404';
+
 const base = 'https://conduit.productionready.io/api/articles';
 
 class Articles_Service {
@@ -92,6 +94,9 @@ class Articles_Service {
         headers: myHeaders,
       };
       const response = await fetch(`${base}/${slug}`, requestOptions);
+      if (response.status === 404) {
+        return 404;
+      }
       if (!response.ok) {
         throw new Error(`Not working fetch ${base}/search/movie: ${response.status}`);
       }

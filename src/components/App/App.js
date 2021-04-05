@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Alert } from 'antd';
 import './Alert.scss';
 import Header from '../Header';
@@ -10,6 +10,7 @@ import CreateArticle from '../CreateArticle';
 import classes from './App.module.scss';
 import EditProfile from '../EditProfile/EditProfile';
 import Article from '../Article';
+import Page_404 from '../Page_404';
 
 const App = () => (
   <BrowserRouter>
@@ -28,13 +29,16 @@ const App = () => (
       }}
     />
     <section className={classes.app}>
-      <Route path={['/', '/articles']} exact component={PostList} />
-      <Route path="/articles/:slug" exact component={Article} />
-      <Route path="/new-article" component={CreateArticle} />
-      <Route path="/articles/:slug/edit" component={CreateArticle} />
-      <Route path="/sign-in" component={SingIn} />
-      <Route path="/sign-up" component={SignUp} />
-      <Route path="/profile" component={EditProfile} />
+      <Switch>
+        <Route path={['/', '/articles']} exact component={PostList} />
+        <Route path="/articles/:slug" exact component={Article} />
+        <Route path="/new-article" component={CreateArticle} />
+        <Route path="/articles/:slug/edit" component={CreateArticle} />
+        <Route path="/sign-in" component={SingIn} />
+        <Route path="/sign-up" component={SignUp} />
+        <Route path="/profile" component={EditProfile} />
+        <Route path="/" component={Page_404} />
+      </Switch>
     </section>
   </BrowserRouter>
 );

@@ -12,6 +12,7 @@ import Writer from '../Writer';
 import classes from './Article.module.scss';
 import Loader from '../Loader';
 import ModalDelete from '../ModalDelete';
+import Page_404 from '../Page_404';
 
 const Article = ({ article, user, addToFavorite, removeFromFavorite, deleteArticle, getOneArticle }) => {
   let [modalIsOpen, setModalIsOpen] = useState(false);
@@ -22,12 +23,9 @@ const Article = ({ article, user, addToFavorite, removeFromFavorite, deleteArtic
     getOneArticle(slug, user);
   }, []);
 
-  if (!article) {
-    return <Loader />;
-  }
-  if (!article.title) {
-    return <Redirect to="/articles" />;
-  }
+  if (article === 404) return <Page_404 />;
+  if (!article) return <Loader />;
+  if (!article.title) return <Redirect to="/articles" />;
 
   const { author, title, body, createdAt, description, favorited, favoritesCount, tagList } = article;
 
